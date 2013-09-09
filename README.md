@@ -57,12 +57,12 @@ NULL
 
 ##Composer
 To add the library as a local, per-project dependency use [Composer](http://getcomposer.org)! Simply add a dependency on
-`dominionenterprises/filter-php` to your project's `composer.json` file such as:
+`dominionenterprises/filter` to your project's `composer.json` file such as:
 
 ```json
 {
     "require": {
-        "dominionenterprises/filter-php": "~1.0"
+        "dominionenterprises/filter": "~1.0"
     }
 }
 ```
