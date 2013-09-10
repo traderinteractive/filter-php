@@ -13,7 +13,7 @@ if ($returnStatus !== 0) {
     exit(1);
 }
 
-passthru('vendor/bin/phpunit --coverage-clover clover.xml tests', $returnStatus);
+passthru('vendor/bin/phpunit --coverage-clover clover.xml --coverage-html coverage tests', $returnStatus);
 if ($returnStatus !== 0) {
     exit(1);
 }
