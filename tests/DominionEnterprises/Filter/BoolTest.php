@@ -1,0 +1,65 @@
+<?php
+namespace DominionEnterprises\Filter;
+use DominionEnterprises\Filter\Bool as B;
+
+final class BoolTest extends \PHPUnit_Framework_TestCase
+{
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Bool::filter
+     */
+    public function filter_basic()
+    {
+        $this->assertTrue(B::filter(true));
+        $this->assertTrue(B::filter('   true'));
+        $this->assertTrue(B::filter(' TRUE '));
+        $this->assertTrue(B::filter('True '));
+
+        $this->assertFalse(B::filter('false   '));
+        $this->assertFalse(B::filter('FALSE  '));
+        $this->assertFalse(B::filter(' False '));
+        $this->assertFalse(B::filter(false));
+    }
+
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Bool::filter
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage $allowNull was not a bool
+     */
+    public function filter_allowNullIsNotBool()
+    {
+        B::filter('true', 1);
+    }
+
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Bool::filter
+     */
+    public function filter_allowNullIsTrueAndNullValue()
+    {
+        $this->assertNull(B::filter(null, true));
+    }
+
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Bool::filter
+     * @expectedException \Exception
+     * @expectedExceptionMessage "1" $value is not a string
+     */
+    public function filter_nonStringAndNonBoolValue()
+    {
+        B::filter(1);
+    }
+
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Bool::filter
+     * @expectedException \Exception
+     * @expectedExceptionMessage invalid is not 'true' or 'false' disregarding case and whitespace
+     */
+    public function filter_invalidString()
+    {
+        B::filter('invalid');
+    }
+}
