@@ -264,6 +264,39 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
         F::filter(array('boo' => array('required' => 1)), array());
     }
 
+    /**
+     * @test
+     */
+    public function prepends()
+    {
+        $result = F::filter(
+            array('field' => array(array('TestFilter::filter'))),
+            array('field' => 'arg'),
+            array('prepends' => array('somethingWrong', '\DominionEnterprises\\'))
+        );
+        $this->assertSame(array('status' => true, 'result' => array('field' => 'argboo'), 'unknowns' => array(), 'error' => null), $result);
+    }
+
+    /**
+     * @test
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage 'prepends' option was not an array
+     */
+    public function prependsNotArray()
+    {
+        F::filter(array(), array(), array('prepends' => 1));
+    }
+
+    /**
+     * @test
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage "1" a given prepend was not a string
+     */
+    public function prependNotString()
+    {
+        F::filter(array(), array(), array('prepends' => array(1)));
+    }
+
     public static function failingFilter($val)
     {
         throw new \Exception('i failed');
