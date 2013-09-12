@@ -1,14 +1,14 @@
 <?php
 /**
- * Defines the DominionEnterprises\Filter\Collection class.
+ * Defines the DominionEnterprises\Filter\Arrays class.
  */
 
 namespace DominionEnterprises\Filter;
 
 /**
- * A collection of filters for collections.
+ * A collection of filters for arrays.
  */
-final class Collection
+final class Arrays
 {
     /**
      * Filter an array by throwing if not an array or an empty array.
