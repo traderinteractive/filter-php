@@ -1,52 +1,52 @@
 <?php
 namespace DominionEnterprises\Filter;
-use DominionEnterprises\Filter\Collection as C;
+use DominionEnterprises\Filter\Arrays as A;
 
-final class CollectionTest extends \PHPUnit_Framework_TestCase
+final class ArraysTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Collection::notEmpty
+     * @covers \DominionEnterprises\Filter\Arrays::notEmpty
      */
     public function notEmpty_pass()
     {
-        $this->assertSame(array('boo'), C::notEmpty(array('boo')));
+        $this->assertSame(array('boo'), A::notEmpty(array('boo')));
     }
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Collection::notEmpty
+     * @covers \DominionEnterprises\Filter\Arrays::notEmpty
      * @expectedException \Exception
      * @expectedExceptionMessage Value '1' is not an array
      */
     public function notEmpty_failNotArray()
     {
-        C::notEmpty(1);
+        A::notEmpty(1);
     }
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Collection::notEmpty
+     * @covers \DominionEnterprises\Filter\Arrays::notEmpty
      * @expectedException \Exception
      * @expectedExceptionMessage Array is empty
      */
     public function notEmpty_failEmpty()
     {
-        C::notEmpty(array());
+        A::notEmpty(array());
     }
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Collection::in
+     * @covers \DominionEnterprises\Filter\Arrays::in
      */
     public function in_passStrict()
     {
-        $this->assertSame('boo', C::in('boo', array('boo')));
+        $this->assertSame('boo', A::in('boo', array('boo')));
     }
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Collection::in
+     * @covers \DominionEnterprises\Filter\Arrays::in
      * @expectedException \Exception
      * @expectedExceptionMessage Value '0' is not in array array (
      *   0 => 0
@@ -54,12 +54,12 @@ final class CollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function in_failStrict()
     {
-        C::in('0', array(0));
+        A::in('0', array(0));
     }
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Collection::in
+     * @covers \DominionEnterprises\Filter\Arrays::in
      * @expectedException \Exception
      * @expectedExceptionMessage Value 'boo' is not in array array (
      *   0 => 'foo'
@@ -67,26 +67,26 @@ final class CollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function in_failNotStrict()
     {
-        C::in('boo', array('foo'), false);
+        A::in('boo', array('foo'), false);
     }
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Collection::in
+     * @covers \DominionEnterprises\Filter\Arrays::in
      */
     public function in_passNotStrict()
     {
-        $this->assertSame('0', C::in('0', array(0), false));
+        $this->assertSame('0', A::in('0', array(0), false));
     }
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Collection::in
+     * @covers \DominionEnterprises\Filter\Arrays::in
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage $strict was not a bool
      */
     public function in_strictNotBool()
     {
-        C::in('boo', array(), 1);
+        A::in('boo', array(), 1);
     }
 }
