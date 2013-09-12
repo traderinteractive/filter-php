@@ -38,7 +38,7 @@ final class Int
      */
     public static function filter($value, $allowNull = false, $minValue = null, $maxValue = PHP_INT_MAX)
     {
-        if (!is_bool($allowNull)) {
+        if ($allowNull !== false && $allowNull !== true) {
             throw new \InvalidArgumentException('"' . var_export($allowNull, true) . '" $allowNull was not a bool');
         }
 
