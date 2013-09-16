@@ -12,7 +12,7 @@ final class Filterer
 {
     private static $_filterAliases = array(
         'in' => '\DominionEnterprises\Filter\Arrays::in',
-        'notEmpty' => '\DominionEnterprises\Filter\Arrays::notEmpty',
+        'array' => '\DominionEnterprises\Filter\Arrays::filter',
         'bool' => '\DominionEnterprises\Filter\Bool::filter',
         'float' => '\DominionEnterprises\Filter\Float::filter',
         'int' => '\DominionEnterprises\Filter\Int::filter',

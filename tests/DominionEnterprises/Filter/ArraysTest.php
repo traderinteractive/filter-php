@@ -6,33 +6,77 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Arrays::notEmpty
+     * @covers \DominionEnterprises\Filter\Arrays::filter
      */
-    public function notEmpty_pass()
+    public function filter_basicPass()
     {
-        $this->assertSame(array('boo'), A::notEmpty(array('boo')));
+        $this->assertSame(array('boo'), A::filter(array('boo')));
     }
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Arrays::notEmpty
+     * @covers \DominionEnterprises\Filter\Arrays::filter
      * @expectedException \Exception
      * @expectedExceptionMessage Value '1' is not an array
      */
-    public function notEmpty_failNotArray()
+    public function filter_failNotArray()
     {
-        A::notEmpty(1);
+        A::filter(1);
     }
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Arrays::notEmpty
+     * @covers \DominionEnterprises\Filter\Arrays::filter
      * @expectedException \Exception
-     * @expectedExceptionMessage Array is empty
+     * @expectedExceptionMessage $value count of 0 is less than 1
      */
-    public function notEmpty_failEmpty()
+    public function filter_failEmpty()
     {
-        A::notEmpty(array());
+        A::filter(array());
+    }
+
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Arrays::filter
+     * @expectedException \Exception
+     * @expectedExceptionMessage $value count of 1 is less than 2
+     */
+    public function filter_countLessThanMin()
+    {
+        A::filter(array(0), 2);
+    }
+
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Arrays::filter
+     * @expectedException \Exception
+     * @expectedExceptionMessage $value count of 2 is greater than 1
+     */
+    public function filter_countGreaterThanMax()
+    {
+        A::filter(array(0, 1), 1, 1);
+    }
+
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Arrays::filter
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage $minCount was not an int
+     */
+    public function filter_minCountNotInt()
+    {
+        A::filter(array(), true);
+    }
+
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Arrays::filter
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage $maxCount was not an int
+     */
+    public function filter_maxCountNotInt()
+    {
+        A::filter(array(), 0, true);
     }
 
     /**
