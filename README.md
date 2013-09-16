@@ -12,6 +12,7 @@ A filtering implementation for verifying correct data and performing typical mod
  * Optional/Required support, field and global level
  * Chaining filters
  * Optionally returns unknown fields
+ * Filter alias support
 
 ##Example
 ```php
@@ -30,7 +31,7 @@ list($status, $result, $unknowns, $error) = DominionEnterprises\Filterer::filter
     [
         'field one' => [[$trimFunc], ['substr', 0, 3], [[$appendFilter, 'filter'], 'boo']],
         'field two' => ['required' => true, ['floatval']],
-        'field three' => ['required' => false, ['floatval']],
+        'field three' => ['required' => false, ['float']],
     ],
     ['field one' => ' abcd', 'field two' => '3.14']
 );
