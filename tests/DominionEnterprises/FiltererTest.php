@@ -59,6 +59,35 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function filterDefaultShortNamePass()
+    {
+        $result = F::filter(array('fieldOne' => array(array('float'))), array('fieldOne' => '3.14'));
+        $this->assertSame(array('status' => true, 'result' => array('fieldOne' => 3.14), 'unknowns' => array(), 'error' => null), $result);
+    }
+
+    /**
+     * @test
+     */
+    public function filterCustomShortNamePass()
+    {
+        F::setFilterAliases(array('aShortName' => 'floatval'));
+        $result = F::filter(array('fieldOne' => array(array('floatval'))), array('fieldOne' => '3.14'));
+        $this->assertSame(array('status' => true, 'result' => array('fieldOne' => 3.14), 'unknowns' => array(), 'error' => null), $result);
+    }
+
+    /**
+     * @test
+     */
+    public function filterGetSetKnownFilters()
+    {
+        $knownFilters = array('shortNameOne' => 'fullNameOne', 'shortNameTwo' => 'fullNameTwo');
+        F::setFilterAliases($knownFilters);
+        $this->assertSame($knownFilters, F::getFilterAliases());
+    }
+
+    /**
+     * @test
+     */
     public function filterFail()
     {
         $result = F::filter(

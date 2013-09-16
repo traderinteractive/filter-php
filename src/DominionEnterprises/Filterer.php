@@ -10,6 +10,16 @@ namespace DominionEnterprises;
  */
 final class Filterer
 {
+    private static $_filterAliases = array(
+        'in' => '\DominionEnterprises\Filter\Arrays::in',
+        'notEmpty' => '\DominionEnterprises\Filter\Arrays::notEmpty',
+        'bool' => '\DominionEnterprises\Filter\Bool::filter',
+        'float' => '\DominionEnterprises\Filter\Float::filter',
+        'int' => '\DominionEnterprises\Filter\Int::filter',
+        'uint' => '\DominionEnterprises\Filter\UnsignedInt::filter',
+        'string' => '\DominionEnterprises\Filter\String::filter',
+    );
+
     /**
      * Example:
      * <pre>
@@ -29,7 +39,7 @@ final class Filterer
      *     [
      *         'field one' => [[$trimFunc], ['substr', 0, 3], [[$appendFilter, 'filter'], 'boo']],
      *         'field two' => ['required' => true, ['floatval']],
-     *         'field three' => ['required' => false, ['floatval']],
+     *         'field three' => ['required' => false, ['float']],
      *     ],
      *     ['field one' => ' abcd', 'field two' => '3.14']
      * );
@@ -111,6 +121,10 @@ final class Filterer
                 }
 
                 $function = array_shift($filter);
+                if ((is_string($function) || is_int($function)) && array_key_exists($function, self::$_filterAliases)) {
+                    $function = self::$_filterAliases[$function];
+                }
+
                 if (!is_callable($function)) {
                     throw new \Exception("Function '" . trim(var_export($function, true), "'") . "' for field '{$field}' is not callable");
                 }
@@ -156,5 +170,25 @@ final class Filterer
         }
 
         return array('status' => false, 'result' => null, 'unknowns' => $leftOverInput, 'error' => implode("\n", $errors));
+    }
+
+    /**
+     * Return the filter aliases.
+     *
+     * @return array array where keys are aliases and values pass is_callable().
+     */
+    public static function getFilterAliases()
+    {
+        return self::$_filterAliases;
+    }
+
+    /**
+     * Set the filter aliases.
+     *
+     * @param array $filters array where keys are aliases and values pass is_callable().
+     */
+    public static function setFilterAliases(array $aliases)
+    {
+        self::$_filterAliases = $aliases;
     }
 }
