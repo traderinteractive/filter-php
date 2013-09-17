@@ -86,4 +86,48 @@ final class Arrays
 
         return $value;
     }
+
+    /**
+     * Filter an array by throwing if any element in the array $value is not a string
+     *
+     * The return value is the $value, as expected by the \DominionEnterprises\Filterer class.
+     *
+     * @param mixed $value the value to filter
+     * @param bool $allowNull flag to allow elements to be null.
+     * @param bool $allowEmpty flag to allow elements to be empty/whitespace strings
+     *
+     * @return the passed in value
+     * @throws \InvalidArgumentException if $allowNull was not a bool
+     * @throws \InvalidArgumentException if $allowEmpty was not a bool
+     * @throws \Exception if any element not a string or null and $allowNull is false
+     * @throws \Exception if any element in the array empty or contains only whitespace and $allowEmpty false
+     */
+    public static function ofStrings($value, $allowNull = false, $allowEmpty = false)
+    {
+        if ($allowNull !== true && $allowNull !== false) {
+            throw new \InvalidArgumentException('$allowNull was not a bool');
+        }
+
+        if ($allowEmpty !== true && $allowEmpty !== false) {
+            throw new \InvalidArgumentException('$allowEmpty was not a bool');
+        }
+
+        self::filter($value);
+
+        foreach ($value as $key => $element) {
+            if ($allowNull && $element === null) {
+                continue;
+            }
+
+            if (!is_string($element)) {
+                throw new \Exception("Value at position '{$key}' was not a string");
+            }
+
+            if (!$allowEmpty && trim($element) === '') {
+                throw new \Exception("Value at position '{$key}' was empty or whitespace");
+            }
+        }
+
+        return $value;
+    }
 }

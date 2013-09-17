@@ -133,4 +133,106 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
     {
         A::in('boo', array(), 1);
     }
+
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Arrays::ofStrings
+     */
+    public function ofStrings_basicPass()
+    {
+        $this->assertSame(array('a', 'b', 'c'), A::ofStrings(array('a', 'b', 'c')));
+    }
+
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Arrays::ofStrings
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage $allowNull was not a bool
+     */
+    public function ofStrings_allowNullNotBool()
+    {
+        A::ofStrings(array('a'), 1);
+    }
+
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Arrays::ofStrings
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage $allowEmpty was not a bool
+     */
+    public function ofStrings_allowEmptyNotBool()
+    {
+        A::ofStrings(array('a'), true, 1);
+    }
+
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Arrays::ofStrings
+     * @expectedException \Exception
+     * @expectedExceptionMessage Value at position '1' was not a string
+     */
+    public function ofStrings_containsNullFail()
+    {
+        A::ofStrings(array('a', null, 'c'));
+    }
+
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Arrays::ofStrings
+     */
+    public function ofStrings_containsNullPass()
+    {
+        $this->assertSame(array('a', null, 'c'), A::ofStrings(array('a', null, 'c'), true));
+    }
+
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Arrays::ofStrings
+     * @expectedException \Exception
+     * @expectedExceptionMessage Value at position '2' was not a string
+     */
+    public function ofStrings_containsNonString()
+    {
+        A::ofStrings(array('a', 'b', 1));
+    }
+
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Arrays::ofStrings
+     * @expectedException \Exception
+     * @expectedExceptionMessage Value at position '2' was empty or whitespace
+     */
+    public function ofStrings_containsEmptyStringFail()
+    {
+        A::ofStrings(array('a', 'b', ''));
+    }
+
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Arrays::ofStrings
+     * @expectedException \Exception
+     * @expectedExceptionMessage Value at position '0' was empty or whitespace
+     */
+    public function ofStrings_containsWhitespaceFail()
+    {
+        A::ofStrings(array("\n\t", 'b', 'c'));
+    }
+
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Arrays::ofStrings
+     */
+    public function ofStrings_containsEmptyStringPass()
+    {
+        $this->assertSame(array('a', 'b', ''), A::ofStrings(array('a', 'b', ''), false, true));
+    }
+
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Arrays::ofStrings
+     */
+    public function ofStrings_containsWhitespacePass()
+    {
+        $this->assertSame(array("\n\t", 'b', 'c'), A::ofStrings(array("\n\t", 'b', 'c'), false, true));
+    }
 }
