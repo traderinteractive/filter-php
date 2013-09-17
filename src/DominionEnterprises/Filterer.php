@@ -35,7 +35,7 @@ final class Filterer
      *
      * $trimFunc = function($val) { return trim($val); };
      *
-     * list($status, $result, $unknowns, $error) = DominionEnterprises\Filterer::filter(
+     * list($status, $result, $error, $unknowns) = DominionEnterprises\Filterer::filter(
      *     [
      *         'field one' => [[$trimFunc], ['substr', 0, 3], [[$appendFilter, 'filter'], 'boo']],
      *         'field two' => ['required' => true, ['floatval']],
@@ -46,8 +46,8 @@ final class Filterer
      *
      * var_dump($status);
      * var_dump($result);
-     * var_dump($unknowns);
      * var_dump($error);
+     * var_dump($unknowns);
      * </pre>
      * prints:
      * <pre>
@@ -58,9 +58,9 @@ final class Filterer
      *   'field two' =>
      *   double(3.14)
      * }
+     * NULL
      * array(0) {
      * }
-     * NULL
      * </pre>
      *
      * @param array $spec the specification to apply to the $input. An array where each key is a known input field and each value is an array
@@ -73,8 +73,8 @@ final class Filterer
      * @param array $options 'allowUnknowns' (default false) true to allow unknowns or false to treat as error, 'defaultRequired'
      *     (default false) true to make fields required by default and treat as error on absence and false to allow their absence by default
      *
-     * @return array on success array('status' => true, 'result' => $input filtered, 'unknowns' => array of unknown fields, 'error' => null)
-     *     on error array('status' => false, 'result' => null, 'unknowns' => array of unknown fields, 'error' => 'error message')
+     * @return array on success array(true, $input filtered, null, array of unknown fields)
+     *     on error array(false, null, 'error message', array of unknown fields)
      *
      * @throws \Exception
      * @throws \InvalidArgumentException if 'allowUnknowns' option was not a bool
@@ -166,10 +166,10 @@ final class Filterer
         }
 
         if (empty($errors)) {
-            return array('status' => true, 'result' => $inputToFilter, 'unknowns' => $leftOverInput, 'error' => null);
+            return array(true, $inputToFilter, null, $leftOverInput);
         }
 
-        return array('status' => false, 'result' => null, 'unknowns' => $leftOverInput, 'error' => implode("\n", $errors));
+        return array(false, null, implode("\n", $errors), $leftOverInput);
     }
 
     /**

@@ -11,7 +11,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
     public function requiredPass()
     {
         $result = F::filter(array('fieldOne' => array('required' => false)), array());
-        $this->assertSame(array('status' => true, 'result' => array(), 'unknowns' => array(), 'error' => null), $result);
+        $this->assertSame(array(true, array(), null, array()), $result);
     }
 
     /**
@@ -20,10 +20,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
     public function requiredFail()
     {
         $result = F::filter(array('fieldOne' => array('required' => true)), array());
-        $this->assertSame(
-            array('status' => false, 'result' => null, 'unknowns' => array(), 'error' => "Field 'fieldOne' was required and not present"),
-            $result
-        );
+        $this->assertSame(array(false, null, "Field 'fieldOne' was required and not present", array()), $result);
     }
 
     /**
@@ -32,7 +29,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
     public function requiredDefaultPass()
     {
         $result = F::filter(array('fieldOne' => array()), array());
-        $this->assertSame(array('status' => true, 'result' => array(), 'unknowns' => array(), 'error' => null), $result);
+        $this->assertSame(array(true, array(), null, array()), $result);
     }
 
     /**
@@ -41,10 +38,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
     public function requiredDefaultFail()
     {
         $result = F::filter(array('fieldOne' => array()), array(), array('defaultRequired' => true));
-        $this->assertSame(
-            array('status' => false, 'result' => null, 'unknowns' => array(), 'error' => "Field 'fieldOne' was required and not present"),
-            $result
-        );
+        $this->assertSame(array(false, null, "Field 'fieldOne' was required and not present", array()), $result);
     }
 
     /**
@@ -53,7 +47,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
     public function filterPass()
     {
         $result = F::filter(array('fieldOne' => array(array('floatval'))), array('fieldOne' => '3.14'));
-        $this->assertSame(array('status' => true, 'result' => array('fieldOne' => 3.14), 'unknowns' => array(), 'error' => null), $result);
+        $this->assertSame(array(true, array('fieldOne' => 3.14), null, array()), $result);
     }
 
     /**
@@ -62,7 +56,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
     public function filterDefaultShortNamePass()
     {
         $result = F::filter(array('fieldOne' => array(array('float'))), array('fieldOne' => '3.14'));
-        $this->assertSame(array('status' => true, 'result' => array('fieldOne' => 3.14), 'unknowns' => array(), 'error' => null), $result);
+        $this->assertSame(array(true, array('fieldOne' => 3.14), null, array()), $result);
     }
 
     /**
@@ -72,7 +66,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
     {
         F::setFilterAliases(array('aShortName' => 'floatval'));
         $result = F::filter(array('fieldOne' => array(array('floatval'))), array('fieldOne' => '3.14'));
-        $this->assertSame(array('status' => true, 'result' => array('fieldOne' => 3.14), 'unknowns' => array(), 'error' => null), $result);
+        $this->assertSame(array(true, array('fieldOne' => 3.14), null, array()), $result);
     }
 
     /**
@@ -94,15 +88,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
             array('fieldOne' => array(array('\DominionEnterprises\FiltererTest::failingFilter'))),
             array('fieldOne' => 'valueOne')
         );
-        $this->assertSame(
-            array(
-                'status' => false,
-                'result' => null,
-                'unknowns' => array(),
-                'error' => "Field 'fieldOne' with value 'valueOne' failed filtering, message 'i failed'",
-            ),
-            $result
-        );
+        $this->assertSame(array(false, null, "Field 'fieldOne' with value 'valueOne' failed filtering, message 'i failed'", array()), $result);
     }
 
     /**
@@ -119,7 +105,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
             ),
             array('fieldOne' => 'a3.14')
         );
-        $this->assertSame(array('status' => true, 'result' => array('fieldOne' => 3.14), 'unknowns' => array(), 'error' => null), $result);
+        $this->assertSame(array(true, array('fieldOne' => 3.14), null, array()), $result);
     }
 
     /**
@@ -136,15 +122,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
             ),
             array('fieldOne' => 'the value')
         );
-        $this->assertSame(
-            array(
-                'status' => false,
-                'result' => null,
-                'unknowns' => array(),
-                'error' => "Field 'fieldOne' with value 'the value' failed filtering, message 'i failed'",
-            ),
-            $result
-        );
+        $this->assertSame(array(false, null, "Field 'fieldOne' with value 'the value' failed filtering, message 'i failed'", array()), $result);
     }
 
     /**
@@ -156,10 +134,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
             array('fieldOne' => array(array('trim')), 'fieldTwo' => array(array('strtoupper'))),
             array('fieldOne' => ' value', 'fieldTwo' => 'bob')
         );
-        $this->assertSame(
-            array('status' => true, 'result' => array('fieldOne' => 'value', 'fieldTwo' => 'BOB'), 'unknowns' => array(), 'error' => null),
-            $result
-        );
+        $this->assertSame(array(true, array('fieldOne' => 'value', 'fieldTwo' => 'BOB'), null, array()), $result);
     }
 
     /**
@@ -176,7 +151,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
         );
         $expectedMessage = "Field 'fieldOne' with value 'value one' failed filtering, message 'i failed'\n";
         $expectedMessage .= "Field 'fieldTwo' with value 'value two' failed filtering, message 'i failed'";
-        $this->assertSame(array('status' => false, 'result' => null, 'unknowns' => array(), 'error' => $expectedMessage), $result);
+        $this->assertSame(array(false, null, $expectedMessage, array()), $result);
     }
 
     /**
@@ -185,7 +160,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
     public function emptyFilter()
     {
         $result = F::filter(array('fieldOne' => array(array())), array('fieldOne' => 0));
-        $this->assertSame(array('status' => true, 'result' => array('fieldOne' => 0), 'unknowns' => array(), 'error' => null), $result);
+        $this->assertSame(array(true, array('fieldOne' => 0), null, array()), $result);
     }
 
     /**
@@ -194,7 +169,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
     public function unknownsAllowed()
     {
         $result = F::filter(array(), array('fieldTwo' => 0), array('allowUnknowns' => true));
-        $this->assertSame(array('status' => true, 'result' => array(), 'unknowns' => array('fieldTwo' => 0), 'error' => null), $result);
+        $this->assertSame(array(true, array(), null, array('fieldTwo' => 0)), $result);
     }
 
     /**
@@ -203,15 +178,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
     public function unknownsNotAllowed()
     {
         $result = F::filter(array(), array('fieldTwo' => 0));
-        $this->assertSame(
-            array(
-                'status' => false,
-                'result' => null,
-                'unknowns' => array('fieldTwo' => 0),
-                'error' => "Field 'fieldTwo' with value '0' is unknown",
-            ),
-            $result
-        );
+        $this->assertSame(array(false, null, "Field 'fieldTwo' with value '0' is unknown", array('fieldTwo' => 0)), $result);
     }
 
     /**
@@ -220,7 +187,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
     public function objectFilter()
     {
         $result = F::filter(array('fieldOne' => array(array(array(new TestFilter(), 'filter')))), array('fieldOne' => 'foo'));
-        $this->assertSame(array('status' => true, 'result' => array('fieldOne' => 'fooboo'), 'unknowns' => array(), 'error' => null), $result);
+        $this->assertSame(array(true, array('fieldOne' => 'fooboo'), null, array()), $result);
     }
 
     /**
