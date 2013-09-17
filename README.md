@@ -27,7 +27,7 @@ $appendFilter = new AppendFilter();
 
 $trimFunc = function($val) { return trim($val); };
 
-list($status, $result, $unknowns, $error) = DominionEnterprises\Filterer::filter(
+list($status, $result, $error, $unknowns) = DominionEnterprises\Filterer::filter(
     [
         'field one' => [[$trimFunc], ['substr', 0, 3], [[$appendFilter, 'filter'], 'boo']],
         'field two' => ['required' => true, ['floatval']],
@@ -38,8 +38,8 @@ list($status, $result, $unknowns, $error) = DominionEnterprises\Filterer::filter
 
 var_dump($status);
 var_dump($result);
-var_dump($unknowns);
 var_dump($error);
+var_dump($unknowns);
 ```
 prints
 
@@ -51,9 +51,9 @@ array(2) {
   'field two' =>
   double(3.14)
 }
+NULL
 array(0) {
 }
-NULL
 ```
 
 ##Composer
