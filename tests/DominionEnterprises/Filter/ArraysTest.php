@@ -133,4 +133,44 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
     {
         A::in('boo', array(), 1);
     }
+
+    /**
+     * Validate that of works with a simple test
+     *
+     * @test
+     * @covers \DominionEnterprises\Filter\Arrays::of
+     */
+    public function of()
+    {
+        $data = array(array('foo' => 'bar'), array('foo' => 'baz'));
+        $this->assertSame($data, A::of($data, array('foo' => array(array('string')))));
+    }
+
+    /**
+     * Validate that of throws an error it each of the items is not an array
+     *
+     * @test
+     * @covers \DominionEnterprises\Filter\Arrays::of
+     * @expectedException \Exception
+     * @expectedExceptionMessage Item 'bar' was not an array
+     */
+    public function of_nonArrayItems()
+    {
+        $data = array('bar');
+        $this->assertSame($data, A::of($data, array()));
+    }
+
+    /**
+     * Validate that of throws an error if one of the items fails validation
+     *
+     * @test
+     * @covers \DominionEnterprises\Filter\Arrays::of
+     * @expectedException \Exception
+     * @expectedExceptionMessage Field 'foo' with value '5.2' failed filtering
+     */
+    public function of_failingItem()
+    {
+        $data = array(array('foo' => 'bar'), array('foo' => 5.2));
+        $this->assertSame($data, A::of($data, array('foo' => array(array('string')))));
+    }
 }
