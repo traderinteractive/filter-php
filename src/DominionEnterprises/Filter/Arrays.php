@@ -4,6 +4,7 @@
  */
 
 namespace DominionEnterprises\Filter;
+use \DominionEnterprises\Filterer;
 
 /**
  * A collection of filters for arrays.
@@ -85,5 +86,44 @@ final class Arrays
         }
 
         return $value;
+    }
+
+    /**
+     * Filter an array of items by a common Filterer specification.
+     *
+     * The return value is the $value, as expected by the \DominionEnterprises\Filterer class.
+     * This uses the filter specification given as a nested call to \DominionEnterprises\Filterer to verify that each item passes the
+     * specification.
+     *
+     * @see \DominionEnterprises\Filterer::filter()
+     * @param array $items The items to apply the filter specification to.  May be empty, in which case no failures should result.
+     * @param array $spec The specification to apply to each item of the array.  @see \DominionEnterprises\Filterer::filter()
+     * @param array $options The filterer options to use - @see \DominionEnterprises\Filterer::filter()
+     *
+     * @return the passed in value
+     *
+     * @throws \Exception if any of the $items do not adhere to the $spec
+     */
+    public static function of(array $items, array $spec, array $options = array())
+    {
+        foreach ($items as &$item) {
+            $status = null;
+            $result = null;
+            $error = null;
+
+            if (is_array($item)) {
+                list($status, $result, $error) = Filterer::filter($spec, $item, $options);
+            } else {
+                list($status, $result, $error) = Filterer::filterSingle($spec, $item, $options);
+            }
+
+            if (!$status) {
+                throw new \Exception("Item '" . trim(var_export($item, true), "'") . "' failed to pass validation with error: '{$error}'");
+            }
+
+            $item = $result;
+        }
+
+        return $items;
     }
 }
