@@ -112,4 +112,36 @@ final class Arrays
 
         return $result;
     }
+
+    /**
+     * Filter an array by applying filters to each member
+     *
+     * @param array $values as array to be filtered. Use the Arrays::filter() before this method to ensure counts when you pass into Filterer
+     * @param array $spec spec to apply to each $values member, specified the same as in @see Filterer::filter.
+     *     Eg ['key' => ['required' => true, ['string', false], ['unit']], 'key2' => ...]
+     *
+     * @return array the filtered $values
+     *
+     * @throws \Exception if any member of $values fails filtering
+     */
+    public static function ofArrays(array $values, array $spec)
+    {
+        $results = array();
+        $errors = array();
+        foreach ($values as $key => $item) {
+            list($status, $result, $error) = Filterer::filter($spec, $item);
+            if (!$status) {
+                $errors[] = $error;
+                continue;
+            }
+
+            $results[$key] = $result;
+        }
+
+        if (!empty($errors)) {
+            throw new \Exception(implode("\n", $errors));
+        }
+
+        return $results;
+    }
 }

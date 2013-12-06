@@ -19,6 +19,7 @@ final class Filterer
         'uint' => '\DominionEnterprises\Filter\UnsignedInt::filter',
         'string' => '\DominionEnterprises\Filter\String::filter',
         'ofScalars' => '\DominionEnterprises\Filter\Arrays::ofScalars',
+        'ofArrays' => '\DominionEnterprises\Filter\Arrays::ofArrays',
     );
 
     /**

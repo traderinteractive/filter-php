@@ -178,4 +178,56 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
             $this->assertSame($expected, $e->getMessage());
         }
     }
+
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Arrays::ofArrays
+     */
+    public function ofArrays()
+    {
+        $expected = array(array('key' => 1), array('key' => 2));
+        $this->assertSame($expected, A::ofArrays(array(array('key' => '1'), array('key' => '2')), array('key' => array(array('uint')))));
+    }
+
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Arrays::ofArrays
+     */
+    public function ofArrays_chained()
+    {
+        $expected = array(array('key' => 3.3), array('key' => 5.5));
+        $spec = array('key' => array(array('trim', 'a'), array('floatval')));
+        $this->assertSame($expected, A::ofArrays(array(array('key' => 'a3.3'), array('key' => 'a5.5')), $spec));
+    }
+
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Arrays::ofArrays
+     */
+    public function ofArrays_requiredAndUnknown()
+    {
+        try {
+            A::ofArrays(array(array('key' => '1'), array('key2' => '2')), array('key' => array('required' => true, array('uint'))));
+            $this->fail();
+        } catch (\Exception $e) {
+            $expected = "Field 'key' was required and not present\nField 'key2' with value '2' is unknown";
+            $this->assertSame($expected, $e->getMessage());
+        }
+    }
+
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Arrays::ofArrays
+     */
+    public function ofArrays_fail()
+    {
+        try {
+            A::ofArrays(array(array('key' => '1'), array('key' => 2), array('key' => 3)), array('key' => array(array('string'))));
+            $this->fail();
+        } catch (\Exception $e) {
+            $expected = "Field 'key' with value '2' failed filtering, message 'Value '2' is not a string'\n";
+            $expected .= "Field 'key' with value '3' failed filtering, message 'Value '3' is not a string'";
+            $this->assertSame($expected, $e->getMessage());
+        }
+    }
 }
