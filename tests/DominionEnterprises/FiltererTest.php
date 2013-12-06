@@ -7,6 +7,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
+     * @covers \DominionEnterprises\Filterer::filter
      */
     public function requiredPass()
     {
@@ -16,6 +17,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @covers \DominionEnterprises\Filterer::filter
      */
     public function requiredFail()
     {
@@ -25,6 +27,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @covers \DominionEnterprises\Filterer::filter
      */
     public function requiredDefaultPass()
     {
@@ -34,6 +37,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @covers \DominionEnterprises\Filterer::filter
      */
     public function requiredDefaultFail()
     {
@@ -43,6 +47,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @covers \DominionEnterprises\Filterer::filter
      */
     public function filterPass()
     {
@@ -52,6 +57,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @covers \DominionEnterprises\Filterer::filter
      */
     public function filterDefaultShortNamePass()
     {
@@ -61,6 +67,8 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @covers \DominionEnterprises\Filterer::filter
+     * @covers \DominionEnterprises\Filterer::setFilterAliases
      */
     public function filterCustomShortNamePass()
     {
@@ -71,6 +79,9 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @covers \DominionEnterprises\Filterer::filter
+     * @covers \DominionEnterprises\Filterer::setFilterAliases
+     * @covers \DominionEnterprises\Filterer::getFilterAliases
      */
     public function filterGetSetKnownFilters()
     {
@@ -81,6 +92,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @covers \DominionEnterprises\Filterer::filter
      */
     public function filterFail()
     {
@@ -93,6 +105,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @covers \DominionEnterprises\Filterer::filter
      */
     public function chainPass()
     {
@@ -110,6 +123,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @covers \DominionEnterprises\Filterer::filter
      */
     public function chainFail()
     {
@@ -127,6 +141,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @covers \DominionEnterprises\Filterer::filter
      */
     public function multiInputPass()
     {
@@ -139,6 +154,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @covers \DominionEnterprises\Filterer::filter
      */
     public function multiInputFail()
     {
@@ -156,6 +172,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @covers \DominionEnterprises\Filterer::filter
      */
     public function emptyFilter()
     {
@@ -165,6 +182,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @covers \DominionEnterprises\Filterer::filter
      */
     public function unknownsAllowed()
     {
@@ -174,6 +192,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @covers \DominionEnterprises\Filterer::filter
      */
     public function unknownsNotAllowed()
     {
@@ -183,6 +202,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @covers \DominionEnterprises\Filterer::filter
      */
     public function objectFilter()
     {
@@ -192,6 +212,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @covers \DominionEnterprises\Filterer::filter
      * @expectedException Exception
      * @expectedExceptionMessage Function 'boo' for field 'foo' is not callable
      */
@@ -202,6 +223,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @covers \DominionEnterprises\Filterer::filter
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage 'allowUnknowns' option was not a bool
      */
@@ -212,6 +234,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @covers \DominionEnterprises\Filterer::filter
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage 'defaultRequired' option was not a bool
      */
@@ -222,6 +245,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @covers \DominionEnterprises\Filterer::filter
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage filters for field 'boo' was not a array
      */
@@ -232,6 +256,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @covers \DominionEnterprises\Filterer::filter
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage filters for field 'boo' was not a array
      */
@@ -242,6 +267,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @covers \DominionEnterprises\Filterer::filter
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage filter for field 'boo' was not a array
      */
@@ -252,6 +278,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @covers \DominionEnterprises\Filterer::filter
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage 'required' for field 'boo' was not a bool
      */
