@@ -91,27 +91,29 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers \DominionEnterprises\Filter\Arrays::in
-     * @expectedException \Exception
-     * @expectedExceptionMessage Value '0' is not in array array (
-     *   0 => 0
-     * )
      */
     public function in_failStrict()
     {
-        A::in('0', array(0));
+        try {
+            A::in('0', array(0));
+            $this->fail();
+        } catch (\Exception $e) {
+            $this->assertSame("Value '0' is not in array array (\n  0 => 0,\n)", $e->getMessage());
+        }
     }
 
     /**
      * @test
      * @covers \DominionEnterprises\Filter\Arrays::in
-     * @expectedException \Exception
-     * @expectedExceptionMessage Value 'boo' is not in array array (
-     *   0 => 'foo'
-     * )
      */
     public function in_failNotStrict()
     {
-        A::in('boo', array('foo'), false);
+        try {
+            A::in('boo', array('foo'), false);
+            $this->fail();
+        } catch (\Exception $e) {
+            $this->assertSame("Value 'boo' is not in array array (\n  0 => 'foo',\n)", $e->getMessage());
+        }
     }
 
     /**

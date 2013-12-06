@@ -81,7 +81,7 @@ final class Arrays
         }
 
         if (!in_array($value, $haystack, $strict)) {
-            throw new \Exception("Value '" . trim(var_export($value, true), "'") . "' is not in array " . var_export($haystack, true) . '"');
+            throw new \Exception("Value '" . trim(var_export($value, true), "'") . "' is not in array " . var_export($haystack, true));
         }
 
         return $value;
