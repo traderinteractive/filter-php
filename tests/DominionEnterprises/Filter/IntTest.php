@@ -30,11 +30,11 @@ final class IntTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers \DominionEnterprises\Filter\Int::filter
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage "1.1" $maxValue was not an int
+     * @expectedExceptionMessage "1.5" $maxValue was not an int
      */
     public function filter_maxValueNotInt()
     {
-        S::filter('1', false, 1, 1.1);
+        S::filter('1', false, 1, 1.5);
     }
 
     /**
