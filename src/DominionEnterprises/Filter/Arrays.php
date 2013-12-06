@@ -4,6 +4,7 @@
  */
 
 namespace DominionEnterprises\Filter;
+use DominionEnterprises\Filterer;
 
 /**
  * A collection of filters for arrays.
@@ -85,5 +86,30 @@ final class Arrays
         }
 
         return $value;
+    }
+
+    /**
+     * Filter an array by applying filters to each member
+     *
+     * @param array $values an array to be filtered. Use the Arrays::filter() before this method to ensure counts when you pass into Filterer
+     * @param array $filters filters with each specified the same as in @see Filterer::filter. Eg [['string', false, 2], ['uint']]
+     *
+     * @return array the filtered $values
+     *
+     * @throws \Exception if any member of $values fails filtering
+     */
+    public static function ofScalars(array $values, array $filters)
+    {
+        $wrappedFilters = array();
+        foreach ($values as $key => $item) {
+            $wrappedFilters[$key] = $filters;
+        }
+
+        list($status, $result, $error) = Filterer::filter($wrappedFilters, $values);
+        if (!$status) {
+            throw new \Exception($error);
+        }
+
+        return $result;
     }
 }

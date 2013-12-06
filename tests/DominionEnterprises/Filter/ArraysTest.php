@@ -135,4 +135,47 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
     {
         A::in('boo', array(), 1);
     }
+
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Arrays::ofScalars
+     */
+    public function ofScalars()
+    {
+        $this->assertSame(array(1, 2), A::ofScalars(array('1', '2'), array(array('uint'))));
+    }
+
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Arrays::ofScalars
+     */
+    public function ofScalars_chained()
+    {
+        $this->assertSame(array(3.3, 5.5), A::ofScalars(array('a3.3', 'a5.5'), array(array('trim', 'a'), array('floatval'))));
+    }
+
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Arrays::ofScalars
+     */
+    public function ofScalars_withMeaninglessKeys()
+    {
+        $this->assertSame(array('key1' => 1, 'key2' => 2), A::ofScalars(array('key1' => '1', 'key2' => '2'), array(array('uint'))));
+    }
+
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Arrays::ofScalars
+     */
+    public function ofScalars_fail()
+    {
+        try {
+            A::ofScalars(array('1', 2, 3), array(array('string')));
+            $this->fail();
+        } catch (\Exception $e) {
+            $expected = "Field '1' with value '2' failed filtering, message 'Value '2' is not a string'\n";
+            $expected .= "Field '2' with value '3' failed filtering, message 'Value '3' is not a string'";
+            $this->assertSame($expected, $e->getMessage());
+        }
+    }
 }
