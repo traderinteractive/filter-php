@@ -251,4 +251,35 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame(0.0, F::filter(0.0, false, null, 0.0));
     }
+
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Float::filter
+     */
+    public function filter_castInts()
+    {
+        $this->assertSame(1.0, F::filter(1, false, null, null, true));
+    }
+
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Float::filter
+     * @expectedException \Exception
+     * @expectedExceptionMessage "1" $value is not a string
+     */
+    public function filter_castIntsIsFalse()
+    {
+        F::filter(1, false, null, null, false);
+    }
+
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Float::filter
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage "1" $castInts was not a bool
+     */
+    public function filter_castIntsIsNotBool()
+    {
+        F::filter('1', false, null, null, 1);
+    }
 }
