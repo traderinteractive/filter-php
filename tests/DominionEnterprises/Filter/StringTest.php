@@ -6,6 +6,26 @@ final class StringUtilTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
+     * @covers \DominionEnterprises\Filter\String::filter
+     */
+    public function filter_castScalars()
+    {
+        $this->assertSame('1', S::filter(1, false, 1, PHP_INT_MAX, true));
+    }
+
+    /**
+     * @test
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage $castScalars was not a boolean value
+     * @covers \DominionEnterprises\Filter\String::filter
+     */
+    public function filter_castScalarsNotBoolean()
+    {
+        S::filter('a', false, 1, PHP_INT_MAX, 'string');
+    }
+
+    /**
+     * @test
      * @expectedException Exception
      * @expectedExceptionMessage Value '1' is not a string
      * @covers \DominionEnterprises\Filter\String::filter

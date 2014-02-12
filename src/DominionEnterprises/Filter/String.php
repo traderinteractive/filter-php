@@ -22,12 +22,14 @@ final class String
      * @param bool $allowNull True to allow nulls through, and false (default) if nulls should not be allowed.
      * @param int $minLength Minimum length to allow for $value.
      * @param int $maxLength Maximum length to allow for $value.
+     * @param bool $castScalars True to cast scalar values to strings.
+     *
      * @return The passed in $value.
      *
      * @throws \Exception if the value did not pass validation.
      * @throws \InvalidArgumentException if one of the parameters was not correctly typed.
      */
-    public static function filter($value, $allowNull = false, $minLength = 1, $maxLength = PHP_INT_MAX)
+    public static function filter($value, $allowNull = false, $minLength = 1, $maxLength = PHP_INT_MAX, $castScalars = false)
     {
         if ($allowNull !== false && $allowNull !== true) {
             throw new \InvalidArgumentException('$allowNull was not a boolean value');
@@ -41,8 +43,16 @@ final class String
             throw new \InvalidArgumentException('$maxLength was not a positive integer value');
         }
 
+        if ($castScalars !== false && $castScalars !== true) {
+            throw new \InvalidArgumentException('$castScalars was not a boolean value');
+        }
+
         if ($allowNull === true && $value === null) {
             return null;
+        }
+
+        if (is_scalar($value) && $castScalars) {
+            $value = (string)$value;
         }
 
         if (!is_string($value)) {
