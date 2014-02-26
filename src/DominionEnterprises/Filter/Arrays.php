@@ -144,4 +144,25 @@ final class Arrays
 
         return $results;
     }
+
+    /**
+     * Filter $value by using a Filterer $spec and Filterer's default options.
+     *
+     * @param array $value array to be filtered. Use the Arrays::filter() before this method to ensure counts when you pass into Filterer
+     * @param array $spec spec to apply to $value, specified the same as in @see Filterer::filter.
+     *     Eg ['key' => ['required' => true, ['string', false], ['unit']], 'key2' => ...]
+     *
+     * @return array the filtered $value
+     *
+     * @throws \Exception if $value fails filtering
+     */
+    public static function ofArray(array $value, array $spec)
+    {
+        list($status, $result, $error) = Filterer::filter($spec, $value);
+        if (!$status) {
+            throw new \Exception($error);
+        }
+
+        return $result;
+    }
 }

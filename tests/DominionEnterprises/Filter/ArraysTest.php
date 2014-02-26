@@ -230,4 +230,67 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
             $this->assertSame($expected, $e->getMessage());
         }
     }
+
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Arrays::ofArray
+     */
+    public function ofArray()
+    {
+        $expected = array('key1' => 1, 'key2' => 2);
+        $spec = array('key1' => array(array('uint')), 'key2' => array(array('uint')));
+        $this->assertSame($expected, A::ofArray(array('key1' => '1', 'key2' => '2'), $spec));
+    }
+
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Arrays::ofArray
+     */
+    public function ofArray_chained()
+    {
+        $expected = array('key' => 3.3);
+        $spec = array('key' => array(array('trim', 'a'), array('floatval')));
+        $this->assertSame($expected, A::ofArray(array('key' => 'a3.3'), $spec));
+    }
+
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Arrays::ofArray
+     */
+    public function ofArray_requiredSuccess()
+    {
+        $expected = array('key2' => 2);
+        $spec = array('key1' => array(array('uint')), 'key2' => array('required' => true, array('uint')));
+        $this->assertSame($expected, A::ofArray(array('key2' => '2'), $spec));
+    }
+
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Arrays::ofArray
+     */
+    public function ofArray_requiredFail()
+    {
+        try {
+            A::ofArray(array('key1' => '1'), array('key1' => array(array('uint')), 'key2' => array('required' => true, array('uint'))));
+            $this->fail();
+        } catch (\Exception $e) {
+            $expected = "Field 'key2' was required and not present";
+            $this->assertSame($expected, $e->getMessage());
+        }
+    }
+
+    /**
+     * @test
+     * @covers \DominionEnterprises\Filter\Arrays::ofArray
+     */
+    public function ofArray_unknown()
+    {
+        try {
+            A::ofArray(array('key' => '1'), array('key2' => array(array('uint'))));
+            $this->fail();
+        } catch (\Exception $e) {
+            $expected = "Field 'key' with value '1' is unknown";
+            $this->assertSame($expected, $e->getMessage());
+        }
+    }
 }

@@ -20,6 +20,7 @@ final class Filterer
         'string' => '\DominionEnterprises\Filter\String::filter',
         'ofScalars' => '\DominionEnterprises\Filter\Arrays::ofScalars',
         'ofArrays' => '\DominionEnterprises\Filter\Arrays::ofArrays',
+        'ofArray' => '\DominionEnterprises\Filter\Arrays::ofArray',
     );
 
     /**
