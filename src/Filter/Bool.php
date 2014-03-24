@@ -19,6 +19,8 @@ final class Bool
      *
      * @param string|bool $value the value to filter to a boolean
      * @param bool $allowNull Set to true if NULL values are allowed. The filtered result of a NULL value is NULL
+     * @param array $trueValues Array of values which represent the boolean true value. Values should be lowercased
+     * @param array $falseValues Array of values which represent the boolean false value. Values should be lowercased
      *
      * @return bool the filtered $value
      *
@@ -26,7 +28,7 @@ final class Bool
      * @throws \Exception if $value is not a string
      * @throws \Exception if $value is not 'true' or 'false' disregarding case and whitespace
      */
-    public static function filter($value, $allowNull = false)
+    public static function filter($value, $allowNull = false, array $trueValues = array('true'), array $falseValues = array('false'))
     {
         if ($allowNull !== false && $allowNull !== true) {
             throw new \InvalidArgumentException('$allowNull was not a bool');
@@ -48,12 +50,16 @@ final class Bool
 
         $value = strtolower($value);
 
-        if ($value === 'true') {
+        if (in_array($value, $trueValues, true)) {
             return true;
-        } elseif ($value === 'false') {
+        }
+
+        if (in_array($value, $falseValues, true)) {
             return false;
         }
 
-        throw new \Exception("{$value} is not 'true' or 'false' disregarding case and whitespace");
+        throw new \Exception(
+            "{$value} is not '" . implode("' or '", array_merge($trueValues, $falseValues)) . "' disregarding case and whitespace"
+        );
     }
 }
