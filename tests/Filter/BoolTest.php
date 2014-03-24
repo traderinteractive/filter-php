@@ -2,11 +2,14 @@
 namespace DominionEnterprises\Filter;
 use DominionEnterprises\Filter\Bool as B;
 
+/**
+ * @coversDefaultClass \DominionEnterprises\Filter\Bool
+ */
 final class BoolTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Bool::filter
+     * @covers ::filter
      */
     public function filter_basic()
     {
@@ -23,7 +26,7 @@ final class BoolTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Bool::filter
+     * @covers ::filter
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage $allowNull was not a bool
      */
@@ -34,7 +37,7 @@ final class BoolTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Bool::filter
+     * @covers ::filter
      */
     public function filter_allowNullIsTrueAndNullValue()
     {
@@ -43,7 +46,7 @@ final class BoolTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Bool::filter
+     * @covers ::filter
      * @expectedException \Exception
      * @expectedExceptionMessage "1" $value is not a string
      */
@@ -54,7 +57,7 @@ final class BoolTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Bool::filter
+     * @covers ::filter
      * @expectedException \Exception
      * @expectedExceptionMessage invalid is not 'true' or 'false' disregarding case and whitespace
      */
