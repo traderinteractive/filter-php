@@ -2,11 +2,14 @@
 namespace DominionEnterprises\Filter;
 use DominionEnterprises\Filter\Bool as B;
 
+/**
+ * @coversDefaultClass \DominionEnterprises\Filter\Bool
+ */
 final class BoolTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Bool::filter
+     * @covers ::filter
      */
     public function filter_basic()
     {
@@ -23,7 +26,7 @@ final class BoolTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Bool::filter
+     * @covers ::filter
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage $allowNull was not a bool
      */
@@ -34,7 +37,7 @@ final class BoolTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Bool::filter
+     * @covers ::filter
      */
     public function filter_allowNullIsTrueAndNullValue()
     {
@@ -43,7 +46,7 @@ final class BoolTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Bool::filter
+     * @covers ::filter
      * @expectedException \Exception
      * @expectedExceptionMessage "1" $value is not a string
      */
@@ -54,12 +57,41 @@ final class BoolTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Bool::filter
+     * @covers ::filter
      * @expectedException \Exception
      * @expectedExceptionMessage invalid is not 'true' or 'false' disregarding case and whitespace
      */
     public function filter_invalidString()
     {
         B::filter('invalid');
+    }
+
+    /**
+     * @test
+     * @covers ::filter
+     */
+    public function filter_customTrueValues()
+    {
+        $this->assertTrue(B::filter('Y', false, array('y')));
+    }
+
+    /**
+     * @test
+     * @covers ::filter
+     */
+    public function filter_customFalseValues()
+    {
+        $this->assertFalse(B::filter('0', false, array('true'), array('0')));
+    }
+
+    /**
+     * @test
+     * @covers ::filter
+     * @expectedException \Exception
+     * @expectedExceptionMessage true is not 'y' or '1' or 'n' or '0' disregarding case and whitespace
+     */
+    public function filter_customBoolValuesInvalidString()
+    {
+        $this->assertFalse(B::filter('true', false, array('y', '1'), array('n', '0')));
     }
 }
