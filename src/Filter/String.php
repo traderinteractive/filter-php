@@ -22,7 +22,7 @@ final class String
      * @param bool $allowNull True to allow nulls through, and false (default) if nulls should not be allowed.
      * @param int $minLength Minimum length to allow for $value.
      * @param int $maxLength Maximum length to allow for $value.
-     * @return The passed in $value.
+     * @return string|null The passed in $value.
      *
      * @throws \Exception if the value did not pass validation.
      * @throws \InvalidArgumentException if one of the parameters was not correctly typed.
