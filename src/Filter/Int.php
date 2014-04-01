@@ -23,7 +23,7 @@ final class Int
      * @param int $minValue The minimum acceptable value
      * @param int $maxValue The maximum acceptable value
      *
-     * @return int The filtered value
+     * @return int|null The filtered value
      *
      * @throws \InvalidArgumentException if $allowNull is not a boolean
      * @throws \InvalidArgumentException if $minValue is not null and not an int

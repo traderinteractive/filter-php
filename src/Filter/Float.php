@@ -21,7 +21,7 @@ final class Float
      * @param int $maxValue The maximum acceptable value
      * @param bool $castInts Flag to cast $value to float if it is an integer
      *
-     * @return float The filtered value
+     * @return float|null The filtered value
      *
      * @see is_numeric
      * @throws \InvalidArgumentException if $allowNull is not a boolean

@@ -19,7 +19,7 @@ final class Url
      *
      * @param mixed $value The value to filter.
      *
-     * @return The passed in $value.
+     * @return string The passed in $value.
      *
      * @throws \Exception if the value did not pass validation.
      */

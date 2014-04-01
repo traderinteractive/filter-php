@@ -188,7 +188,8 @@ final class Filterer
     /**
      * Set the filter aliases.
      *
-     * @param array $filters array where keys are aliases and values pass is_callable().
+     * @param array $aliases array where keys are aliases and values pass is_callable().
+     * @return void
      */
     public static function setFilterAliases(array $aliases)
     {

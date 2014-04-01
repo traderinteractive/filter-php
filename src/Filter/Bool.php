@@ -22,7 +22,7 @@ final class Bool
      * @param array $trueValues Array of values which represent the boolean true value. Values should be lowercased
      * @param array $falseValues Array of values which represent the boolean false value. Values should be lowercased
      *
-     * @return bool the filtered $value
+     * @return bool|null the filtered $value
      *
      * @throws \InvalidArgumentException if $allowNull is not a boolean
      * @throws \Exception if $value is not a string
