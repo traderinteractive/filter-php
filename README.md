@@ -144,7 +144,7 @@ validation.
 
 The following checks that `$value` is an integer between 1 and 100 inclusive, and returns the integer (after casting it if it was a string).
 ```php
-$value = \DominionEnterprises\Filter\UnsignedInt($value, false, 1, 100);
+$value = \DominionEnterprises\Filter\UnsignedInt::filter($value, false, 1, 100);
 ```
 
 #### String::filter
@@ -154,7 +154,7 @@ string. The default bounds are 1+, so an empty string fails by default.
 
 The following checks that `$value` is a non-empty string.
 ```php
-\DominionEnterprises\Filter\String($value);
+\DominionEnterprises\Filter\String::filter($value);
 ```
 
 #### Url::filter
