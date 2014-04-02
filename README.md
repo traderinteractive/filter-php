@@ -157,6 +157,15 @@ The following checks that `$value` is a non-empty string.
 \DominionEnterprises\Filter\String($value);
 ```
 
+#### Url::filter
+Aliased in the filterer as `url`, this filter verifies that the argument is a URL string according to
+[RFC2396](http://www.faqs.org/rfcs/rfc2396).
+
+The following checks that `$value` is a URL.
+```php
+\DominionEnterprises\Filter\Url::filter($value);
+```
+
 ##Contact
 Developers may be contacted at:
 
