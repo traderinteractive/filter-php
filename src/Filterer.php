@@ -21,6 +21,7 @@ final class Filterer
         'ofScalars' => '\DominionEnterprises\Filter\Arrays::ofScalars',
         'ofArrays' => '\DominionEnterprises\Filter\Arrays::ofArrays',
         'ofArray' => '\DominionEnterprises\Filter\Arrays::ofArray',
+        'url' => '\DominionEnterprises\Filter\Url::filter',
     );
 
     /**
