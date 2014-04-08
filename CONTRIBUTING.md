@@ -1,6 +1,6 @@
 # Contribution Guidelines
 We welcome you to report [issues](https://github.com/dominionenterprises/filter-php/issues) or submit
-[Pull Requests](https://github.com/dominionenterprises/filter-php/pulls).  While the below guidelines are necessary to get code merged, you can
+[pull requests](https://github.com/dominionenterprises/filter-php/pulls).  While the below guidelines are necessary to get code merged, you can
 submit pull requests that do not adhere to them and we will try to take care of them in our spare time.  We are a smallish group of developers,
 though, so if you can make sure the build is passing 100%, that would be very useful.
 
