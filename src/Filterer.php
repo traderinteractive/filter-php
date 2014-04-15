@@ -152,7 +152,7 @@ final class Filterer
                 throw new \InvalidArgumentException("filters for field '{$field}' was not a array");
             }
 
-            $required = array_key_exists('required', $filters) ? $filters['required'] : $defaultRequired;
+            $required = isset($filters['required']) ? $filters['required'] : $defaultRequired;
 
             if ($required !== false && $required !== true) {
                 throw new \InvalidArgumentException("'required' for field '{$field}' was not a bool");
