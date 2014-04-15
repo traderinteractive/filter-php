@@ -2,11 +2,14 @@
 namespace DominionEnterprises\Filter;
 use DominionEnterprises\Filter\Float as F;
 
+/**
+ * @coversDefaultClass \DominionEnterprises\Filter\Float
+ */
 final class FloatTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Float::filter
+     * @covers ::filter
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage "1" $allowNull was not a bool
      */
@@ -17,7 +20,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Float::filter
+     * @covers ::filter
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage "'boo'" $minValue was not a float
      */
@@ -28,7 +31,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Float::filter
+     * @covers ::filter
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage "1" $maxValue was not a float
      */
@@ -39,7 +42,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Float::filter
+     * @covers ::filter
      */
     public function filter_allowNullIsTrueAndNullValue()
     {
@@ -48,7 +51,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Float::filter
+     * @covers ::filter
      */
     public function filter_positiveFloat()
     {
@@ -57,7 +60,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Float::filter
+     * @covers ::filter
      */
     public function filter_negativeFloat()
     {
@@ -66,7 +69,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Float::filter
+     * @covers ::filter
      */
     public function filter_zeroFloat()
     {
@@ -77,7 +80,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Float::filter
+     * @covers ::filter
      */
     public function filter_positiveString()
     {
@@ -97,7 +100,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Float::filter
+     * @covers ::filter
      */
     public function filter_negativeString()
     {
@@ -115,7 +118,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Float::filter
+     * @covers ::filter
      * @expectedException \Exception
      * @expectedExceptionMessage "true" $value is not a string
      */
@@ -126,7 +129,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Float::filter
+     * @covers ::filter
      * @expectedException \Exception
      * @exceptedExceptionMessage  does not pass is_numeric
      */
@@ -137,7 +140,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Float::filter
+     * @covers ::filter
      * @expectedException \Exception
      * @expectedExceptionMessage  does not pass is_numeric
      */
@@ -148,7 +151,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Float::filter
+     * @covers ::filter
      * @expectedException \Exception
      * @expectedExceptionMessage 123-4 does not pass is_numeric
      */
@@ -159,7 +162,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Float::filter
+     * @covers ::filter
      * @expectedException \Exception
      * @expectedExceptionMessage 0xff is hex format
      */
@@ -170,7 +173,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Float::filter
+     * @covers ::filter
      * @expectedException \Exception
      * @expectedExceptionMessage 1. 0 does not pass is_numeric
      */
@@ -181,7 +184,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Float::filter
+     * @covers ::filter
      * @expectedException \Exception
      * @expectedExceptionMessage 1 0 does not pass is_numeric
      */
@@ -192,7 +195,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Float::filter
+     * @covers ::filter
      * @expectedException \Exception
      * @expectedExceptionMessage 1e999999999999 overflow
      */
@@ -203,7 +206,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Float::filter
+     * @covers ::filter
      * @expectedException \Exception
      * @expectedExceptionMessage -1e999999999999 overflow
      */
@@ -214,7 +217,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Float::filter
+     * @covers ::filter
      * @expectedException \Exception
      * @expectedExceptionMessage -1 is less than 0
      */
@@ -225,7 +228,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Float::filter
+     * @covers ::filter
      */
     public function filter_equalToMin()
     {
@@ -234,7 +237,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Float::filter
+     * @covers ::filter
      * @expectedException \Exception
      * @expectedExceptionMessage 1 is greater than 0
      */
@@ -245,7 +248,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Float::filter
+     * @covers ::filter
      */
     public function filter_equalToMax()
     {
@@ -254,7 +257,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Float::filter
+     * @covers ::filter
      */
     public function filter_castInts()
     {
@@ -263,7 +266,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Float::filter
+     * @covers ::filter
      * @expectedException \Exception
      * @expectedExceptionMessage "1" $value is not a string
      */
@@ -274,7 +277,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Float::filter
+     * @covers ::filter
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage "1" $castInts was not a bool
      */

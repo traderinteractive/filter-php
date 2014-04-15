@@ -2,13 +2,16 @@
 namespace DominionEnterprises\Filter;
 use DominionEnterprises\Filter\String as S;
 
+/**
+ * @coversDefaultClass \DominionEnterprises\Filter\String
+ */
 final class StringUtilTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
      * @expectedException Exception
      * @expectedExceptionMessage Value '1' is not a string
-     * @covers \DominionEnterprises\Filter\String::filter
+     * @covers ::filter
      */
     public function filter_notString()
     {
@@ -17,7 +20,7 @@ final class StringUtilTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\String::filter
+     * @covers ::filter
      */
     public function filter_nullPass()
     {
@@ -28,7 +31,7 @@ final class StringUtilTest extends \PHPUnit_Framework_TestCase
      * @test
      * @expectedException Exception
      * @expectedExceptionMessage Value 'NULL' is not a string
-     * @covers \DominionEnterprises\Filter\String::filter
+     * @covers ::filter
      */
     public function filter_nullFail()
     {
@@ -37,7 +40,7 @@ final class StringUtilTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\String::filter
+     * @covers ::filter
      */
     public function filter_minLengthPass()
     {
@@ -47,7 +50,7 @@ final class StringUtilTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @expectedException Exception
-     * @covers \DominionEnterprises\Filter\String::filter
+     * @covers ::filter
      */
     public function filter_minLengthFail()
     {
@@ -56,7 +59,7 @@ final class StringUtilTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\String::filter
+     * @covers ::filter
      */
     public function filter_maxLengthPass()
     {
@@ -67,7 +70,7 @@ final class StringUtilTest extends \PHPUnit_Framework_TestCase
      * @test
      * @expectedException Exception
      * @expectedExceptionMessage Value 'a' with length '1' is less than '0' or greater than '0'
-     * @covers \DominionEnterprises\Filter\String::filter
+     * @covers ::filter
      */
     public function filter_maxLengthFail()
     {
@@ -78,7 +81,7 @@ final class StringUtilTest extends \PHPUnit_Framework_TestCase
      * @test
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage $allowNull was not a boolean value
-     * @covers \DominionEnterprises\Filter\String::filter
+     * @covers ::filter
      */
     public function filter_allowNullNotBoolean()
     {
@@ -89,7 +92,7 @@ final class StringUtilTest extends \PHPUnit_Framework_TestCase
      * @test
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage $minLength was not a positive integer value
-     * @covers \DominionEnterprises\Filter\String::filter
+     * @covers ::filter
      */
     public function filter_minLengthNotInteger()
     {
@@ -100,7 +103,7 @@ final class StringUtilTest extends \PHPUnit_Framework_TestCase
      * @test
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage $maxLength was not a positive integer value
-     * @covers \DominionEnterprises\Filter\String::filter
+     * @covers ::filter
      */
     public function filter_maxLengthNotInteger()
     {
@@ -111,7 +114,7 @@ final class StringUtilTest extends \PHPUnit_Framework_TestCase
      * @test
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage $minLength was not a positive integer value
-     * @covers \DominionEnterprises\Filter\String::filter
+     * @covers ::filter
      */
     public function filter_minLengthNegative()
     {
@@ -122,7 +125,7 @@ final class StringUtilTest extends \PHPUnit_Framework_TestCase
      * @test
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage $maxLength was not a positive integer value
-     * @covers \DominionEnterprises\Filter\String::filter
+     * @covers ::filter
      */
     public function filter_maxLengthNegative()
     {
