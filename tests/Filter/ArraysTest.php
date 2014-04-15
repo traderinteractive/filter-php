@@ -2,11 +2,14 @@
 namespace DominionEnterprises\Filter;
 use DominionEnterprises\Filter\Arrays as A;
 
+/**
+ * @coversDefaultClass \DominionEnterprises\Filter\Arrays
+ */
 final class ArraysTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Arrays::filter
+     * @covers ::filter
      */
     public function filter_basicPass()
     {
@@ -15,7 +18,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Arrays::filter
+     * @covers ::filter
      * @expectedException \Exception
      * @expectedExceptionMessage Value '1' is not an array
      */
@@ -26,7 +29,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Arrays::filter
+     * @covers ::filter
      * @expectedException \Exception
      * @expectedExceptionMessage $value count of 0 is less than 1
      */
@@ -37,7 +40,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Arrays::filter
+     * @covers ::filter
      * @expectedException \Exception
      * @expectedExceptionMessage $value count of 1 is less than 2
      */
@@ -48,7 +51,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Arrays::filter
+     * @covers ::filter
      * @expectedException \Exception
      * @expectedExceptionMessage $value count of 2 is greater than 1
      */
@@ -59,7 +62,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Arrays::filter
+     * @covers ::filter
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage $minCount was not an int
      */
@@ -70,7 +73,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Arrays::filter
+     * @covers ::filter
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage $maxCount was not an int
      */
@@ -81,7 +84,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Arrays::in
+     * @covers ::in
      */
     public function in_passStrict()
     {
@@ -90,7 +93,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Arrays::in
+     * @covers ::in
      */
     public function in_failStrict()
     {
@@ -104,7 +107,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Arrays::in
+     * @covers ::in
      */
     public function in_failNotStrict()
     {
@@ -118,7 +121,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Arrays::in
+     * @covers ::in
      */
     public function in_passNotStrict()
     {
@@ -127,7 +130,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Arrays::in
+     * @covers ::in
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage $strict was not a bool
      */
@@ -138,7 +141,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Arrays::ofScalars
+     * @covers ::ofScalars
      */
     public function ofScalars()
     {
@@ -147,7 +150,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Arrays::ofScalars
+     * @covers ::ofScalars
      */
     public function ofScalars_chained()
     {
@@ -156,7 +159,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Arrays::ofScalars
+     * @covers ::ofScalars
      */
     public function ofScalars_withMeaninglessKeys()
     {
@@ -165,7 +168,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Arrays::ofScalars
+     * @covers ::ofScalars
      */
     public function ofScalars_fail()
     {
@@ -181,7 +184,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Arrays::ofArrays
+     * @covers ::ofArrays
      */
     public function ofArrays()
     {
@@ -191,7 +194,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Arrays::ofArrays
+     * @covers ::ofArrays
      */
     public function ofArrays_chained()
     {
@@ -202,7 +205,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Arrays::ofArrays
+     * @covers ::ofArrays
      */
     public function ofArrays_requiredAndUnknown()
     {
@@ -217,7 +220,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Arrays::ofArrays
+     * @covers ::ofArrays
      */
     public function ofArrays_fail()
     {
@@ -233,7 +236,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Arrays::ofArray
+     * @covers ::ofArray
      */
     public function ofArray()
     {
@@ -244,7 +247,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Arrays::ofArray
+     * @covers ::ofArray
      */
     public function ofArray_chained()
     {
@@ -255,7 +258,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Arrays::ofArray
+     * @covers ::ofArray
      */
     public function ofArray_requiredSuccess()
     {
@@ -266,7 +269,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Arrays::ofArray
+     * @covers ::ofArray
      */
     public function ofArray_requiredFail()
     {
@@ -281,7 +284,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Arrays::ofArray
+     * @covers ::ofArray
      */
     public function ofArray_unknown()
     {

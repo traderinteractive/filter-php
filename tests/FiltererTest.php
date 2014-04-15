@@ -3,11 +3,14 @@
 namespace DominionEnterprises;
 use DominionEnterprises\Filterer as F;
 
+/**
+ * @coversDefaultClass \DominionEnterprises\Filterer
+ */
 final class FiltererTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     * @covers \DominionEnterprises\Filterer::filter
+     * @covers ::filter
      */
     public function requiredPass()
     {
@@ -17,7 +20,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filterer::filter
+     * @covers ::filter
      */
     public function requiredFail()
     {
@@ -27,7 +30,57 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filterer::filter
+     * @covers ::filter
+     */
+    public function requiredWithADefaultWithoutInput()
+    {
+        $result = F::filter(array('fieldOne' => array('required' => true, 'default' => 'theDefault')), array());
+        $this->assertSame(array(true, array('fieldOne' => 'theDefault'), null, array()), $result);
+    }
+
+    /**
+     * @test
+     * @covers ::filter
+     */
+    public function requiredWithANullDefaultWithoutInput()
+    {
+        $result = F::filter(array('fieldOne' => array('required' => true, 'default' => null)), array());
+        $this->assertSame(array(true, array('fieldOne' => null), null, array()), $result);
+    }
+
+    /**
+     * @test
+     * @covers ::filter
+     */
+    public function requiredWithADefaultWithInput()
+    {
+        $result = F::filter(array('fieldOne' => array('required' => true, 'default' => 'theDefault')), array('fieldOne' => 'notTheDefault'));
+        $this->assertSame(array(true, array('fieldOne' => 'notTheDefault'), null, array()), $result);
+    }
+
+    /**
+     * @test
+     * @covers ::filter
+     */
+    public function notRequiredWithADefaultWithoutInput()
+    {
+        $result = F::filter(array('fieldOne' => array('default' => 'theDefault')), array());
+        $this->assertSame(array(true, array('fieldOne' => 'theDefault'), null, array()), $result);
+    }
+
+    /**
+     * @test
+     * @covers ::filter
+     */
+    public function notRequiredWithADefaultWithInput()
+    {
+        $result = F::filter(array('fieldOne' => array('default' => 'theDefault')), array('fieldOne' => 'notTheDefault'));
+        $this->assertSame(array(true, array('fieldOne' => 'notTheDefault'), null, array()), $result);
+    }
+
+    /**
+     * @test
+     * @covers ::filter
      */
     public function requiredDefaultPass()
     {
@@ -37,7 +90,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filterer::filter
+     * @covers ::filter
      */
     public function requiredDefaultFail()
     {
@@ -47,7 +100,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filterer::filter
+     * @covers ::filter
      */
     public function filterPass()
     {
@@ -57,7 +110,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filterer::filter
+     * @covers ::filter
      */
     public function filterDefaultShortNamePass()
     {
@@ -67,8 +120,8 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filterer::filter
-     * @covers \DominionEnterprises\Filterer::setFilterAliases
+     * @covers ::filter
+     * @covers ::setFilterAliases
      */
     public function filterCustomShortNamePass()
     {
@@ -79,9 +132,9 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filterer::filter
-     * @covers \DominionEnterprises\Filterer::setFilterAliases
-     * @covers \DominionEnterprises\Filterer::getFilterAliases
+     * @covers ::filter
+     * @covers ::setFilterAliases
+     * @covers ::getFilterAliases
      */
     public function filterGetSetKnownFilters()
     {
@@ -105,7 +158,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filterer::filter
+     * @covers ::filter
      */
     public function chainPass()
     {
@@ -123,7 +176,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filterer::filter
+     * @covers ::filter
      */
     public function chainFail()
     {
@@ -141,7 +194,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filterer::filter
+     * @covers ::filter
      */
     public function multiInputPass()
     {
@@ -154,7 +207,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filterer::filter
+     * @covers ::filter
      */
     public function multiInputFail()
     {
@@ -172,7 +225,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filterer::filter
+     * @covers ::filter
      */
     public function emptyFilter()
     {
@@ -182,7 +235,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filterer::filter
+     * @covers ::filter
      */
     public function unknownsAllowed()
     {
@@ -192,7 +245,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filterer::filter
+     * @covers ::filter
      */
     public function unknownsNotAllowed()
     {
@@ -202,7 +255,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filterer::filter
+     * @covers ::filter
      */
     public function objectFilter()
     {
@@ -212,7 +265,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filterer::filter
+     * @covers ::filter
      * @expectedException Exception
      * @expectedExceptionMessage Function 'boo' for field 'foo' is not callable
      */
@@ -223,7 +276,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filterer::filter
+     * @covers ::filter
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage 'allowUnknowns' option was not a bool
      */
@@ -234,7 +287,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filterer::filter
+     * @covers ::filter
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage 'defaultRequired' option was not a bool
      */
@@ -245,7 +298,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filterer::filter
+     * @covers ::filter
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage filters for field 'boo' was not a array
      */
@@ -256,7 +309,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filterer::filter
+     * @covers ::filter
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage filters for field 'boo' was not a array
      */
@@ -267,7 +320,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filterer::filter
+     * @covers ::filter
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage filter for field 'boo' was not a array
      */
@@ -278,7 +331,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filterer::filter
+     * @covers ::filter
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage 'required' for field 'boo' was not a bool
      */

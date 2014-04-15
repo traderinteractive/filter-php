@@ -44,6 +44,7 @@ final class Filterer
      *         'field one' => [[$trimFunc], ['substr', 0, 3], [[$appendFilter, 'filter'], 'boo']],
      *         'field two' => ['required' => true, ['floatval']],
      *         'field three' => ['required' => false, ['float']],
+     *         'field four' => ['required' => true, 'default' => 1, ['uint']],
      *     ],
      *     ['field one' => ' abcd', 'field two' => '3.14']
      * );
@@ -56,11 +57,13 @@ final class Filterer
      * prints:
      * <pre>
      * bool(true)
-     * array(2) {
+     * array(3) {
      *   'field one' =>
      *   string(6) "abcboo"
      *   'field two' =>
      *   double(3.14)
+     *   'field four' =>
+     *   int(1)
      * }
      * NULL
      * array(0) {
@@ -72,7 +75,8 @@ final class Filterer
      *     value to filter as its first argument. Two examples would be the string 'trim' or an object function specified like [$obj, 'filter'],
      *     see is_callable() documentation. The rest of the members are extra arguments to the callable. The result of one filter will be the
      *     first argument to the next filter. In addition to the filters, the specification values may contain a 'required' key (default false)
-     *     that controls the same behavior as the 'defaultRequired' option below but on a per field basis.
+     *     that controls the same behavior as the 'defaultRequired' option below but on a per field basis. A 'default' specification value
+     *     may be used to substitute in a default to the $input when the key is not present (whether 'required' is specified or not).
      * @param array $input the input the apply the $spec on.
      * @param array $options 'allowUnknowns' (default false) true to allow unknowns or false to treat as error, 'defaultRequired'
      *     (default false) true to make fields required by default and treat as error on absence and false to allow their absence by default
@@ -115,6 +119,7 @@ final class Filterer
             }
 
             unset($filters['required']);//doesnt matter if required since we have this one
+            unset($filters['default']);//doesnt matter if there is a default since we have a value
             foreach ($filters as $filter) {
                 if (!is_array($filter)) {
                     throw new \InvalidArgumentException("filter for field '{$field}' was not a array");
@@ -152,10 +157,15 @@ final class Filterer
                 throw new \InvalidArgumentException("filters for field '{$field}' was not a array");
             }
 
-            $required = array_key_exists('required', $filters) ? $filters['required'] : $defaultRequired;
+            $required = isset($filters['required']) ? $filters['required'] : $defaultRequired;
 
             if ($required !== false && $required !== true) {
                 throw new \InvalidArgumentException("'required' for field '{$field}' was not a bool");
+            }
+
+            if (array_key_exists('default', $filters)) {
+                $inputToFilter[$field] = $filters['default'];
+                continue;
             }
 
             if ($required) {

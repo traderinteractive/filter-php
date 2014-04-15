@@ -2,11 +2,14 @@
 namespace DominionEnterprises\Filter;
 use DominionEnterprises\Filter\Int as S;
 
+/**
+ * @coversDefaultClass \DominionEnterprises\Filter\Int
+ */
 final class IntTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Int::filter
+     * @covers ::filter
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage "1" $allowNull was not a bool
      */
@@ -17,7 +20,7 @@ final class IntTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Int::filter
+     * @covers ::filter
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage "'boo'" $minValue was not an int
      */
@@ -28,7 +31,7 @@ final class IntTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Int::filter
+     * @covers ::filter
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage "1.5" $maxValue was not an int
      */
@@ -39,7 +42,7 @@ final class IntTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Int::filter
+     * @covers ::filter
      */
     public function filter_allowNullIsTrueAndNullValue()
     {
@@ -49,7 +52,7 @@ final class IntTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Int::filter
+     * @covers ::filter
      */
     public function filter_positiveInt()
     {
@@ -58,7 +61,7 @@ final class IntTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Int::filter
+     * @covers ::filter
      */
     public function filter_negativeInt()
     {
@@ -67,7 +70,7 @@ final class IntTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Int::filter
+     * @covers ::filter
      */
     public function filter_zeroInt()
     {
@@ -78,7 +81,7 @@ final class IntTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Int::filter
+     * @covers ::filter
      */
     public function filter_positiveString()
     {
@@ -89,7 +92,7 @@ final class IntTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Int::filter
+     * @covers ::filter
      */
     public function filter_negativeString()
     {
@@ -99,7 +102,7 @@ final class IntTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Int::filter
+     * @covers ::filter
      * @expectedException \Exception
      * @expectedExceptionMessage "true" $value is not a string
      */
@@ -110,7 +113,7 @@ final class IntTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Int::filter
+     * @covers ::filter
      * @expectedException \Exception
      * @expectedExceptionMessage $value string length is zero
      */
@@ -121,7 +124,7 @@ final class IntTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Int::filter
+     * @covers ::filter
      * @expectedException \Exception
      * @expectedExceptionMessage $value string length is zero
      */
@@ -132,7 +135,7 @@ final class IntTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Int::filter
+     * @covers ::filter
      * @expectedException \Exception
      * @expectedExceptionMessage 123.4 does not contain all digits, optionally prepended by a '+' or '-' and optionally surrounded by whitespace
      */
@@ -143,7 +146,7 @@ final class IntTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Int::filter
+     * @covers ::filter
      * @expectedException \Exception
      */
     public function filter_greaterThanPhpIntMax()
@@ -160,7 +163,7 @@ final class IntTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Int::filter
+     * @covers ::filter
      * @expectedException \Exception
      */
     public function filter_lessThanPhpIntMin()
@@ -177,7 +180,7 @@ final class IntTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Int::filter
+     * @covers ::filter
      * @expectedException \Exception
      * @expectedExceptionMessage -1 is less than 0
      */
@@ -188,7 +191,7 @@ final class IntTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Int::filter
+     * @covers ::filter
      */
     public function filter_equalToMin()
     {
@@ -197,7 +200,7 @@ final class IntTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Int::filter
+     * @covers ::filter
      * @expectedException \Exception
      * @expectedExceptionMessage 1 is greater than 0
      */
@@ -208,7 +211,7 @@ final class IntTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filter\Int::filter
+     * @covers ::filter
      */
     public function filter_equalToMax()
     {
