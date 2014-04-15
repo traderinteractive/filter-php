@@ -32,6 +32,56 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers ::filter
      */
+    public function requiredWithADefaultWithoutInput()
+    {
+        $result = F::filter(array('fieldOne' => array('required' => true, 'default' => 'theDefault')), array());
+        $this->assertSame(array(true, array('fieldOne' => 'theDefault'), null, array()), $result);
+    }
+
+    /**
+     * @test
+     * @covers ::filter
+     */
+    public function requiredWithANullDefaultWithoutInput()
+    {
+        $result = F::filter(array('fieldOne' => array('required' => true, 'default' => null)), array());
+        $this->assertSame(array(true, array('fieldOne' => null), null, array()), $result);
+    }
+
+    /**
+     * @test
+     * @covers ::filter
+     */
+    public function requiredWithADefaultWithInput()
+    {
+        $result = F::filter(array('fieldOne' => array('required' => true, 'default' => 'theDefault')), array('fieldOne' => 'notTheDefault'));
+        $this->assertSame(array(true, array('fieldOne' => 'notTheDefault'), null, array()), $result);
+    }
+
+    /**
+     * @test
+     * @covers ::filter
+     */
+    public function notRequiredWithADefaultWithoutInput()
+    {
+        $result = F::filter(array('fieldOne' => array('default' => 'theDefault')), array());
+        $this->assertSame(array(true, array('fieldOne' => 'theDefault'), null, array()), $result);
+    }
+
+    /**
+     * @test
+     * @covers ::filter
+     */
+    public function notRequiredWithADefaultWithInput()
+    {
+        $result = F::filter(array('fieldOne' => array('default' => 'theDefault')), array('fieldOne' => 'notTheDefault'));
+        $this->assertSame(array(true, array('fieldOne' => 'notTheDefault'), null, array()), $result);
+    }
+
+    /**
+     * @test
+     * @covers ::filter
+     */
     public function requiredDefaultPass()
     {
         $result = F::filter(array('fieldOne' => array()), array());

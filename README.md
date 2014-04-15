@@ -17,6 +17,7 @@ A filtering implementation for verifying correct data and performing typical mod
   * Class function
   * Built-in function
  * Optional/Required support, field and global level
+ * Default support
  * Chaining filters
  * Optionally returns unknown fields
  * Filter alias support
@@ -39,6 +40,7 @@ list($status, $result, $error, $unknowns) = DominionEnterprises\Filterer::filter
         'field one' => [[$trimFunc], ['substr', 0, 3], [[$appendFilter, 'filter'], 'boo']],
         'field two' => ['required' => true, ['floatval']],
         'field three' => ['required' => false, ['float']],
+        'field four' => ['required' => true, 'default' => 1, ['uint']],
     ],
     ['field one' => ' abcd', 'field two' => '3.14']
 );
@@ -52,11 +54,13 @@ prints
 
 ```php
 bool(true)
-array(2) {
+array(3) {
   'field one' =>
   string(6) "abcboo"
   'field two' =>
   double(3.14)
+  'field four' =>
+  int(1)
 }
 NULL
 array(0) {
