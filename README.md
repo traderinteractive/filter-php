@@ -80,7 +80,7 @@ To add the library as a local, per-project dependency use [Composer](http://getc
 ```
 
 ##Documentation
-Found in the [source](src/DominionEnterprises/Filterer.php) itself, take a look!
+Found in the [source](src/Filterer.php) itself, take a look!
 
 ### Included Filters
 Of course, any function can potentially be used as a filter, but we include some useful filters with aliases for common circumstances.
