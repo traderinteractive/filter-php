@@ -207,7 +207,7 @@ final class Filterer
     public static function setFilterAliases(array $aliases)
     {
         $originalAliases = self::$_filterAliases;
-        self::$_filterAliases = [];
+        self::$_filterAliases = array();
         try {
             foreach ($aliases as $alias => $callback) {
                 self::registerAlias($alias, $callback);
@@ -228,13 +228,18 @@ final class Filterer
      * @return void
      *
      * @throws \InvalidArgumentException if $alias was not a string or int
+     * @throws \InvalidArgumentException if $filter was not callable
      * @throws \InvalidArgumentException if $overwrite was not a bool
      * @throws \Exception if $overwrite is false and $alias exists
      */
-    public static function registerAlias($alias, callable $filter, $overwrite = false)
+    public static function registerAlias($alias, $filter, $overwrite = false)
     {
         if (!is_string($alias) && !is_int($alias)) {
             throw new \InvalidArgumentException('$alias was not a string or int');
+        }
+
+        if (!is_callable($filter)) {
+            throw new \InvalidArgumentException('$filter was not callable');
         }
 
         if ($overwrite !== false && $overwrite !== true) {

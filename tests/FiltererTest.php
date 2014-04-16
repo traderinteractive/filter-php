@@ -136,21 +136,16 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
      */
     public function setFilterAliasFails()
     {
-        F::setFilterAliases(['upper' => 'strtoupper', 'lower' => 'strtolower']);
+        F::setFilterAliases(array('upper' => 'strtoupper', 'lower' => 'strtolower'));
         try {
-            F::setFilterAliases([ 'alias' => 'nonCallable']);
+            F::setFilterAliases(array('alias' => 'nonCallable'));
             $this->fail('No exception thrown');
-        } catch (\PHPUnit_Framework_Error $e) {
-            //In a production setting, passing a non-callable would trigger a catchable fatal error
-            //PHPUnit turns the triggered error into an exception.
-            $this->assertContains(
-                'Argument 2 passed to DominionEnterprises\Filterer::registerAlias() must be callable',
-                $e->getMessage()
-            );
+        } catch (\InvalidArgumentException $e) {
+            $this->assertSame('$filter was not callable', $e->getMessage());
         }
 
         // aliases remain unchanged
-        $this->assertSame(['upper' => 'strtoupper', 'lower' => 'strtolower'], F::getFilterAliases());
+        $this->assertSame(array('upper' => 'strtoupper', 'lower' => 'strtolower'), F::getFilterAliases());
     }
 
     /**
@@ -378,6 +373,17 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers ::registerAlias
      * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage $filter was not callable
+     */
+    public function registerAliasFilterNotCallable()
+    {
+        F::registerAlias('alias', 'undefined');
+    }
+
+    /**
+     * @test
+     * @covers ::registerAlias
+     * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage $overwrite was not a bool
      */
     public function registerAliasOverwriteNotBool()
@@ -393,7 +399,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
      */
     public function registerExistingAliasOverwriteFalse()
     {
-        F::setFilterAliases([]);
+        F::setFilterAliases(array());
         F::registerAlias('upper', 'strtoupper');
         F::registerAlias('upper', 'strtoupper', false);
     }
@@ -404,9 +410,9 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
      */
     public function registerExistingAliasOverwriteTrue()
     {
-        F::setFilterAliases(['upper' => 'strtoupper', 'lower' => 'strtolower']);
+        F::setFilterAliases(array('upper' => 'strtoupper', 'lower' => 'strtolower'));
         F::registerAlias('upper', 'ucfirst', true);
-        $this->assertSame(['upper' => 'ucfirst', 'lower' => 'strtolower'], F::getFilterAliases());
+        $this->assertSame(array('upper' => 'ucfirst', 'lower' => 'strtolower'), F::getFilterAliases());
     }
 
     public static function failingFilter($val)
