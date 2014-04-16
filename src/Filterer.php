@@ -201,10 +201,21 @@ final class Filterer
      *
      * @param array $aliases array where keys are aliases and values pass is_callable().
      * @return void
+     *
+     * @throws \Exception Thrown if any of the given $aliases is not valid. @see registerAlias()
      */
     public static function setFilterAliases(array $aliases)
     {
-        self::$_filterAliases = $aliases;
+        $originalAliases = self::$_filterAliases;
+        self::$_filterAliases = [];
+        try {
+            foreach ($aliases as $alias => $callback) {
+                self::registerAlias($alias, $callback);
+            }
+        } catch (\Exception $e) {
+            self::$_filterAliases = $originalAliases;
+            throw $e;
+        }
     }
 
     /**

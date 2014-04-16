@@ -125,9 +125,32 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
      */
     public function filterCustomShortNamePass()
     {
-        F::setFilterAliases(array('aShortName' => 'floatval'));
-        $result = F::filter(array('fieldOne' => array(array('floatval'))), array('fieldOne' => '3.14'));
+        F::setFilterAliases(array('fval' => 'floatval'));
+        $result = F::filter(array('fieldOne' => array(array('fval'))), array('fieldOne' => '3.14'));
         $this->assertSame(array(true, array('fieldOne' => 3.14), null, array()), $result);
+    }
+
+    /**
+     * @test
+     * @covers ::setFilterAliases
+     */
+    public function setFilterAliasFails()
+    {
+        F::setFilterAliases(['upper' => 'strtoupper', 'lower' => 'strtolower']);
+        try {
+            F::setFilterAliases([ 'alias' => 'nonCallable']);
+            $this->fail('No exception thrown');
+        } catch (\PHPUnit_Framework_Error $e) {
+            //In a production setting, passing a non-callable would trigger a catchable fatal error
+            //PHPUnit turns the triggered error into an exception.
+            $this->assertContains(
+                'Argument 2 passed to DominionEnterprises\Filterer::registerAlias() must be callable',
+                $e->getMessage()
+            );
+        }
+
+        // aliases remain unchanged
+        $this->assertSame(['upper' => 'strtoupper', 'lower' => 'strtolower'], F::getFilterAliases());
     }
 
     /**
@@ -138,7 +161,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
      */
     public function filterGetSetKnownFilters()
     {
-        $knownFilters = array('shortNameOne' => 'fullNameOne', 'shortNameTwo' => 'fullNameTwo');
+        $knownFilters = array('lower' => 'strtolower', 'upper' => 'strtoupper');
         F::setFilterAliases($knownFilters);
         $this->assertSame($knownFilters, F::getFilterAliases());
     }
