@@ -340,6 +340,52 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
         F::filter(array('boo' => array('required' => 1)), array());
     }
 
+    /**
+     * @test
+     * @covers ::registerAlias
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage $alias was not a string or int
+     */
+    public function registerAliasAliasNotString()
+    {
+        F::registerAlias(true, 'strtolower');
+    }
+
+    /**
+     * @test
+     * @covers ::registerAlias
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage $overwrite was not a bool
+     */
+    public function registerAliasOverwriteNotBool()
+    {
+        F::registerAlias('lower', 'strtolower', 'foo');
+    }
+
+    /**
+     * @test
+     * @covers ::registerAlias
+     * @expectedException \Exception
+     * @expectedExceptionMessage Alias 'upper' exists
+     */
+    public function registerExistingAliasOverwriteFalse()
+    {
+        F::setFilterAliases([]);
+        F::registerAlias('upper', 'strtoupper');
+        F::registerAlias('upper', 'strtoupper', false);
+    }
+
+    /**
+     * @test
+     * @covers ::registerAlias
+     */
+    public function registerExistingAliasOverwriteTrue()
+    {
+        F::setFilterAliases(['upper' => 'strtoupper', 'lower' => 'strtolower']);
+        F::registerAlias('upper', 'ucfirst', true);
+        $this->assertSame(['upper' => 'ucfirst', 'lower' => 'strtolower'], F::getFilterAliases());
+    }
+
     public static function failingFilter($val)
     {
         throw new \Exception('i failed');

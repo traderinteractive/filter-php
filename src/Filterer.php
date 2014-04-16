@@ -206,4 +206,34 @@ final class Filterer
     {
         self::$_filterAliases = $aliases;
     }
+
+    /**
+     * Register a new alias with the Filterer
+     *
+     * @param string|int $alias the alias to register
+     * @param callable $filter the aliased callable filter
+     * @param bool $overwrite Flag to overwrite existing alias if it exists
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentException if $alias was not a string or int
+     * @throws \InvalidArgumentException if $overwrite was not a bool
+     * @throws \Exception if $overwrite is false and $alias exists
+     */
+    public static function registerAlias($alias, callable $filter, $overwrite = false)
+    {
+        if (!is_string($alias) && !is_int($alias)) {
+            throw new \InvalidArgumentException('$alias was not a string or int');
+        }
+
+        if ($overwrite !== false && $overwrite !== true) {
+            throw new \InvalidArgumentException('$overwrite was not a bool');
+        }
+
+        if (array_key_exists($alias, self::$_filterAliases) && !$overwrite) {
+            throw new \Exception("Alias '{$alias}' exists");
+        }
+
+        self::$_filterAliases[$alias] = $filter;
+    }
 }
