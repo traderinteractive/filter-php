@@ -201,9 +201,50 @@ final class Filterer
      *
      * @param array $aliases array where keys are aliases and values pass is_callable().
      * @return void
+     *
+     * @throws \Exception Thrown if any of the given $aliases is not valid. @see registerAlias()
      */
     public static function setFilterAliases(array $aliases)
     {
-        self::$_filterAliases = $aliases;
+        $originalAliases = self::$_filterAliases;
+        self::$_filterAliases = [];
+        try {
+            foreach ($aliases as $alias => $callback) {
+                self::registerAlias($alias, $callback);
+            }
+        } catch (\Exception $e) {
+            self::$_filterAliases = $originalAliases;
+            throw $e;
+        }
+    }
+
+    /**
+     * Register a new alias with the Filterer
+     *
+     * @param string|int $alias the alias to register
+     * @param callable $filter the aliased callable filter
+     * @param bool $overwrite Flag to overwrite existing alias if it exists
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentException if $alias was not a string or int
+     * @throws \InvalidArgumentException if $overwrite was not a bool
+     * @throws \Exception if $overwrite is false and $alias exists
+     */
+    public static function registerAlias($alias, callable $filter, $overwrite = false)
+    {
+        if (!is_string($alias) && !is_int($alias)) {
+            throw new \InvalidArgumentException('$alias was not a string or int');
+        }
+
+        if ($overwrite !== false && $overwrite !== true) {
+            throw new \InvalidArgumentException('$overwrite was not a bool');
+        }
+
+        if (array_key_exists($alias, self::$_filterAliases) && !$overwrite) {
+            throw new \Exception("Alias '{$alias}' exists");
+        }
+
+        self::$_filterAliases[$alias] = $filter;
     }
 }
