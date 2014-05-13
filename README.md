@@ -82,6 +82,34 @@ To add the library as a local, per-project dependency use [Composer](http://getc
 ##Documentation
 Found in the [source](src/Filterer.php) itself, take a look!
 
+### Filterer
+At the core of this library is a `Filterer` class that can validate the structure of an array and map the data through filters.  This behavior
+is defined by a specification of the different filters to apply and some additional options.
+
+#### Specification
+The specification is an array of key => filter specification pairs.
+
+The keys define the known fields in the array.  Any fields in the array that are not in the specification are treated as "unknown" fields and
+may cause validation to fail, depending on the value of the `allowUnknowns` option.
+
+The filter specification for a single field is also an array.  It can contain two special keys:
+* `required` defines whether this field is a required element of the array.  This value overrides the global filter specification's
+  `defaultRequired` option.
+* `default` defines what the default value of this field is if none is given.  A field with a default value will be guaranteed to be in the
+  result.  The `required` value does not affect `default` behavior.
+
+The rest of the specification for the field are the filters to apply.
+
+The first element in the filter is the filter to run.  This can either be something that passes `is_callable` (e.g., `'trim'` or
+`[$object, 'method']`) or it can be one of our predefined aliases (e.g., `'float'`).
+
+The rest of the elements in the filter are the extra arguments to the filter (the value being filtered is always the first argument).
+
+A filter specification can contain any number of filters and the result of each filter is piped in as the input to the next filter.  The result
+of the final filter is set in the result array.
+
+The example above should help clarify all this.
+
 ### Included Filters
 Of course, any function can potentially be used as a filter, but we include some useful filters with aliases for common circumstances.
 
