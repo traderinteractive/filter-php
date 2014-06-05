@@ -22,6 +22,7 @@ final class Filterer
         'ofArrays' => '\DominionEnterprises\Filter\Arrays::ofArrays',
         'ofArray' => '\DominionEnterprises\Filter\Arrays::ofArray',
         'url' => '\DominionEnterprises\Filter\Url::filter',
+        'email' => '\DominionEnterprises\Filter\Email::filter',
     );
 
     /**
