@@ -198,6 +198,14 @@ The following checks that `$value` is a URL.
 \DominionEnterprises\Filter\Url::filter($value);
 ```
 
+#### Email::filter
+Aliased in the filterer as `email`, this filter verifies that the argument is an email.
+
+The following checks that `$value` is an email.
+```php
+\DominionEnterprises\Filter\Email::filter($value);
+```
+
 ##Contact
 Developers may be contacted at:
 
