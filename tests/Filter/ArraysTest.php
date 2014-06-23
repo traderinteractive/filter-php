@@ -142,6 +142,9 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::ofScalars
+     * @uses \DominionEnterprises\Filter\Int
+     * @uses \DominionEnterprises\Filter\UnsignedInt
+     * @uses \DominionEnterprises\Filterer
      */
     public function ofScalars()
     {
@@ -151,6 +154,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::ofScalars
+     * @uses \DominionEnterprises\Filterer
      */
     public function ofScalars_chained()
     {
@@ -160,6 +164,9 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::ofScalars
+     * @uses \DominionEnterprises\Filter\Int
+     * @uses \DominionEnterprises\Filter\UnsignedInt
+     * @uses \DominionEnterprises\Filterer
      */
     public function ofScalars_withMeaninglessKeys()
     {
@@ -169,6 +176,8 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::ofScalars
+     * @uses \DominionEnterprises\Filter\String
+     * @uses \DominionEnterprises\Filterer
      */
     public function ofScalars_fail()
     {
@@ -185,6 +194,9 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::ofArrays
+     * @uses \DominionEnterprises\Filter\Int
+     * @uses \DominionEnterprises\Filter\UnsignedInt
+     * @uses \DominionEnterprises\Filterer
      */
     public function ofArrays()
     {
@@ -195,6 +207,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::ofArrays
+     * @uses \DominionEnterprises\Filterer
      */
     public function ofArrays_chained()
     {
@@ -206,6 +219,9 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::ofArrays
+     * @uses \DominionEnterprises\Filter\Int
+     * @uses \DominionEnterprises\Filter\UnsignedInt
+     * @uses \DominionEnterprises\Filterer
      */
     public function ofArrays_requiredAndUnknown()
     {
@@ -221,6 +237,8 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::ofArrays
+     * @uses \DominionEnterprises\Filter\String
+     * @uses \DominionEnterprises\Filterer
      */
     public function ofArrays_fail()
     {
@@ -237,6 +255,9 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::ofArray
+     * @uses \DominionEnterprises\Filter\Int
+     * @uses \DominionEnterprises\Filter\UnsignedInt
+     * @uses \DominionEnterprises\Filterer
      */
     public function ofArray()
     {
@@ -248,6 +269,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::ofArray
+     * @uses \DominionEnterprises\Filterer
      */
     public function ofArray_chained()
     {
@@ -259,6 +281,9 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::ofArray
+     * @uses \DominionEnterprises\Filter\Int
+     * @uses \DominionEnterprises\Filter\UnsignedInt
+     * @uses \DominionEnterprises\Filterer
      */
     public function ofArray_requiredSuccess()
     {
@@ -270,6 +295,9 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::ofArray
+     * @uses \DominionEnterprises\Filter\Int
+     * @uses \DominionEnterprises\Filter\UnsignedInt
+     * @uses \DominionEnterprises\Filterer
      */
     public function ofArray_requiredFail()
     {
@@ -285,6 +313,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::ofArray
+     * @uses \DominionEnterprises\Filterer
      */
     public function ofArray_unknown()
     {
