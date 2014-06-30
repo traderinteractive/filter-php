@@ -1,14 +1,13 @@
 #filter-php
-[![Build Status](https://travis-ci.org/dominionenterprises/filter-php.png)](https://travis-ci.org/dominionenterprises/filter-php)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/dominionenterprises/filter-php/badges/quality-score.png?s=aafae56e65e9f626709043710df934d248ff09ce)](https://scrutinizer-ci.com/g/dominionenterprises/filter-php/)
-[![Code Coverage](https://scrutinizer-ci.com/g/dominionenterprises/filter-php/badges/coverage.png?s=47a4c24cc8ecf67a8bdb1923fa3e6dc8087727b2)](https://scrutinizer-ci.com/g/dominionenterprises/filter-php/)
-
-[![Latest Stable Version](https://poser.pugx.org/dominionenterprises/filter/v/stable.png)](https://packagist.org/packages/dominionenterprises/filter)
-[![Total Downloads](https://poser.pugx.org/dominionenterprises/filter/downloads.png)](https://packagist.org/packages/dominionenterprises/filter)
-[![Latest Unstable Version](https://poser.pugx.org/dominionenterprises/filter/v/unstable.png)](https://packagist.org/packages/dominionenterprises/filter)
-[![License](https://poser.pugx.org/dominionenterprises/filter/license.png)](https://packagist.org/packages/dominionenterprises/filter)
-
 A filtering implementation for verifying correct data and performing typical modifications to data.
+
+[![Build Status](http://img.shields.io/travis/dominionenterprises/filter-php.svg?style=flat)](https://travis-ci.org/dominionenterprises/filter-php)
+[![Scrutinizer Code Quality](http://img.shields.io/scrutinizer/g/dominionenterprises/filter-php.svg?style=flat)](https://scrutinizer-ci.com/g/dominionenterprises/filter-php/)
+[![Code Coverage](http://img.shields.io/scrutinizer/coverage/g/dominionenterprises/filter-php.svg?style=flat)](https://scrutinizer-ci.com/g/dominionenterprises/filter-php/)
+
+[![Latest Stable Version](http://img.shields.io/packagist/v/dominionenterprises/filter.svg?style=flat)](https://packagist.org/packages/dominionenterprises/filter)
+[![Total Downloads](http://img.shields.io/packagist/dt/dominionenterprises/filter.svg?style=flat)](https://packagist.org/packages/dominionenterprises/filter)
+[![License](http://img.shields.io/packagist/l/dominionenterprises/filter.svg?style=flat)](https://packagist.org/packages/dominionenterprises/filter)
 
 ##Features
  * Compact, readable specification
