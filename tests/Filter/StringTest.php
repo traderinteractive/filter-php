@@ -131,4 +131,65 @@ final class StringUtilTest extends \PHPUnit_Framework_TestCase
     {
         S::filter('a', false, 1, -1);
     }
+
+    /**
+     * Verifies basic explode functionality.
+     *
+     * @test
+     * @covers ::explode
+     */
+    public function explode()
+    {
+        $this->assertSame(array('a', 'bcd', 'e'), S::explode('a,bcd,e'));
+    }
+
+    /**
+     * Verifies explode with a custom delimiter.
+     *
+     * @test
+     * @covers ::explode
+     */
+    public function explode_customDelimiter()
+    {
+        $this->assertSame(array('a', 'b', 'c', 'd,e'), S::explode('a b c d,e', ' '));
+    }
+
+    /**
+     * Verifies explode filter with a non-string value.
+     *
+     * @test
+     * @expectedException Exception
+     * @expectedExceptionMessage Value 'true' is not a string
+     * @covers ::explode
+     */
+    public function explode_nonStringValue()
+    {
+        S::explode(true);
+    }
+
+    /**
+     * Verifies explode filter with a non-string delimiter.
+     *
+     * @test
+     * @expectedException Exception
+     * @expectedExceptionMessage Delimiter '4' is not a non-empty string
+     * @covers ::explode
+     */
+    public function explode_nonStringDelimiter()
+    {
+        S::explode('test', 4);
+    }
+
+    /**
+     * Verifies explode filter with an empty delimiter.
+     *
+     * @test
+     * @expectedException Exception
+     * @expectedExceptionMessage Delimiter '''' is not a non-empty string
+     * @covers ::explode
+     */
+    public function explode_emptyDelimiter()
+    {
+        S::explode('test', '');
+    }
 }

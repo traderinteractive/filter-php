@@ -188,6 +188,14 @@ The following checks that `$value` is a non-empty string.
 \DominionEnterprises\Filter\String::filter($value);
 ```
 
+#### String::explode
+Aliased in the filterer as `explode`, this filter is essentially a wrapper around the built-in [`explode`](http://www.php.net/explode) method
+with the value first in order to work with the `Filterer`.  It also defaults to using `,` as a delimiter.  For example:
+```php
+$value = \DominionEnterprises\Filter\String::explode('abc,def,ghi');
+assert($value === ['abc', 'def', 'ghi']);
+```
+
 #### Url::filter
 Aliased in the filterer as `url`, this filter verifies that the argument is a URL string according to
 [RFC2396](http://www.faqs.org/rfcs/rfc2396).
