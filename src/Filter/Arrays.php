@@ -165,4 +165,29 @@ final class Arrays
 
         return $result;
     }
+
+    /**
+     * Given a multi-dimensional array, flatten the array to a single level.
+     *
+     * The order of the values will be maintained, but the keys will not.
+     *
+     * For example, given the array [[1, 2], [3, [4, 5]]], this would result in the array [1, 2, 3, 4, 5].
+     *
+     * @param array $value The array to flatten.
+     *
+     * @return array The single-dimension array.
+     */
+    public static function flatten(array $value)
+    {
+        $result = array();
+
+        array_walk_recursive(
+            $value,
+            function($item) use(&$result) {
+                $result[] = $item;
+            }
+        );
+
+        return $result;
+    }
 }

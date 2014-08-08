@@ -152,6 +152,14 @@ $value = \DominionEnterprises\Filter\Arrays::ofArrays($value, ['id' => [['uint']
 Aliased in the filterer as `ofArray`, this filter verifies that the argument is an array that passes the given specification.  This is
 essentially a flipped version of `Filterer::filter` that allows for testing nested associative arrays.
 
+#### Arrays::flatten
+Aliased in the filterer as `flatten`, this filter flattens a multi-dimensional array to a single dimension.  The order of values will be
+maintained, but the keys themselves will not.  For example:
+```php
+$value = \DominionEnterprises\Filter\Arrays::flatten([[1, 2], [3, [4, 5]]]);
+assert($value === [1, 2, 3, 4, 5]);
+```
+
 #### Bool::filter
 Aliased in the filterer as `bool`, this filter verifies that the argument is a boolean value or a string that maps to one.  The second parameter
 can be set to `true` to allow null values through without an error (they will stay null and not get converted to false).  The last parameters

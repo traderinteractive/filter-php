@@ -24,6 +24,7 @@ final class Filterer
         'url' => '\DominionEnterprises\Filter\Url::filter',
         'email' => '\DominionEnterprises\Filter\Email::filter',
         'explode' => '\DominionEnterprises\Filter\String::explode',
+        'flatten' => '\DominionEnterprises\Filter\Arrays::flatten',
     );
 
     /**

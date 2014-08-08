@@ -325,4 +325,15 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
             $this->assertSame($expected, $e->getMessage());
         }
     }
+
+    /**
+     * Verifies the basic behavior of the flatten filter.
+     *
+     * @test
+     * @covers ::flatten
+     */
+    public function flatten()
+    {
+        $this->assertSame(array(1, 2, 3, 4, 5), A::flatten(array(array(1, 2), array(array(3, array(4, 5))))));
+    }
 }
