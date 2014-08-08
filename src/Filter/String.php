@@ -57,4 +57,29 @@ final class String
 
         return $value;
     }
+
+    /**
+     * Explodes a string into an array using the given delimiter.
+     *
+     * For example, given the string 'foo,bar,baz', this would return the array ['foo', 'bar', 'baz'].
+     *
+     * @param string $value The string to explode.
+     * @param string $delimiter The non-empty delimiter to explode on.
+     * @return array The exploded values.
+     *
+     * @throws \Exception if the value is not a string.
+     * @throws \InvalidArgumentException if the delimiter does not pass validation.
+     */
+    public static function explode($value, $delimiter = ',')
+    {
+        if (!is_string($value)) {
+            throw new \Exception("Value '" . var_export($value, true) . "' is not a string");
+        }
+
+        if (!is_string($delimiter) || empty($delimiter)) {
+            throw new \InvalidArgumentException("Delimiter '" . var_export($delimiter, true) . "' is not a non-empty string");
+        }
+
+        return explode($delimiter, $value);
+    }
 }
