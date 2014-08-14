@@ -100,7 +100,7 @@ final class Arrays
      */
     public static function ofScalars(array $values, array $filters)
     {
-        $wrappedFilters = array();
+        $wrappedFilters = [];
         foreach ($values as $key => $item) {
             $wrappedFilters[$key] = $filters;
         }
@@ -126,8 +126,8 @@ final class Arrays
      */
     public static function ofArrays(array $values, array $spec)
     {
-        $results = array();
-        $errors = array();
+        $results = [];
+        $errors = [];
         foreach ($values as $key => $item) {
             list($status, $result, $error) = Filterer::filter($spec, $item);
             if (!$status) {
@@ -179,7 +179,7 @@ final class Arrays
      */
     public static function flatten(array $value)
     {
-        $result = array();
+        $result = [];
 
         array_walk_recursive(
             $value,

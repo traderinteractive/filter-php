@@ -28,7 +28,7 @@ final class Bool
      * @throws \Exception if $value is not a string
      * @throws \Exception if $value is not 'true' or 'false' disregarding case and whitespace
      */
-    public static function filter($value, $allowNull = false, array $trueValues = array('true'), array $falseValues = array('false'))
+    public static function filter($value, $allowNull = false, array $trueValues = ['true'], array $falseValues = ['false'])
     {
         if ($allowNull !== false && $allowNull !== true) {
             throw new \InvalidArgumentException('$allowNull was not a bool');

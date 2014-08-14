@@ -10,7 +10,7 @@ namespace DominionEnterprises;
  */
 final class Filterer
 {
-    private static $_filterAliases = array(
+    private static $_filterAliases = [
         'in' => '\DominionEnterprises\Filter\Arrays::in',
         'array' => '\DominionEnterprises\Filter\Arrays::filter',
         'bool' => '\DominionEnterprises\Filter\Bool::filter',
@@ -25,7 +25,7 @@ final class Filterer
         'email' => '\DominionEnterprises\Filter\Email::filter',
         'explode' => '\DominionEnterprises\Filter\String::explode',
         'flatten' => '\DominionEnterprises\Filter\Arrays::flatten',
-    );
+    ];
 
     /**
      * Example:
@@ -84,8 +84,8 @@ final class Filterer
      * @param array $options 'allowUnknowns' (default false) true to allow unknowns or false to treat as error, 'defaultRequired'
      *     (default false) true to make fields required by default and treat as error on absence and false to allow their absence by default
      *
-     * @return array on success array(true, $input filtered, null, array of unknown fields)
-     *     on error array(false, null, 'error message', array of unknown fields)
+     * @return array on success [true, $input filtered, null, array of unknown fields]
+     *     on error [false, null, 'error message', array of unknown fields]
      *
      * @throws \Exception
      * @throws \InvalidArgumentException if 'allowUnknowns' option was not a bool
@@ -94,9 +94,9 @@ final class Filterer
      * @throws \InvalidArgumentException if a filter for a field was not a array
      * @throws \InvalidArgumentException if 'required' for a field was not a bool
      */
-    public static function filter(array $spec, array $input, array $options = array())
+    public static function filter(array $spec, array $input, array $options = [])
     {
-        $options += array('allowUnknowns' => false, 'defaultRequired' => false);
+        $options += ['allowUnknowns' => false, 'defaultRequired' => false];
 
         $allowUnknowns = $options['allowUnknowns'];
         $defaultRequired = $options['defaultRequired'];
@@ -113,7 +113,7 @@ final class Filterer
         $leftOverSpec = array_diff_key($spec, $input);
         $leftOverInput = array_diff_key($input, $spec);
 
-        $errors = array();
+        $errors = [];
         foreach ($inputToFilter as $field => $value) {
             $filters = $spec[$field];
 
@@ -183,10 +183,10 @@ final class Filterer
         }
 
         if (empty($errors)) {
-            return array(true, $inputToFilter, null, $leftOverInput);
+            return [true, $inputToFilter, null, $leftOverInput];
         }
 
-        return array(false, null, implode("\n", $errors), $leftOverInput);
+        return [false, null, implode("\n", $errors), $leftOverInput];
     }
 
     /**
@@ -210,7 +210,7 @@ final class Filterer
     public static function setFilterAliases(array $aliases)
     {
         $originalAliases = self::$_filterAliases;
-        self::$_filterAliases = array();
+        self::$_filterAliases = [];
         try {
             foreach ($aliases as $alias => $callback) {
                 self::registerAlias($alias, $callback);
