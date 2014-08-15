@@ -72,7 +72,7 @@ final class BoolTest extends \PHPUnit_Framework_TestCase
      */
     public function filter_customTrueValues()
     {
-        $this->assertTrue(B::filter('Y', false, array('y')));
+        $this->assertTrue(B::filter('Y', false, ['y']));
     }
 
     /**
@@ -81,7 +81,7 @@ final class BoolTest extends \PHPUnit_Framework_TestCase
      */
     public function filter_customFalseValues()
     {
-        $this->assertFalse(B::filter('0', false, array('true'), array('0')));
+        $this->assertFalse(B::filter('0', false, ['true'], ['0']));
     }
 
     /**
@@ -92,6 +92,6 @@ final class BoolTest extends \PHPUnit_Framework_TestCase
      */
     public function filter_customBoolValuesInvalidString()
     {
-        $this->assertFalse(B::filter('true', false, array('y', '1'), array('n', '0')));
+        $this->assertFalse(B::filter('true', false, ['y', '1'], ['n', '0']));
     }
 }

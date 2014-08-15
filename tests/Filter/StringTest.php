@@ -140,7 +140,7 @@ final class StringUtilTest extends \PHPUnit_Framework_TestCase
      */
     public function explode()
     {
-        $this->assertSame(array('a', 'bcd', 'e'), S::explode('a,bcd,e'));
+        $this->assertSame(['a', 'bcd', 'e'], S::explode('a,bcd,e'));
     }
 
     /**
@@ -151,7 +151,7 @@ final class StringUtilTest extends \PHPUnit_Framework_TestCase
      */
     public function explode_customDelimiter()
     {
-        $this->assertSame(array('a', 'b', 'c', 'd,e'), S::explode('a b c d,e', ' '));
+        $this->assertSame(['a', 'b', 'c', 'd,e'], S::explode('a b c d,e', ' '));
     }
 
     /**

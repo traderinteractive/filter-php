@@ -152,11 +152,11 @@ final class IntTest extends \PHPUnit_Framework_TestCase
     public function filter_greaterThanPhpIntMax()
     {
         //32, 64 and 128 bit and their +1 's
-        $maxes = array(
+        $maxes = [
             '2147483647' => '2147483648',
             '9223372036854775807' => '9223372036854775808',
             '170141183460469231731687303715884105727' => '170141183460469231731687303715884105728',
-        );
+        ];
         $oneOverMax = $maxes[(string)PHP_INT_MAX];
         S::filter($oneOverMax);
     }
@@ -169,11 +169,11 @@ final class IntTest extends \PHPUnit_Framework_TestCase
     public function filter_lessThanPhpIntMin()
     {
         //32, 64 and 128 bit and their -1 's
-        $mins = array(
+        $mins = [
             '-2147483648' => '-2147483649',
             '-9223372036854775808' => '-9223372036854775809',
             '-170141183460469231731687303715884105728' => '-170141183460469231731687303715884105729',
-        );
+        ];
         $oneUnderMin = $mins[(string)~PHP_INT_MAX];
         S::filter($oneUnderMin);
     }

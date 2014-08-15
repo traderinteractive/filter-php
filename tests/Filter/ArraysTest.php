@@ -13,7 +13,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      */
     public function filter_basicPass()
     {
-        $this->assertSame(array('boo'), A::filter(array('boo')));
+        $this->assertSame(['boo'], A::filter(['boo']));
     }
 
     /**
@@ -35,7 +35,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      */
     public function filter_failEmpty()
     {
-        A::filter(array());
+        A::filter([]);
     }
 
     /**
@@ -46,7 +46,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      */
     public function filter_countLessThanMin()
     {
-        A::filter(array(0), 2);
+        A::filter([0], 2);
     }
 
     /**
@@ -57,7 +57,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      */
     public function filter_countGreaterThanMax()
     {
-        A::filter(array(0, 1), 1, 1);
+        A::filter([0, 1], 1, 1);
     }
 
     /**
@@ -68,7 +68,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      */
     public function filter_minCountNotInt()
     {
-        A::filter(array(), true);
+        A::filter([], true);
     }
 
     /**
@@ -79,7 +79,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      */
     public function filter_maxCountNotInt()
     {
-        A::filter(array(), 0, true);
+        A::filter([], 0, true);
     }
 
     /**
@@ -88,7 +88,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      */
     public function in_passStrict()
     {
-        $this->assertSame('boo', A::in('boo', array('boo')));
+        $this->assertSame('boo', A::in('boo', ['boo']));
     }
 
     /**
@@ -98,7 +98,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
     public function in_failStrict()
     {
         try {
-            A::in('0', array(0));
+            A::in('0', [0]);
             $this->fail();
         } catch (\Exception $e) {
             $this->assertSame("Value '0' is not in array array (\n  0 => 0,\n)", $e->getMessage());
@@ -112,7 +112,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
     public function in_failNotStrict()
     {
         try {
-            A::in('boo', array('foo'), false);
+            A::in('boo', ['foo'], false);
             $this->fail();
         } catch (\Exception $e) {
             $this->assertSame("Value 'boo' is not in array array (\n  0 => 'foo',\n)", $e->getMessage());
@@ -125,7 +125,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      */
     public function in_passNotStrict()
     {
-        $this->assertSame('0', A::in('0', array(0), false));
+        $this->assertSame('0', A::in('0', [0], false));
     }
 
     /**
@@ -136,7 +136,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      */
     public function in_strictNotBool()
     {
-        A::in('boo', array(), 1);
+        A::in('boo', [], 1);
     }
 
     /**
@@ -148,7 +148,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      */
     public function ofScalars()
     {
-        $this->assertSame(array(1, 2), A::ofScalars(array('1', '2'), array(array('uint'))));
+        $this->assertSame([1, 2], A::ofScalars(['1', '2'], [['uint']]));
     }
 
     /**
@@ -158,7 +158,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      */
     public function ofScalars_chained()
     {
-        $this->assertSame(array(3.3, 5.5), A::ofScalars(array('a3.3', 'a5.5'), array(array('trim', 'a'), array('floatval'))));
+        $this->assertSame([3.3, 5.5], A::ofScalars(['a3.3', 'a5.5'], [['trim', 'a'], ['floatval']]));
     }
 
     /**
@@ -170,7 +170,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      */
     public function ofScalars_withMeaninglessKeys()
     {
-        $this->assertSame(array('key1' => 1, 'key2' => 2), A::ofScalars(array('key1' => '1', 'key2' => '2'), array(array('uint'))));
+        $this->assertSame(['key1' => 1, 'key2' => 2], A::ofScalars(['key1' => '1', 'key2' => '2'], [['uint']]));
     }
 
     /**
@@ -182,7 +182,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
     public function ofScalars_fail()
     {
         try {
-            A::ofScalars(array('1', 2, 3), array(array('string')));
+            A::ofScalars(['1', 2, 3], [['string']]);
             $this->fail();
         } catch (\Exception $e) {
             $expected = "Field '1' with value '2' failed filtering, message 'Value '2' is not a string'\n";
@@ -200,8 +200,8 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      */
     public function ofArrays()
     {
-        $expected = array(array('key' => 1), array('key' => 2));
-        $this->assertSame($expected, A::ofArrays(array(array('key' => '1'), array('key' => '2')), array('key' => array(array('uint')))));
+        $expected = [['key' => 1], ['key' => 2]];
+        $this->assertSame($expected, A::ofArrays([['key' => '1'], ['key' => '2']], ['key' => [['uint']]]));
     }
 
     /**
@@ -211,9 +211,9 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      */
     public function ofArrays_chained()
     {
-        $expected = array(array('key' => 3.3), array('key' => 5.5));
-        $spec = array('key' => array(array('trim', 'a'), array('floatval')));
-        $this->assertSame($expected, A::ofArrays(array(array('key' => 'a3.3'), array('key' => 'a5.5')), $spec));
+        $expected = [['key' => 3.3], ['key' => 5.5]];
+        $spec = ['key' => [['trim', 'a'], ['floatval']]];
+        $this->assertSame($expected, A::ofArrays([['key' => 'a3.3'], ['key' => 'a5.5']], $spec));
     }
 
     /**
@@ -226,7 +226,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
     public function ofArrays_requiredAndUnknown()
     {
         try {
-            A::ofArrays(array(array('key' => '1'), array('key2' => '2')), array('key' => array('required' => true, array('uint'))));
+            A::ofArrays([['key' => '1'], ['key2' => '2']], ['key' => ['required' => true, ['uint']]]);
             $this->fail();
         } catch (\Exception $e) {
             $expected = "Field 'key' was required and not present\nField 'key2' with value '2' is unknown";
@@ -243,7 +243,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
     public function ofArrays_fail()
     {
         try {
-            A::ofArrays(array(array('key' => '1'), array('key' => 2), array('key' => 3)), array('key' => array(array('string'))));
+            A::ofArrays([['key' => '1'], ['key' => 2], ['key' => 3]], ['key' => [['string']]]);
             $this->fail();
         } catch (\Exception $e) {
             $expected = "Field 'key' with value '2' failed filtering, message 'Value '2' is not a string'\n";
@@ -261,9 +261,9 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      */
     public function ofArray()
     {
-        $expected = array('key1' => 1, 'key2' => 2);
-        $spec = array('key1' => array(array('uint')), 'key2' => array(array('uint')));
-        $this->assertSame($expected, A::ofArray(array('key1' => '1', 'key2' => '2'), $spec));
+        $expected = ['key1' => 1, 'key2' => 2];
+        $spec = ['key1' => [['uint']], 'key2' => [['uint']]];
+        $this->assertSame($expected, A::ofArray(['key1' => '1', 'key2' => '2'], $spec));
     }
 
     /**
@@ -273,9 +273,9 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      */
     public function ofArray_chained()
     {
-        $expected = array('key' => 3.3);
-        $spec = array('key' => array(array('trim', 'a'), array('floatval')));
-        $this->assertSame($expected, A::ofArray(array('key' => 'a3.3'), $spec));
+        $expected = ['key' => 3.3];
+        $spec = ['key' => [['trim', 'a'], ['floatval']]];
+        $this->assertSame($expected, A::ofArray(['key' => 'a3.3'], $spec));
     }
 
     /**
@@ -287,9 +287,9 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      */
     public function ofArray_requiredSuccess()
     {
-        $expected = array('key2' => 2);
-        $spec = array('key1' => array(array('uint')), 'key2' => array('required' => true, array('uint')));
-        $this->assertSame($expected, A::ofArray(array('key2' => '2'), $spec));
+        $expected = ['key2' => 2];
+        $spec = ['key1' => [['uint']], 'key2' => ['required' => true, ['uint']]];
+        $this->assertSame($expected, A::ofArray(['key2' => '2'], $spec));
     }
 
     /**
@@ -302,7 +302,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
     public function ofArray_requiredFail()
     {
         try {
-            A::ofArray(array('key1' => '1'), array('key1' => array(array('uint')), 'key2' => array('required' => true, array('uint'))));
+            A::ofArray(['key1' => '1'], ['key1' => [['uint']], 'key2' => ['required' => true, ['uint']]]);
             $this->fail();
         } catch (\Exception $e) {
             $expected = "Field 'key2' was required and not present";
@@ -318,7 +318,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
     public function ofArray_unknown()
     {
         try {
-            A::ofArray(array('key' => '1'), array('key2' => array(array('uint'))));
+            A::ofArray(['key' => '1'], ['key2' => [['uint']]]);
             $this->fail();
         } catch (\Exception $e) {
             $expected = "Field 'key' with value '1' is unknown";
@@ -334,6 +334,6 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      */
     public function flatten()
     {
-        $this->assertSame(array(1, 2, 3, 4, 5), A::flatten(array(array(1, 2), array(array(3, array(4, 5))))));
+        $this->assertSame([1, 2, 3, 4, 5], A::flatten([[1, 2], [[3, [4, 5]]]]));
     }
 }
