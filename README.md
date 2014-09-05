@@ -3,7 +3,7 @@ A filtering implementation for verifying correct data and performing typical mod
 
 [![Build Status](http://img.shields.io/travis/dominionenterprises/filter-php.svg?style=flat)](https://travis-ci.org/dominionenterprises/filter-php)
 [![Scrutinizer Code Quality](http://img.shields.io/scrutinizer/g/dominionenterprises/filter-php.svg?style=flat)](https://scrutinizer-ci.com/g/dominionenterprises/filter-php/)
-[![Code Coverage](http://img.shields.io/scrutinizer/coverage/g/dominionenterprises/filter-php.svg?style=flat)](https://scrutinizer-ci.com/g/dominionenterprises/filter-php/)
+[![Code Coverage](http://img.shields.io/coveralls/dominionenterprises/filter-php.svg?style=flat)](https://coveralls.io/r/dominionenterprises/filter-php)
 
 [![Latest Stable Version](http://img.shields.io/packagist/v/dominionenterprises/filter.svg?style=flat)](https://packagist.org/packages/dominionenterprises/filter)
 [![Total Downloads](http://img.shields.io/packagist/dt/dominionenterprises/filter.svg?style=flat)](https://packagist.org/packages/dominionenterprises/filter)
