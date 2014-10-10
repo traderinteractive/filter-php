@@ -229,6 +229,14 @@ The following checks that `$value` is a date/time.
 $dateTime = \DominionEnterprises\Filter\DateTime::filter('2014-02-04T11:55:00-0500');
 ```
 
+#### DateTimeZone::filter
+Aliased in the filterer as `date`, this will filter the value as a `\DateTimeZone` object. The value can be any [supported timezone name](http://php.net/manual/en/timezones.php)
+
+The following checks that `$value` is a timezone
+```php
+$timezone = \DominionEnterprises\Filter\DateTimeZone::filter('America/New_York');
+```
+
 ##Contact
 Developers may be contacted at:
 

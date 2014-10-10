@@ -23,6 +23,9 @@
     "require": {
         "php": "~5.4"
     },
+    "suggest": {
+        "ext-timezonedb": "The latest version of the timezone database"
+    },
     "require-dev": {
         "phpunit/phpunit": "~4.1",
         "satooshi/php-coveralls": "~0.6.1",
