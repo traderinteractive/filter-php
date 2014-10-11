@@ -204,6 +204,13 @@ $value = \DominionEnterprises\Filter\String::explode('abc,def,ghi');
 assert($value === ['abc', 'def', 'ghi']);
 ```
 
+#### String::concat
+Aliased in the filterer as `concat`, this filter will prepend and/or append given strings to the filtered value. For example:
+```php
+$value = \DominionEnterprises\Filterer\String::concat('middle', false, 'start', 'end');
+assert($value === 'startmiddleend');
+```
+
 #### Url::filter
 Aliased in the filterer as `url`, this filter verifies that the argument is a URL string according to
 [RFC2396](http://www.faqs.org/rfcs/rfc2396).
