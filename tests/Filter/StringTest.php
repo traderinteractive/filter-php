@@ -298,4 +298,35 @@ final class StringUtilTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame('prefix' . __FILE__ . 'suffix', S::concat(new \SplFileInfo(__FILE__), false, 'prefix', 'suffix'));
     }
+
+    /**
+     * Verify basic behavior of nullify().
+     *
+     * @test
+     * @covers ::nullify
+     *
+     * @return void
+     */
+    public function nullify()
+    {
+        $this->assertNull(S::nullify(null));
+        $this->assertNull(S::nullify(''));
+        $this->assertNull(S::nullify("\n \t"));
+        $this->assertSame(" abc\n", S::nullify(" abc\n"));
+    }
+
+    /**
+     * Verify behavior of nullify() when $value is not a string.
+     *
+     * @test
+     * @covers ::nullify
+     * @expectedException \Exception
+     * @expectedExceptionMessage $value was not filterable as a string
+     *
+     * @return void
+     */
+    public function nullify_nonStringValue()
+    {
+        S::nullify(false);
+    }
 }

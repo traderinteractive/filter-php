@@ -117,4 +117,26 @@ final class String
 
         throw new \Exception('$value was not filterable as a string');
     }
+
+    /**
+     * Method to filter empty or whitespace strings to null.
+     *
+     * @param string $value The starting value.
+     *
+     * @return null|string
+     *
+     * @throws \Exception Thrown if $value cannot be filtered.
+     */
+    public static function nullify($value)
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        if (!is_string($value)) {
+            throw new \Exception('$value was not filterable as a string');
+        }
+
+        return (trim($value) == '') ? null : $value;
+    }
 }
