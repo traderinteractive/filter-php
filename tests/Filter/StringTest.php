@@ -329,4 +329,77 @@ final class StringUtilTest extends \PHPUnit_Framework_TestCase
     {
         S::nullify(false);
     }
+
+    /**
+     * Verify basic behavior of regex().
+     *
+     * @test
+     * @covers ::regex
+     *
+     * @return void
+     */
+    public function regex()
+    {
+        $this->assertSame('abc', S::regex('abc', '/[^0-9]/'));
+    }
+
+    /**
+     * Verify behavior of regex() when $value is not a string.
+     *
+     * @test
+     * @covers ::regex
+     * @expectedException \Exception
+     * @expectedExceptionMessage $value was not filterable as a string
+     *
+     * @return void
+     */
+    public function regex_nonStringValue()
+    {
+        S::regex(false, '/[^0-9]/');
+    }
+
+    /**
+     * Verify behavior of regex() when $pattern is not a string.
+     *
+     * @test
+     * @covers ::regex
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage $pattern must be a string
+     *
+     * @return void
+     */
+    public function regex_nonStringPattern()
+    {
+        S::regex('abc', false);
+    }
+
+    /**
+     * Verify behavior of regex() when $pattern is not a valid regular expression.
+     *
+     * @test
+     * @covers ::regex
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage $pattern is not a valid regular expression
+     *
+     * @return void
+     */
+    public function regex_nonRegexPattern()
+    {
+        S::regex('abc', 'not valid regex');
+    }
+
+    /**
+     * Verify behavior of regex() when $pattern is not a valid regular expression.
+     *
+     * @test
+     * @covers ::regex
+     * @expectedException \Exception
+     * @expectedExceptionMessage Value '123' is not match the given regular expression
+     *
+     * @return void
+     */
+    public function regex_nonMatch()
+    {
+        S::regex('123', '/[^0-9]/');
+    }
 }

@@ -139,4 +139,38 @@ final class String
 
         return (trim($value) == '') ? null : $value;
     }
+
+    /**
+     * Filters a given string by the given regular expression.
+     *
+     * @param string $value The starting value
+     * @param string $pattern The regex pattern
+     *
+     * @return string
+     *
+     * @throws \Exception Thrown if $value cannot be filtered.
+     * @throws \InvalidArgumentException Throw if $pattern is not a string.
+     * @throws \InvalidArgumentException Throw if $pattern is not a valid regular expression.
+     */
+    public static function regex($value, $pattern)
+    {
+        if (!is_string($value)) {
+            throw new \Exception('$value was not filterable as a string');
+        }
+
+        if (!is_string($pattern)) {
+            throw new \InvalidArgumentException('$pattern must be a string');
+        }
+
+        $matched = @preg_match($pattern, $value);
+        if ($matched === false) {
+            throw new \InvalidArgumentException('$pattern is not a valid regular expression');
+        }
+
+        if ($matched === 0) {
+            throw new \Exception("Value '{$value}' is not match the given regular expression");
+        }
+
+        return $value;
+    }
 }
