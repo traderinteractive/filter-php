@@ -25,6 +25,9 @@ final class Filterer
         'email' => '\DominionEnterprises\Filter\Email::filter',
         'explode' => '\DominionEnterprises\Filter\String::explode',
         'flatten' => '\DominionEnterprises\Filter\Arrays::flatten',
+        'date' => '\DominionEnterprises\Filter\DateTime::filter',
+        'timezone' => '\DominionEnterprises\Filter\DateTimeZone::filter',
+        'concat' => '\DominionEnterprises\Filter\String::concat',
     ];
 
     /**

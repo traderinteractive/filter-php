@@ -192,4 +192,214 @@ final class StringUtilTest extends \PHPUnit_Framework_TestCase
     {
         S::explode('test', '');
     }
+
+    /**
+     * Verify basic behvaior of concat().
+     *
+     * @test
+     * @covers ::concat
+     *
+     * @return void
+     */
+    public function concat()
+    {
+        $this->assertSame('prefixstringsuffix', S::concat('string', false, 'prefix', 'suffix'));
+    }
+
+    /**
+     * Verify behavior of concat() when $allowNull is not a boolean.
+     *
+     * @test
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage $allowNull was not a boolean value
+     * @covers ::concat
+     */
+    public function concat_allowNullNotBoolean()
+    {
+        S::concat('n/a', 5, 'prefix', 'suffix');
+    }
+
+    /**
+     * Verify behavior of concat() when null is given for $value and $allowNull is true.
+     *
+     * @test
+     * @covers ::concat
+     */
+    public function concat_nullAllowed()
+    {
+        $this->assertSame('prefixsuffix', S::concat(null, true, 'prefix', 'suffix'));
+    }
+
+    /**
+     * Verify behavior of concat() when null is given for $value and $allowNull is true.
+     *
+     * @test
+     * @covers ::concat
+     * @expectedException \Exception
+     * @expectedExceptionMessage $value was not filterable as a string
+     */
+    public function concat_nullNotAllowed()
+    {
+        S::concat(null, false, 'prefix', 'suffix');
+    }
+
+    /**
+     * Verify behavior of concat() when $prefix is not a string.
+     *
+     * @test
+     * @covers ::concat
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage $prefix was not a string
+     *
+     * @return void
+     */
+    public function concat_nonStringPrefix()
+    {
+        S::concat('string', false, true, 'suffix');
+    }
+
+    /**
+     * Verify behavior of concat() when $suffix is not a string.
+     *
+     * @test
+     * @covers ::concat
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage $suffix was not a string
+     *
+     * @return void
+     */
+    public function concat_nonStringSuffix()
+    {
+        S::concat('string', false, 'prefix', 0.00);
+    }
+
+    /**
+     * Verify behavior of concat() when $value is a non-string scalar.
+     *
+     * @test
+     * @covers ::concat
+     *
+     * @return void
+     */
+    public function concat_scalarValue()
+    {
+        $this->assertSame('prefix123suffix', S::concat(123, false, 'prefix', 'suffix'));
+    }
+
+    /**
+     * Verify behavior of concat() when $value is an object that implements __toString().
+     *
+     * @test
+     * @covers ::concat
+     *
+     * @return void
+     */
+    public function concat_objectValue()
+    {
+        $this->assertSame('prefix' . __FILE__ . 'suffix', S::concat(new \SplFileInfo(__FILE__), false, 'prefix', 'suffix'));
+    }
+
+    /**
+     * Verify basic behavior of nullify().
+     *
+     * @test
+     * @covers ::nullify
+     *
+     * @return void
+     */
+    public function nullify()
+    {
+        $this->assertNull(S::nullify(null));
+        $this->assertNull(S::nullify(''));
+        $this->assertNull(S::nullify("\n \t"));
+        $this->assertSame(" abc\n", S::nullify(" abc\n"));
+    }
+
+    /**
+     * Verify behavior of nullify() when $value is not a string.
+     *
+     * @test
+     * @covers ::nullify
+     * @expectedException \Exception
+     * @expectedExceptionMessage $value was not filterable as a string
+     *
+     * @return void
+     */
+    public function nullify_nonStringValue()
+    {
+        S::nullify(false);
+    }
+
+    /**
+     * Verify basic behavior of regex().
+     *
+     * @test
+     * @covers ::regex
+     *
+     * @return void
+     */
+    public function regex()
+    {
+        $this->assertSame('abc', S::regex('abc', '/[^0-9]/'));
+    }
+
+    /**
+     * Verify behavior of regex() when $value is not a string.
+     *
+     * @test
+     * @covers ::regex
+     * @expectedException \Exception
+     * @expectedExceptionMessage $value was not filterable as a string
+     *
+     * @return void
+     */
+    public function regex_nonStringValue()
+    {
+        S::regex(false, '/[^0-9]/');
+    }
+
+    /**
+     * Verify behavior of regex() when $pattern is not a string.
+     *
+     * @test
+     * @covers ::regex
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage $pattern must be a string
+     *
+     * @return void
+     */
+    public function regex_nonStringPattern()
+    {
+        S::regex('abc', false);
+    }
+
+    /**
+     * Verify behavior of regex() when $pattern is not a valid regular expression.
+     *
+     * @test
+     * @covers ::regex
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage $pattern is not a valid regular expression
+     *
+     * @return void
+     */
+    public function regex_nonRegexPattern()
+    {
+        S::regex('abc', 'not valid regex');
+    }
+
+    /**
+     * Verify behavior of regex() when $pattern is not a valid regular expression.
+     *
+     * @test
+     * @covers ::regex
+     * @expectedException \Exception
+     * @expectedExceptionMessage Value '123' is not match the given regular expression
+     *
+     * @return void
+     */
+    public function regex_nonMatch()
+    {
+        S::regex('123', '/[^0-9]/');
+    }
 }

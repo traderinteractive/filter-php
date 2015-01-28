@@ -82,4 +82,95 @@ final class String
 
         return explode($delimiter, $value);
     }
+
+    /**
+     * Method to concat the given prefix and suffix to the given string value.
+     *
+     * @param mixed   $value     The starting value. This value must be castable as a string.
+     * @param boolean $allowNull True to allow nulls through, and false (default) if nulls should not be allowed.
+     * @param string  $prefix    The value to prepend to $value.
+     * @param string  $suffix    The value to append to $value.
+     *
+     * @return string
+     *
+     * @throws \InvalidArgumentException Thrown if $prefix is not a string.
+     * @throws \InvalidArgumentException Thrown if $suffix is not a string.
+     * @throws \Exception Thrown if $value fails validation.
+     */
+    public static function concat($value, $allowNull = false, $prefix = '', $suffix = '')
+    {
+        if ($allowNull !== false && $allowNull !== true) {
+            throw new \InvalidArgumentException('$allowNull was not a boolean value');
+        }
+
+        if (!is_string($prefix)) {
+            throw new \InvalidArgumentException('$prefix was not a string');
+        }
+
+        if (!is_string($suffix)) {
+            throw new \InvalidArgumentException('$suffix was not a string');
+        }
+
+        if (is_scalar($value) || (is_object($value) && method_exists($value, '__toString')) || ($allowNull && $value === null)) {
+            return "{$prefix}{$value}{$suffix}";
+        }
+
+        throw new \Exception('$value was not filterable as a string');
+    }
+
+    /**
+     * Method to filter empty or whitespace strings to null.
+     *
+     * @param string $value The starting value.
+     *
+     * @return null|string
+     *
+     * @throws \Exception Thrown if $value cannot be filtered.
+     */
+    public static function nullify($value)
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        if (!is_string($value)) {
+            throw new \Exception('$value was not filterable as a string');
+        }
+
+        return (trim($value) == '') ? null : $value;
+    }
+
+    /**
+     * Filters a given string by the given regular expression.
+     *
+     * @param string $value The starting value
+     * @param string $pattern The regex pattern
+     *
+     * @return string
+     *
+     * @throws \Exception Thrown if $value cannot be filtered.
+     * @throws \InvalidArgumentException Throw if $pattern is not a string.
+     * @throws \InvalidArgumentException Throw if $pattern is not a valid regular expression.
+     */
+    public static function regex($value, $pattern)
+    {
+        if (!is_string($value)) {
+            throw new \Exception('$value was not filterable as a string');
+        }
+
+        if (!is_string($pattern)) {
+            throw new \InvalidArgumentException('$pattern must be a string');
+        }
+
+        $matched = @preg_match($pattern, $value);
+        if ($matched === false) {
+            throw new \InvalidArgumentException('$pattern is not a valid regular expression');
+        }
+
+        if ($matched === 0) {
+            throw new \Exception("Value '{$value}' is not match the given regular expression");
+        }
+
+        return $value;
+    }
 }

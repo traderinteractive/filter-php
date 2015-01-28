@@ -204,6 +204,13 @@ $value = \DominionEnterprises\Filter\String::explode('abc,def,ghi');
 assert($value === ['abc', 'def', 'ghi']);
 ```
 
+#### String::concat
+Aliased in the filterer as `concat`, this filter will prepend and/or append given strings to the filtered value. For example:
+```php
+$value = \DominionEnterprises\Filterer\String::concat('middle', false, 'start', 'end');
+assert($value === 'startmiddleend');
+```
+
 #### Url::filter
 Aliased in the filterer as `url`, this filter verifies that the argument is a URL string according to
 [RFC2396](http://www.faqs.org/rfcs/rfc2396).
@@ -221,6 +228,21 @@ The following checks that `$value` is an email.
 \DominionEnterprises\Filter\Email::filter($value);
 ```
 
+#### DateTime::filter
+Aliased in the filterer as `date`, this will filter the value as a `\DateTime` object. The value can be any string that conforms to [PHP's valid date/time formats](http://php.net/manual/en/datetime.formats.php)
+
+The following checks that `$value` is a date/time.
+```php
+$dateTime = \DominionEnterprises\Filter\DateTime::filter('2014-02-04T11:55:00-0500');
+```
+
+#### DateTimeZone::filter
+Aliased in the filterer as `date`, this will filter the value as a `\DateTimeZone` object. The value can be any [supported timezone name](http://php.net/manual/en/timezones.php)
+
+The following checks that `$value` is a timezone
+```php
+$timezone = \DominionEnterprises\Filter\DateTimeZone::filter('America/New_York');
+```
 ##Contact
 Developers may be contacted at:
 
