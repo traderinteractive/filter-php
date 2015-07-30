@@ -221,6 +221,14 @@ The following checks that `$value` is an email.
 \DominionEnterprises\Filter\Email::filter($value);
 ```
 
+#### DateTime::filter
+Aliased in the filterer as `date`, this will filter the value as a `\DateTime` object. The value can be any string that conforms to [PHP's valid date/time formats](http://php.net/manual/en/datetime.formats.php)
+
+The following checks that `$value` is a date/time.
+```php
+$dateTime = \DominionEnterprises\Filter\DateTime::filter('2014-02-04T11:55:00-0500');
+```
+
 ##Contact
 Developers may be contacted at:
 
