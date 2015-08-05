@@ -169,6 +169,14 @@ The following example converts `$value` to a boolean allowing the strings "on" a
 ```php
 $enabled = \DominionEnterprises\Filter\Booleans::filter($value, false, ['on'], ['off']);
 ```
+#### Booleans::convert
+Aliased in the filterer as `bool-convert`, this filter will convert a given boolean value into the provided true or false conditions. By default the
+return values are the strings 'true' and 'false'
+
+The following converts the boolean `$value` to either 'yes' or 'no'
+```php
+$answer = \DominionEnterprises\Filter\Booleans::convert($value, 'yes', 'no');
+```
 
 #### Floats/Ints/UnsignedInt::filter
 Aliased in the filterer as `float`, `int`, and `uint`, respectively, these filters verify that the arguments are of the proper numeric type and
