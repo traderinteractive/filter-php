@@ -27,6 +27,7 @@ final class Filterer
         'explode' => '\DominionEnterprises\Filter\Strings::explode',
         'flatten' => '\DominionEnterprises\Filter\Arrays::flatten',
         'date' => '\DominionEnterprises\Filter\DateTime::filter',
+        'date-format' => '\DominionEnterprises\Filter\DateTime::format',
         'timezone' => '\DominionEnterprises\Filter\DateTimeZone::filter',
     ];
 

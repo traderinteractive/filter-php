@@ -43,4 +43,23 @@ class DateTime
 
         return new \DateTime($value, $timezone);
     }
+
+    /**
+     * Filters the give \DateTime object to a formatted string.
+     *
+     * @param \DateTimeInterface $dateTime The date to be formatted.
+     * @param string             $format   The format of the outputted date string.
+     *
+     * @return string
+     *
+     * @throws \InvalidArgumentException Thrown if $format is not a string
+     */
+    public static function format(\DateTimeInterface $dateTime, $format = 'c')
+    {
+        if (!is_string($format) || trim($format) === '') {
+            throw new \InvalidArgumentException('$format is not a non-empty string');
+        }
+
+        return $dateTime->format($format);
+    }
 }
