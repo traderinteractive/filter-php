@@ -28,8 +28,12 @@ final class Bool
      * @throws \Exception if $value is not a string
      * @throws \Exception if $value is not 'true' or 'false' disregarding case and whitespace
      */
-    public static function filter($value, $allowNull = false, array $trueValues = ['true'], array $falseValues = ['false'])
-    {
+    public static function filter(
+        $value,
+        $allowNull = false,
+        array $trueValues = ['true'],
+        array $falseValues = ['false']
+    ) {
         if ($allowNull !== false && $allowNull !== true) {
             throw new \InvalidArgumentException('$allowNull was not a bool');
         }
@@ -59,7 +63,11 @@ final class Bool
         }
 
         throw new \Exception(
-            "{$value} is not '" . implode("' or '", array_merge($trueValues, $falseValues)) . "' disregarding case and whitespace"
+            sprintf(
+                "%s is not '%s' disregarding case and whitespace",
+                $value,
+                implode("' or '", array_merge($trueValues, $falseValues))
+            )
         );
     }
 }

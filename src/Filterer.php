@@ -10,7 +10,7 @@ namespace DominionEnterprises;
  */
 final class Filterer
 {
-    private static $_filterAliases = [
+    private static $filterAliases = [
         'in' => '\DominionEnterprises\Filter\Arrays::in',
         'array' => '\DominionEnterprises\Filter\Arrays::filter',
         'bool' => '\DominionEnterprises\Filter\Bool::filter',
@@ -75,16 +75,20 @@ final class Filterer
      * }
      * </pre>
      *
-     * @param array $spec the specification to apply to the $input. An array where each key is a known input field and each value is an array
-     *     of filters. Each filter should be an array with the first member being anything that can pass is_callable() as well as accepting the
-     *     value to filter as its first argument. Two examples would be the string 'trim' or an object function specified like [$obj, 'filter'],
-     *     see is_callable() documentation. The rest of the members are extra arguments to the callable. The result of one filter will be the
-     *     first argument to the next filter. In addition to the filters, the specification values may contain a 'required' key (default false)
-     *     that controls the same behavior as the 'defaultRequired' option below but on a per field basis. A 'default' specification value
-     *     may be used to substitute in a default to the $input when the key is not present (whether 'required' is specified or not).
+     * @param array $spec the specification to apply to the $input. An array where each key is a known input field and
+     *                    each value is an array of filters. Each filter should be an array with the first member being
+     *                    anything that can pass is_callable() as well as accepting the value to filter as its first
+     *                    argument. Two examples would be the string 'trim' or an object function specified like [$obj,
+     *                    'filter'], see is_callable() documentation. The rest of the members are extra arguments to the
+     *                    callable. The result of one filter will be the first argument to the next filter. In addition
+     *                    to the filters, the specification values may contain a 'required' key (default false) that
+     *                    controls the same behavior as the 'defaultRequired' option below but on a per field basis. A
+     *                    'default' specification value may be used to substitute in a default to the $input when the
+     *                    key is not present (whether 'required' is specified or not).
      * @param array $input the input the apply the $spec on.
-     * @param array $options 'allowUnknowns' (default false) true to allow unknowns or false to treat as error, 'defaultRequired'
-     *     (default false) true to make fields required by default and treat as error on absence and false to allow their absence by default
+     * @param array $options 'allowUnknowns' (default false) true to allow unknowns or false to treat as error,
+     *                       'defaultRequired' (default false) true to make fields required by default and treat as
+     *                       error on absence and false to allow their absence by default
      *
      * @return array on success [true, $input filtered, null, array of unknown fields]
      *     on error [false, null, 'error message', array of unknown fields]
@@ -135,12 +139,14 @@ final class Filterer
                 }
 
                 $function = array_shift($filter);
-                if ((is_string($function) || is_int($function)) && array_key_exists($function, self::$_filterAliases)) {
-                    $function = self::$_filterAliases[$function];
+                if ((is_string($function) || is_int($function)) && array_key_exists($function, self::$filterAliases)) {
+                    $function = self::$filterAliases[$function];
                 }
 
                 if (!is_callable($function)) {
-                    throw new \Exception("Function '" . trim(var_export($function, true), "'") . "' for field '{$field}' is not callable");
+                    throw new \Exception(
+                        "Function '" . trim(var_export($function, true), "'") . "' for field '{$field}' is not callable"
+                    );
                 }
 
                 array_unshift($filter, $value);
@@ -198,7 +204,7 @@ final class Filterer
      */
     public static function getFilterAliases()
     {
-        return self::$_filterAliases;
+        return self::$filterAliases;
     }
 
     /**
@@ -211,14 +217,14 @@ final class Filterer
      */
     public static function setFilterAliases(array $aliases)
     {
-        $originalAliases = self::$_filterAliases;
-        self::$_filterAliases = [];
+        $originalAliases = self::$filterAliases;
+        self::$filterAliases = [];
         try {
             foreach ($aliases as $alias => $callback) {
                 self::registerAlias($alias, $callback);
             }
         } catch (\Exception $e) {
-            self::$_filterAliases = $originalAliases;
+            self::$filterAliases = $originalAliases;
             throw $e;
         }
     }
@@ -251,10 +257,10 @@ final class Filterer
             throw new \InvalidArgumentException('$overwrite was not a bool');
         }
 
-        if (array_key_exists($alias, self::$_filterAliases) && !$overwrite) {
+        if (array_key_exists($alias, self::$filterAliases) && !$overwrite) {
             throw new \Exception("Alias '{$alias}' exists");
         }
 
-        self::$_filterAliases[$alias] = $filter;
+        self::$filterAliases[$alias] = $filter;
     }
 }
