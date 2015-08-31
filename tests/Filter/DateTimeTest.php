@@ -149,4 +149,33 @@ final class DateTimeTest extends \PHPUnit_Framework_TestCase
         $dateTime = DateTime::filter($now);
         $this->assertSame($now, $dateTime->getTimestamp());
     }
+
+    /**
+     * Verify behavior of filter() with $immutable set to true.
+     *
+     * @test
+     * @covers ::filter
+     *
+     * @return void
+     */
+    public function filterImmutable()
+    {
+        $string = '2014-02-04T11:55:00-0500';
+        $dateTime = DateTime::filter($string, false, null, true);
+        $this->assertInstanceOf('\DateTimeImmutable', $dateTime);
+        $this->assertSame(strtotime($string), $dateTime->getTimestamp());
+    }
+
+    /**
+     * Verify behavior of filter() when $immutable is not a boolean.
+     *
+     * @test
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage $immutable was not a boolean value
+     * @covers ::filter
+     */
+    public function filterImmutableNotBoolean()
+    {
+        DateTime::filter('n/a', true, null, 5);
+    }
 }
