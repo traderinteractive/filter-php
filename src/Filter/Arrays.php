@@ -66,7 +66,7 @@ final class Arrays
      * The return value is the $value, as expected by the \DominionEnterprises\Filterer class.
      *
      * @param mixed $value value to search for
-     * @param array $haystack array to search in
+     * @param array|callable $haystack array to search in or a callable to retrieve the haystack.
      * @param bool $strict to compare strictly or not. @see in_array()
      *
      * @return the passed in value
@@ -75,10 +75,18 @@ final class Arrays
      * @throws \InvalidArgumentException if $strict was not a bool
      * @throws \Exception if $value is not in array $haystack
      */
-    public static function in($value, array $haystack, $strict = true)
+    public static function in($value, $haystack, $strict = true)
     {
         if ($strict !== true && $strict !== false) {
             throw new \InvalidArgumentException('$strict was not a bool');
+        }
+
+        if (is_callable($haystack)) {
+            $haystack = call_user_func($haystack);
+        }
+
+        if (!is_array($haystack)) {
+            throw new \InvalidArgumentException('Given $haystack was not an array or result from callable was not an array');
         }
 
         if (!in_array($value, $haystack, $strict)) {

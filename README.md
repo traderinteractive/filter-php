@@ -113,11 +113,21 @@ The example above should help clarify all this.
 Of course, any function can potentially be used as a filter, but we include some useful filters with aliases for common circumstances.
 
 #### Arrays::in
-Aliased in the filterer as `in`, this filter is a wrapper around `in_array` including support for strict equality testing.
+Aliased in the filterer as `in`, this filter is a wrapper around `in_array` including support for strict equality testing. The given $haystack can be either an array or a callable which will return an array.
 
 The following does a strict check for `$value` against the 3 accepted values.
 ```php
 \DominionEnterprises\Filter\Arrays::in($value, ['a', 'b', 'c']);
+```
+
+The following will use a callable to retrieve the haystack.
+```php
+function getValues()
+{
+    return ['a', 'b', 'c'];
+}
+
+\DominionEnterprises\Filter\Arrays::in($value, 'getValues');
 ```
 
 #### Arrays::filter
