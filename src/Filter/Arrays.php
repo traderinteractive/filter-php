@@ -4,6 +4,7 @@
  */
 
 namespace DominionEnterprises\Filter;
+
 use DominionEnterprises\Filterer;
 
 /**
@@ -82,7 +83,9 @@ final class Arrays
         }
 
         if (!in_array($value, $haystack, $strict)) {
-            throw new \Exception("Value '" . trim(var_export($value, true), "'") . "' is not in array " . var_export($haystack, true));
+            throw new \Exception(
+                "Value '" . trim(var_export($value, true), "'") . "' is not in array " . var_export($haystack, true)
+            );
         }
 
         return $value;
@@ -91,8 +94,10 @@ final class Arrays
     /**
      * Filter an array by applying filters to each member
      *
-     * @param array $values an array to be filtered. Use the Arrays::filter() before this method to ensure counts when you pass into Filterer
-     * @param array $filters filters with each specified the same as in @see Filterer::filter. Eg [['string', false, 2], ['uint']]
+     * @param array $values an array to be filtered. Use the Arrays::filter() before this method to ensure counts when
+     *                      you pass into Filterer
+     * @param array $filters filters with each specified the same as in @see Filterer::filter.
+     *                       Eg [['string', false, 2], ['uint']]
      *
      * @return array the filtered $values
      *
@@ -116,7 +121,8 @@ final class Arrays
     /**
      * Filter an array by applying filters to each member
      *
-     * @param array $values as array to be filtered. Use the Arrays::filter() before this method to ensure counts when you pass into Filterer
+     * @param array $values as array to be filtered. Use the Arrays::filter() before this method to ensure counts when
+     *                      you pass into Filterer
      * @param array $spec spec to apply to each $values member, specified the same as in @see Filterer::filter.
      *     Eg ['key' => ['required' => true, ['string', false], ['unit']], 'key2' => ...]
      *
@@ -148,7 +154,8 @@ final class Arrays
     /**
      * Filter $value by using a Filterer $spec and Filterer's default options.
      *
-     * @param array $value array to be filtered. Use the Arrays::filter() before this method to ensure counts when you pass into Filterer
+     * @param array $value array to be filtered. Use the Arrays::filter() before this method to ensure counts when you
+     *                     pass into Filterer
      * @param array $spec spec to apply to $value, specified the same as in @see Filterer::filter.
      *     Eg ['key' => ['required' => true, ['string', false], ['unit']], 'key2' => ...]
      *
@@ -183,7 +190,7 @@ final class Arrays
 
         array_walk_recursive(
             $value,
-            function($item) use(&$result) {
+            function ($item) use (&$result) {
                 $result[] = $item;
             }
         );

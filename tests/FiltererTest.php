@@ -1,6 +1,7 @@
 <?php
 
 namespace DominionEnterprises;
+
 use DominionEnterprises\Filterer as F;
 
 /**
@@ -54,7 +55,10 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
      */
     public function requiredWithADefaultWithInput()
     {
-        $result = F::filter(['fieldOne' => ['required' => true, 'default' => 'theDefault']], ['fieldOne' => 'notTheDefault']);
+        $result = F::filter(
+            ['fieldOne' => ['required' => true, 'default' => 'theDefault']],
+            ['fieldOne' => 'notTheDefault']
+        );
         $this->assertSame([true, ['fieldOne' => 'notTheDefault'], null, []], $result);
     }
 
@@ -176,7 +180,10 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
             ['fieldOne' => [['\DominionEnterprises\FiltererTest::failingFilter']]],
             ['fieldOne' => 'valueOne']
         );
-        $this->assertSame([false, null, "Field 'fieldOne' with value 'valueOne' failed filtering, message 'i failed'", []], $result);
+        $this->assertSame(
+            [false, null, "Field 'fieldOne' with value 'valueOne' failed filtering, message 'i failed'", []],
+            $result
+        );
     }
 
     /**
@@ -195,8 +202,14 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
      */
     public function chainFail()
     {
-        $result = F::filter(['fieldOne' => [['trim'], ['\DominionEnterprises\FiltererTest::failingFilter']]], ['fieldOne' => 'the value']);
-        $this->assertSame([false, null, "Field 'fieldOne' with value 'the value' failed filtering, message 'i failed'", []], $result);
+        $result = F::filter(
+            ['fieldOne' => [['trim'], ['\DominionEnterprises\FiltererTest::failingFilter']]],
+            ['fieldOne' => 'the value']
+        );
+        $this->assertSame(
+            [false, null, "Field 'fieldOne' with value 'the value' failed filtering, message 'i failed'", []],
+            $result
+        );
     }
 
     /**
@@ -205,7 +218,10 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
      */
     public function multiInputPass()
     {
-        $result = F::filter(['fieldOne' => [['trim']], 'fieldTwo' => [['strtoupper']]], ['fieldOne' => ' value', 'fieldTwo' => 'bob']);
+        $result = F::filter(
+            ['fieldOne' => [['trim']], 'fieldTwo' => [['strtoupper']]],
+            ['fieldOne' => ' value', 'fieldTwo' => 'bob']
+        );
         $this->assertSame([true, ['fieldOne' => 'value', 'fieldTwo' => 'BOB'], null, []], $result);
     }
 
@@ -263,7 +279,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
      */
     public function objectFilter()
     {
-        $result = F::filter(['fieldOne' => [[[new TestFilter(), 'filter']]]], ['fieldOne' => 'foo']);
+        $result = F::filter(['fieldOne' => [[[$this, 'passingFilter']]]], ['fieldOne' => 'foo']);
         $this->assertSame([true, ['fieldOne' => 'fooboo'], null, []], $result);
     }
 
@@ -408,11 +424,8 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
     {
         throw new \Exception('i failed');
     }
-}
 
-final class TestFilter
-{
-    public function filter($value)
+    public static function passingFilter($value)
     {
         return $value . 'boo';
     }

@@ -1,5 +1,6 @@
 <?php
 namespace DominionEnterprises\Filter;
+
 use DominionEnterprises\Filter\DateTimeZone as TZ;
 
 /**
@@ -35,7 +36,7 @@ final class DateTimeZoneTest extends \PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    public function filter_allowNullNotBoolean()
+    public function filterAllowNullNotBoolean()
     {
         TZ::filter('America/New_York', 5);
     }
@@ -48,7 +49,7 @@ final class DateTimeZoneTest extends \PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    public function filter_nullAllowed()
+    public function filterNullAllowed()
     {
         $this->assertNull(TZ::filter(null, true));
     }
@@ -63,7 +64,7 @@ final class DateTimeZoneTest extends \PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    public function filter_nullNotAllowed()
+    public function filterNullNotAllowed()
     {
         $this->assertNull(TZ::filter(null, false));
     }
@@ -76,7 +77,7 @@ final class DateTimeZoneTest extends \PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    public function filter_timeZonePass()
+    public function filterTimeZonePass()
     {
         $timezone = new \DateTimeZone('America/New_York');
         $this->assertSame($timezone, TZ::filter($timezone));
@@ -90,7 +91,7 @@ final class DateTimeZoneTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Exception
      * @expectedExceptionMessage Unknown or bad timezone (INVALID)
      */
-    public function filter_invalidName()
+    public function filterInvalidName()
     {
         $timezone = TZ::filter('INVALID');
     }
@@ -107,7 +108,7 @@ final class DateTimeZoneTest extends \PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    public function filter_emptyValue()
+    public function filterEmptyValue()
     {
         TZ::filter("\n\t");
     }
@@ -122,7 +123,7 @@ final class DateTimeZoneTest extends \PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    public function filter_nonStringArgument()
+    public function filterNonStringArgument()
     {
         $timezone = TZ::filter(42);
     }

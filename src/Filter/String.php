@@ -13,8 +13,8 @@ final class String
     /**
      * Filter a string.
      *
-     * Verify that the passed in value  is a string.  By default, nulls are not allowed, and the length is restricted between 1 and PHP_INT_MAX.
-     * These parameters can be overwritten for custom behavior.
+     * Verify that the passed in value  is a string.  By default, nulls are not allowed, and the length is restricted
+     * between 1 and PHP_INT_MAX.  These parameters can be overwritten for custom behavior.
      *
      * The return value is the string, as expected by the \DominionEnterprises\Filterer class.
      *
@@ -52,7 +52,15 @@ final class String
         $valueLength = strlen($value);
 
         if ($valueLength < $minLength || $valueLength > $maxLength) {
-            throw new \Exception("Value '{$value}' with length '{$valueLength}' is less than '{$minLength}' or greater than '{$maxLength}'");
+            throw new \Exception(
+                sprintf(
+                    "Value '%s' with length '%d' is less than '%d' or greater than '%d'",
+                    $value,
+                    $valueLength,
+                    $minLength,
+                    $maxLength
+                )
+            );
         }
 
         return $value;
@@ -77,7 +85,9 @@ final class String
         }
 
         if (!is_string($delimiter) || empty($delimiter)) {
-            throw new \InvalidArgumentException("Delimiter '" . var_export($delimiter, true) . "' is not a non-empty string");
+            throw new \InvalidArgumentException(
+                "Delimiter '" . var_export($delimiter, true) . "' is not a non-empty string"
+            );
         }
 
         return explode($delimiter, $value);

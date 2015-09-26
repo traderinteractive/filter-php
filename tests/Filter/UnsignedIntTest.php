@@ -1,5 +1,6 @@
 <?php
 namespace DominionEnterprises\Filter;
+
 use DominionEnterprises\Filter\UnsignedInt as I;
 
 /**
@@ -13,7 +14,7 @@ final class UnsignedIntTest extends \PHPUnit_Framework_TestCase
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage -1 was not greater or equal to zero
      */
-    public function filter_minValueNegative()
+    public function filterMinValueNegative()
     {
         I::filter('1', false, -1);
     }
@@ -23,7 +24,7 @@ final class UnsignedIntTest extends \PHPUnit_Framework_TestCase
      * @covers ::filter
      * @uses \DominionEnterprises\Filter\Int
      */
-    public function filter_minValueNullSuccess()
+    public function filterMinValueNullSuccess()
     {
         $this->assertSame(1, I::filter('1', false, null));
     }
@@ -35,7 +36,7 @@ final class UnsignedIntTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Exception
      * @expectedExceptionMessage -1 is less than 0
      */
-    public function filter_minValueNullFail()
+    public function filterMinValueNullFail()
     {
         I::filter('-1', false, null);
     }
@@ -45,7 +46,7 @@ final class UnsignedIntTest extends \PHPUnit_Framework_TestCase
      * @covers ::filter
      * @uses \DominionEnterprises\Filter\Int
      */
-    public function filter_basicUse()
+    public function filterBasicUse()
     {
         $this->assertSame(123, I::filter('123'));
     }
@@ -55,7 +56,7 @@ final class UnsignedIntTest extends \PHPUnit_Framework_TestCase
      * @covers ::filter
      * @uses \DominionEnterprises\Filter\Int
      */
-    public function filter_allowNullSuccess()
+    public function filterAllowNullSuccess()
     {
         $this->assertSame(null, I::filter(null, true));
     }
@@ -67,7 +68,7 @@ final class UnsignedIntTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Exception
      * @expectedExceptionMessage "NULL" $value is not a string
      */
-    public function filter_allowNullFail()
+    public function filterAllowNullFail()
     {
         I::filter(null, false);
     }
@@ -79,7 +80,7 @@ final class UnsignedIntTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Exception
      * @expectedExceptionMessage 0 is less than 1
      */
-    public function filter_minValueFail()
+    public function filterMinValueFail()
     {
         $this->assertSame(1, I::filter('0', false, 1));
     }
@@ -91,7 +92,7 @@ final class UnsignedIntTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Exception
      * @expectedExceptionMessage 2 is greater than 1
      */
-    public function filter_maxValueFail()
+    public function filterMaxValueFail()
     {
         I::filter('2', false, 0, 1);
     }

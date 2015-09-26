@@ -2,6 +2,7 @@
 namespace DominionEnterprises\Filter;
 
 use DominionEnterprises\Filter\DateTime as D;
+
 /**
  * Unit tests for the \DominionEnterprises\Filter\DateTime class.
  *
@@ -33,7 +34,7 @@ final class DateTimeTest extends \PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    public function filter_timestamp()
+    public function filterTimestamp()
     {
         $now = time();
         $dateTime = D::filter("@{$now}");
@@ -53,7 +54,7 @@ final class DateTimeTest extends \PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    public function filter_emptyValue()
+    public function filterEmptyValue()
     {
         D::filter("\t \n");
     }
@@ -70,7 +71,7 @@ final class DateTimeTest extends \PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    public function filter_invalidValue()
+    public function filterInvalidValue()
     {
         D::filter(true);
     }
@@ -83,7 +84,7 @@ final class DateTimeTest extends \PHPUnit_Framework_TestCase
      * @expectedExceptionMessage $allowNull was not a boolean value
      * @covers ::filter
      */
-    public function filter_allowNullNotBoolean()
+    public function filterAllowNullNotBoolean()
     {
         D::filter('n/a', 5);
     }
@@ -94,7 +95,7 @@ final class DateTimeTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers ::filter
      */
-    public function filter_nullAllowed()
+    public function filterNullAllowed()
     {
         $this->assertNull(D::filter(null, true));
     }
@@ -107,7 +108,7 @@ final class DateTimeTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Exception
      * @expectedExceptionMessage $value is not a non-empty string
      */
-    public function filter_nullNotAllowed()
+    public function filterNullNotAllowed()
     {
         D::filter(null, false);
     }
@@ -118,7 +119,7 @@ final class DateTimeTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers ::filter
      */
-    public function filter_dateTimePass()
+    public function filterDateTimePass()
     {
         $dateTime = new \DateTime('now');
         $this->assertSame($dateTime, D::filter($dateTime));
@@ -130,7 +131,7 @@ final class DateTimeTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers ::filter
      */
-    public function filter_withTimeZone()
+    public function filterWithTimeZone()
     {
         $timezone = new \DateTimeZone('Pacific/Honolulu');
         $dateTime = D::filter('now', false, $timezone);

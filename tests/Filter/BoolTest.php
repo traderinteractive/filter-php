@@ -1,5 +1,6 @@
 <?php
 namespace DominionEnterprises\Filter;
+
 use DominionEnterprises\Filter\Bool as B;
 
 /**
@@ -11,7 +12,7 @@ final class BoolTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers ::filter
      */
-    public function filter_basic()
+    public function filterBasic()
     {
         $this->assertTrue(B::filter(true));
         $this->assertTrue(B::filter('   true'));
@@ -30,7 +31,7 @@ final class BoolTest extends \PHPUnit_Framework_TestCase
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage $allowNull was not a bool
      */
-    public function filter_allowNullIsNotBool()
+    public function filterAllowNullIsNotBool()
     {
         B::filter('true', 1);
     }
@@ -39,7 +40,7 @@ final class BoolTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers ::filter
      */
-    public function filter_allowNullIsTrueAndNullValue()
+    public function filterAllowNullIsTrueAndNullValue()
     {
         $this->assertNull(B::filter(null, true));
     }
@@ -50,7 +51,7 @@ final class BoolTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Exception
      * @expectedExceptionMessage "1" $value is not a string
      */
-    public function filter_nonStringAndNonBoolValue()
+    public function filterNonStringAndNonBoolValue()
     {
         B::filter(1);
     }
@@ -61,7 +62,7 @@ final class BoolTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Exception
      * @expectedExceptionMessage invalid is not 'true' or 'false' disregarding case and whitespace
      */
-    public function filter_invalidString()
+    public function filterInvalidString()
     {
         B::filter('invalid');
     }
@@ -70,7 +71,7 @@ final class BoolTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers ::filter
      */
-    public function filter_customTrueValues()
+    public function filterCustomTrueValues()
     {
         $this->assertTrue(B::filter('Y', false, ['y']));
     }
@@ -79,7 +80,7 @@ final class BoolTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers ::filter
      */
-    public function filter_customFalseValues()
+    public function filterCustomFalseValues()
     {
         $this->assertFalse(B::filter('0', false, ['true'], ['0']));
     }
@@ -90,7 +91,7 @@ final class BoolTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Exception
      * @expectedExceptionMessage true is not 'y' or '1' or 'n' or '0' disregarding case and whitespace
      */
-    public function filter_customBoolValuesInvalidString()
+    public function filterCustomBoolValuesInvalidString()
     {
         $this->assertFalse(B::filter('true', false, ['y', '1'], ['n', '0']));
     }

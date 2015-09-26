@@ -1,5 +1,6 @@
 <?php
 namespace DominionEnterprises\Filter;
+
 use DominionEnterprises\Filter\Float as F;
 
 /**
@@ -13,7 +14,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage "1" $allowNull was not a bool
      */
-    public function filter_allowNullIsNotBool()
+    public function filterAllowNullIsNotBool()
     {
         F::filter('1', 1);
     }
@@ -24,7 +25,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage "'boo'" $minValue was not a float
      */
-    public function filter_minValueNotFloat()
+    public function filterMinValueNotFloat()
     {
         F::filter('1', false, 'boo');
     }
@@ -35,7 +36,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage "1" $maxValue was not a float
      */
-    public function filter_maxValueNotFloat()
+    public function filterMaxValueNotFloat()
     {
         F::filter('1', false, 1.0, 1);
     }
@@ -44,7 +45,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers ::filter
      */
-    public function filter_allowNullIsTrueAndNullValue()
+    public function filterAllowNullIsTrueAndNullValue()
     {
         $this->assertNull(F::filter(null, true));
     }
@@ -53,7 +54,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers ::filter
      */
-    public function filter_positiveFloat()
+    public function filterPositiveFloat()
     {
         $this->assertSame(123.0, F::filter(123.0));
     }
@@ -62,7 +63,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers ::filter
      */
-    public function filter_negativeFloat()
+    public function filterNegativeFloat()
     {
         $this->assertSame(-123.0, F::filter(-123.0));
     }
@@ -71,7 +72,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers ::filter
      */
-    public function filter_zeroFloat()
+    public function filterZeroFloat()
     {
         $positiveZero = + 0.0;
         $this->assertSame(0.0, F::filter($positiveZero));
@@ -82,7 +83,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers ::filter
      */
-    public function filter_positiveString()
+    public function filterPositiveString()
     {
         $this->assertSame(123.0, F::filter('   123 '));
         $this->assertSame(123.0, F::filter('   +123 '));
@@ -102,7 +103,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers ::filter
      */
-    public function filter_negativeString()
+    public function filterNegativeString()
     {
         $this->assertSame(-123.0, F::filter('   -123 '));
         $this->assertSame(-123.0, F::filter('   -123.0 '));
@@ -122,7 +123,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Exception
      * @expectedExceptionMessage "true" $value is not a string
      */
-    public function filter_nonStringOrFloat()
+    public function filterNonStringOrFloat()
     {
         F::filter(true);
     }
@@ -133,7 +134,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Exception
      * @exceptedExceptionMessage  does not pass is_numeric
      */
-    public function filter_emptyString()
+    public function filterEmptyString()
     {
         F::filter('');
     }
@@ -144,7 +145,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Exception
      * @expectedExceptionMessage  does not pass is_numeric
      */
-    public function filter_whitespaceString()
+    public function filterWhitespaceString()
     {
         F::filter('   ');
     }
@@ -155,7 +156,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Exception
      * @expectedExceptionMessage 123-4 does not pass is_numeric
      */
-    public function filter_nonDigitString()
+    public function filterNonDigitString()
     {
         F::filter('123-4');
     }
@@ -166,7 +167,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Exception
      * @expectedExceptionMessage 0xff is hex format
      */
-    public function filter_hexString()
+    public function filterHexString()
     {
         F::filter('0xFF');
     }
@@ -177,7 +178,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Exception
      * @expectedExceptionMessage 1. 0 does not pass is_numeric
      */
-    public function filter_rogueSpaceStringAfterPeriod()
+    public function filterRogueSpaceStringAfterPeriod()
     {
         F::filter('1. 0');
     }
@@ -188,7 +189,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Exception
      * @expectedExceptionMessage 1 0 does not pass is_numeric
      */
-    public function filter_rogueSpaceStringBetweenDigits()
+    public function filterRogueSpaceStringBetweenDigits()
     {
         F::filter('1 0');
     }
@@ -199,7 +200,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Exception
      * @expectedExceptionMessage 1e999999999999 overflow
      */
-    public function filter_overflow()
+    public function filterOverflow()
     {
         F::filter('1e999999999999');
     }
@@ -210,7 +211,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Exception
      * @expectedExceptionMessage -1e999999999999 overflow
      */
-    public function filter_underflow()
+    public function filterUnderflow()
     {
         F::filter('-1e999999999999');
     }
@@ -221,7 +222,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Exception
      * @expectedExceptionMessage -1 is less than 0
      */
-    public function filter_lessThanMin()
+    public function filterLessThanMin()
     {
         F::filter(-1.0, false, 0.0);
     }
@@ -230,7 +231,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers ::filter
      */
-    public function filter_equalToMin()
+    public function filterEqualToMin()
     {
         $this->assertSame(0.0, F::filter(0.0, false, 0.0));
     }
@@ -241,7 +242,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Exception
      * @expectedExceptionMessage 1 is greater than 0
      */
-    public function filter_greaterThanMax()
+    public function filterGreaterThanMax()
     {
         F::filter(1.0, false, null, 0.0);
     }
@@ -250,7 +251,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers ::filter
      */
-    public function filter_equalToMax()
+    public function filterEqualToMax()
     {
         $this->assertSame(0.0, F::filter(0.0, false, null, 0.0));
     }
@@ -259,7 +260,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers ::filter
      */
-    public function filter_castInts()
+    public function filterCastInts()
     {
         $this->assertSame(1.0, F::filter(1, false, null, null, true));
     }
@@ -270,7 +271,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Exception
      * @expectedExceptionMessage "1" $value is not a string
      */
-    public function filter_castIntsIsFalse()
+    public function filterCastIntsIsFalse()
     {
         F::filter(1, false, null, null, false);
     }
@@ -281,7 +282,7 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage "1" $castInts was not a bool
      */
-    public function filter_castIntsIsNotBool()
+    public function filterCastIntsIsNotBool()
     {
         F::filter('1', false, null, null, 1);
     }

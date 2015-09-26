@@ -1,5 +1,6 @@
 <?php
 namespace DominionEnterprises\Filter;
+
 use DominionEnterprises\Filter\Arrays as A;
 
 /**
@@ -11,7 +12,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers ::filter
      */
-    public function filter_basicPass()
+    public function filterBasicPass()
     {
         $this->assertSame(['boo'], A::filter(['boo']));
     }
@@ -22,7 +23,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Exception
      * @expectedExceptionMessage Value '1' is not an array
      */
-    public function filter_failNotArray()
+    public function filterFailNotArray()
     {
         A::filter(1);
     }
@@ -33,7 +34,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Exception
      * @expectedExceptionMessage $value count of 0 is less than 1
      */
-    public function filter_failEmpty()
+    public function filterFailEmpty()
     {
         A::filter([]);
     }
@@ -44,7 +45,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Exception
      * @expectedExceptionMessage $value count of 1 is less than 2
      */
-    public function filter_countLessThanMin()
+    public function filterCountLessThanMin()
     {
         A::filter([0], 2);
     }
@@ -55,7 +56,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Exception
      * @expectedExceptionMessage $value count of 2 is greater than 1
      */
-    public function filter_countGreaterThanMax()
+    public function filterCountGreaterThanMax()
     {
         A::filter([0, 1], 1, 1);
     }
@@ -66,7 +67,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage $minCount was not an int
      */
-    public function filter_minCountNotInt()
+    public function filterMinCountNotInt()
     {
         A::filter([], true);
     }
@@ -77,7 +78,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage $maxCount was not an int
      */
-    public function filter_maxCountNotInt()
+    public function filterMaxCountNotInt()
     {
         A::filter([], 0, true);
     }
@@ -86,7 +87,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers ::in
      */
-    public function in_passStrict()
+    public function inPassStrict()
     {
         $this->assertSame('boo', A::in('boo', ['boo']));
     }
@@ -95,7 +96,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers ::in
      */
-    public function in_failStrict()
+    public function inFailStrict()
     {
         try {
             A::in('0', [0]);
@@ -109,7 +110,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers ::in
      */
-    public function in_failNotStrict()
+    public function inFailNotStrict()
     {
         try {
             A::in('boo', ['foo'], false);
@@ -123,7 +124,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers ::in
      */
-    public function in_passNotStrict()
+    public function inPassNotStrict()
     {
         $this->assertSame('0', A::in('0', [0], false));
     }
@@ -134,7 +135,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage $strict was not a bool
      */
-    public function in_strictNotBool()
+    public function inStrictNotBool()
     {
         A::in('boo', [], 1);
     }
@@ -156,7 +157,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      * @covers ::ofScalars
      * @uses \DominionEnterprises\Filterer
      */
-    public function ofScalars_chained()
+    public function ofScalarsChained()
     {
         $this->assertSame([3.3, 5.5], A::ofScalars(['a3.3', 'a5.5'], [['trim', 'a'], ['floatval']]));
     }
@@ -168,7 +169,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      * @uses \DominionEnterprises\Filter\UnsignedInt
      * @uses \DominionEnterprises\Filterer
      */
-    public function ofScalars_withMeaninglessKeys()
+    public function ofScalarsWithMeaninglessKeys()
     {
         $this->assertSame(['key1' => 1, 'key2' => 2], A::ofScalars(['key1' => '1', 'key2' => '2'], [['uint']]));
     }
@@ -179,7 +180,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      * @uses \DominionEnterprises\Filter\String
      * @uses \DominionEnterprises\Filterer
      */
-    public function ofScalars_fail()
+    public function ofScalarsFail()
     {
         try {
             A::ofScalars(['1', 2, 3], [['string']]);
@@ -209,7 +210,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      * @covers ::ofArrays
      * @uses \DominionEnterprises\Filterer
      */
-    public function ofArrays_chained()
+    public function ofArraysChained()
     {
         $expected = [['key' => 3.3], ['key' => 5.5]];
         $spec = ['key' => [['trim', 'a'], ['floatval']]];
@@ -223,7 +224,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      * @uses \DominionEnterprises\Filter\UnsignedInt
      * @uses \DominionEnterprises\Filterer
      */
-    public function ofArrays_requiredAndUnknown()
+    public function ofArraysRequiredAndUnknown()
     {
         try {
             A::ofArrays([['key' => '1'], ['key2' => '2']], ['key' => ['required' => true, ['uint']]]);
@@ -240,7 +241,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      * @uses \DominionEnterprises\Filter\String
      * @uses \DominionEnterprises\Filterer
      */
-    public function ofArrays_fail()
+    public function ofArraysFail()
     {
         try {
             A::ofArrays([['key' => '1'], ['key' => 2], ['key' => 3]], ['key' => [['string']]]);
@@ -271,7 +272,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      * @covers ::ofArray
      * @uses \DominionEnterprises\Filterer
      */
-    public function ofArray_chained()
+    public function ofArrayChained()
     {
         $expected = ['key' => 3.3];
         $spec = ['key' => [['trim', 'a'], ['floatval']]];
@@ -285,7 +286,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      * @uses \DominionEnterprises\Filter\UnsignedInt
      * @uses \DominionEnterprises\Filterer
      */
-    public function ofArray_requiredSuccess()
+    public function ofArrayRequiredSuccess()
     {
         $expected = ['key2' => 2];
         $spec = ['key1' => [['uint']], 'key2' => ['required' => true, ['uint']]];
@@ -299,7 +300,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      * @uses \DominionEnterprises\Filter\UnsignedInt
      * @uses \DominionEnterprises\Filterer
      */
-    public function ofArray_requiredFail()
+    public function ofArrayRequiredFail()
     {
         try {
             A::ofArray(['key1' => '1'], ['key1' => [['uint']], 'key2' => ['required' => true, ['uint']]]);
@@ -315,7 +316,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      * @covers ::ofArray
      * @uses \DominionEnterprises\Filterer
      */
-    public function ofArray_unknown()
+    public function ofArrayUnknown()
     {
         try {
             A::ofArray(['key' => '1'], ['key2' => [['uint']]]);

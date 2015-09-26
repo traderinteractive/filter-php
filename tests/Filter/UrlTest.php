@@ -1,5 +1,6 @@
 <?php
 namespace DominionEnterprises\Filter;
+
 use DominionEnterprises\Filter\Url as U;
 
 /**
@@ -23,7 +24,7 @@ final class UrlTest extends \PHPUnit_Framework_TestCase
      * @expectedExceptionMessage Value '1' is not a string
      * @covers ::filter
      */
-    public function filter_nonstring()
+    public function filterNonstring()
     {
         U::filter(1);
     }
@@ -34,7 +35,7 @@ final class UrlTest extends \PHPUnit_Framework_TestCase
      * @expectedExceptionMessage Value 'www.example.com' is not a valid url
      * @covers ::filter
      */
-    public function filter_notValid()
+    public function filterNotValid()
     {
         U::filter('www.example.com');
     }

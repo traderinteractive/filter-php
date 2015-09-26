@@ -4,6 +4,7 @@
  */
 
 namespace DominionEnterprises\Filter;
+
 use DominionEnterprises\Filter\Int;
 
 /**

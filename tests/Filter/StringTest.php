@@ -1,5 +1,6 @@
 <?php
 namespace DominionEnterprises\Filter;
+
 use DominionEnterprises\Filter\String as S;
 
 /**
@@ -13,7 +14,7 @@ final class StringUtilTest extends \PHPUnit_Framework_TestCase
      * @expectedExceptionMessage Value '1' is not a string
      * @covers ::filter
      */
-    public function filter_notString()
+    public function filterNotString()
     {
         S::filter(1);
     }
@@ -22,7 +23,7 @@ final class StringUtilTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers ::filter
      */
-    public function filter_nullPass()
+    public function filterNullPass()
     {
         $this->assertSame(null, S::filter(null, true));
     }
@@ -33,7 +34,7 @@ final class StringUtilTest extends \PHPUnit_Framework_TestCase
      * @expectedExceptionMessage Value 'NULL' is not a string
      * @covers ::filter
      */
-    public function filter_nullFail()
+    public function filterNullFail()
     {
         S::filter(null);
     }
@@ -42,7 +43,7 @@ final class StringUtilTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers ::filter
      */
-    public function filter_minLengthPass()
+    public function filterMinLengthPass()
     {
         $this->assertSame('a', S::filter('a'));
     }
@@ -52,7 +53,7 @@ final class StringUtilTest extends \PHPUnit_Framework_TestCase
      * @expectedException Exception
      * @covers ::filter
      */
-    public function filter_minLengthFail()
+    public function filterMinLengthFail()
     {
         S::filter('');
     }
@@ -61,7 +62,7 @@ final class StringUtilTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers ::filter
      */
-    public function filter_maxLengthPass()
+    public function filterMaxLengthPass()
     {
         $this->assertSame('a', S::filter('a', false, 0, 1));
     }
@@ -72,7 +73,7 @@ final class StringUtilTest extends \PHPUnit_Framework_TestCase
      * @expectedExceptionMessage Value 'a' with length '1' is less than '0' or greater than '0'
      * @covers ::filter
      */
-    public function filter_maxLengthFail()
+    public function filterMaxLengthFail()
     {
         S::filter('a', false, 0, 0);
     }
@@ -83,7 +84,7 @@ final class StringUtilTest extends \PHPUnit_Framework_TestCase
      * @expectedExceptionMessage $allowNull was not a boolean value
      * @covers ::filter
      */
-    public function filter_allowNullNotBoolean()
+    public function filterAllowNullNotBoolean()
     {
         S::filter('a', 5);
     }
@@ -94,7 +95,7 @@ final class StringUtilTest extends \PHPUnit_Framework_TestCase
      * @expectedExceptionMessage $minLength was not a positive integer value
      * @covers ::filter
      */
-    public function filter_minLengthNotInteger()
+    public function filterMinLengthNotInteger()
     {
         S::filter('a', false, 5.2);
     }
@@ -105,7 +106,7 @@ final class StringUtilTest extends \PHPUnit_Framework_TestCase
      * @expectedExceptionMessage $maxLength was not a positive integer value
      * @covers ::filter
      */
-    public function filter_maxLengthNotInteger()
+    public function filterMaxLengthNotInteger()
     {
         S::filter('a', false, 1, 5.2);
     }
@@ -116,7 +117,7 @@ final class StringUtilTest extends \PHPUnit_Framework_TestCase
      * @expectedExceptionMessage $minLength was not a positive integer value
      * @covers ::filter
      */
-    public function filter_minLengthNegative()
+    public function filterMinLengthNegative()
     {
         S::filter('a', false, -1);
     }
@@ -127,7 +128,7 @@ final class StringUtilTest extends \PHPUnit_Framework_TestCase
      * @expectedExceptionMessage $maxLength was not a positive integer value
      * @covers ::filter
      */
-    public function filter_maxLengthNegative()
+    public function filterMaxLengthNegative()
     {
         S::filter('a', false, 1, -1);
     }
@@ -149,7 +150,7 @@ final class StringUtilTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers ::explode
      */
-    public function explode_customDelimiter()
+    public function explodeCustomDelimiter()
     {
         $this->assertSame(['a', 'b', 'c', 'd,e'], S::explode('a b c d,e', ' '));
     }
@@ -162,7 +163,7 @@ final class StringUtilTest extends \PHPUnit_Framework_TestCase
      * @expectedExceptionMessage Value 'true' is not a string
      * @covers ::explode
      */
-    public function explode_nonStringValue()
+    public function explodeNonStringValue()
     {
         S::explode(true);
     }
@@ -175,7 +176,7 @@ final class StringUtilTest extends \PHPUnit_Framework_TestCase
      * @expectedExceptionMessage Delimiter '4' is not a non-empty string
      * @covers ::explode
      */
-    public function explode_nonStringDelimiter()
+    public function explodeNonStringDelimiter()
     {
         S::explode('test', 4);
     }
@@ -188,7 +189,7 @@ final class StringUtilTest extends \PHPUnit_Framework_TestCase
      * @expectedExceptionMessage Delimiter '''' is not a non-empty string
      * @covers ::explode
      */
-    public function explode_emptyDelimiter()
+    public function explodeEmptyDelimiter()
     {
         S::explode('test', '');
     }

@@ -13,8 +13,8 @@ final class Int
     /**
      * Filters $value to an integer strictly.
      *
-     * $value must be an int or contain all digits, optionally prepended by a '+' or '-' and optionally surrounded by whitespace to pass
-     * the filter.
+     * $value must be an int or contain all digits, optionally prepended by a '+' or '-' and optionally surrounded by
+     * whitespace to pass the filter.
      *
      * The return value is the int, as expected by the \DominionEnterprises\Filterer class.
      *
@@ -29,7 +29,8 @@ final class Int
      * @throws \InvalidArgumentException if $minValue is not null and not an int
      * @throws \InvalidArgumentException if $maxValue is not an int
      * @throws \Exception if $value string length is zero
-     * @throws \Exception if $value does not contain all digits, optionally prepended by a '+' or '-' and optionally surrounded by whitespace
+     * @throws \Exception if $value does not contain all digits, optionally prepended by a '+' or '-' and optionally
+     *                    surrounded by whitespace
      * @throws \Exception if $value was greater than a max int of PHP_INT_MAX
      * @throws \Exception if $value was less than a min int of ~PHP_INT_MAX
      * @throws \Exception if $value is not a string
@@ -72,7 +73,8 @@ final class Int
 
             if (!ctype_digit($stringToCheckDigits)) {
                 throw new \Exception(
-                    "{$value} does not contain all digits, optionally prepended by a '+' or '-' and optionally surrounded by whitespace"
+                    "{$value} does not contain all digits, optionally prepended by a '+' or '-' and optionally "
+                    . "surrounded by whitespace"
                 );
             }
 
