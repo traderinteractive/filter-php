@@ -138,4 +138,17 @@ final class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($timezone->getName(), $dateTime->getTimeZone()->getName());
         $this->assertSame(-36000, $dateTime->getOffset());
     }
+
+    /**
+     * Verify behavior of filter() when $value is an integer.
+     *
+     * @test
+     * @covers ::filter
+     */
+    public function filterWithIntegerValue()
+    {
+        $now = time();
+        $dateTime = D::filter($now);
+        $this->assertSame($now, $dateTime->getTimestamp());
+    }
 }

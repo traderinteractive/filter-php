@@ -33,6 +33,10 @@ class DateTime
             return $value;
         }
 
+        if (is_int($value) || ctype_digit($value)) {
+            $value = "@{$value}";
+        }
+
         if (!is_string($value) || trim($value) == '') {
             throw new \Exception('$value is not a non-empty string');
         }
