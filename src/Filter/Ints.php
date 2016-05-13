@@ -1,6 +1,6 @@
 <?php
 /**
- * Defines the DominionEnterprises\Filter\Int class.
+ * Defines the DominionEnterprises\Filter\Ints class.
  */
 
 namespace DominionEnterprises\Filter;
@@ -8,7 +8,7 @@ namespace DominionEnterprises\Filter;
 /**
  * A collection of filters for integers.
  */
-final class Int
+final class Ints
 {
     /**
      * Filters $value to an integer strictly.
