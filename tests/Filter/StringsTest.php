@@ -1,12 +1,12 @@
 <?php
 namespace DominionEnterprises\Filter;
 
-use DominionEnterprises\Filter\String as S;
+use DominionEnterprises\Filter\Strings as S;
 
 /**
- * @coversDefaultClass \DominionEnterprises\Filter\String
+ * @coversDefaultClass \DominionEnterprises\Filter\Strings
  */
-final class StringUtilTest extends \PHPUnit_Framework_TestCase
+final class StringsTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test

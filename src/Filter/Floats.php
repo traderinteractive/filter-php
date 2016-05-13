@@ -1,6 +1,6 @@
 <?php
 /**
- * Defines the DominionEnterprises\Filter\Float class.
+ * Defines the DominionEnterprises\Filter\Floats class.
  */
 
 namespace DominionEnterprises\Filter;
@@ -8,7 +8,7 @@ namespace DominionEnterprises\Filter;
 /**
  * A collection of filters for floats.
  */
-final class Float
+final class Floats
 {
     /**
      * Filters $value to a float strictly.

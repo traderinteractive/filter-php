@@ -115,7 +115,6 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @uses \DominionEnterprises\Filter\Float
      */
     public function filterDefaultShortNamePass()
     {
@@ -127,7 +126,6 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers ::filter
      * @covers ::setFilterAliases
-     * @uses \DominionEnterprises\Filterer::registerAlias
      */
     public function filterCustomShortNamePass()
     {
@@ -139,8 +137,6 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::setFilterAliases
-     * @uses \DominionEnterprises\Filterer::getFilterAliases
-     * @uses \DominionEnterprises\Filterer::registerAlias
      */
     public function setFilterAliasFails()
     {
@@ -161,7 +157,6 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
      * @covers ::filter
      * @covers ::setFilterAliases
      * @covers ::getFilterAliases
-     * @uses \DominionEnterprises\Filterer::registerAlias
      */
     public function filterGetSetKnownFilters()
     {
@@ -396,7 +391,6 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::registerAlias
-     * @uses \DominionEnterprises\Filterer::setFilterAliases
      * @expectedException \Exception
      * @expectedExceptionMessage Alias 'upper' exists
      */
@@ -410,8 +404,6 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::registerAlias
-     * @uses \DominionEnterprises\Filterer::getFilterAliases
-     * @uses \DominionEnterprises\Filterer::setFilterAliases
      */
     public function registerExistingAliasOverwriteTrue()
     {

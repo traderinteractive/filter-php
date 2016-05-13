@@ -5,7 +5,7 @@
 
 namespace DominionEnterprises\Filter;
 
-use DominionEnterprises\Filter\Int;
+use DominionEnterprises\Filter\Ints;
 
 /**
  * A collection of filters for unsigned integers.
@@ -15,7 +15,7 @@ final class UnsignedInt
     /**
      * Filters $value to an unsigned integer strictly.
      *
-     * @see \DominionEnterprises\Filter\Int::filter()
+     * @see \DominionEnterprises\Filter\Ints::filter()
      *
      * @throws \InvalidArgumentException if $minValue was not greater or equal to zero
      */
@@ -27,6 +27,6 @@ final class UnsignedInt
             throw new \InvalidArgumentException("{$minValue} was not greater or equal to zero");
         }
 
-        return Int::filter($value, $allowNull, $minValue, $maxValue);
+        return Ints::filter($value, $allowNull, $minValue, $maxValue);
     }
 }

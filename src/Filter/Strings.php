@@ -1,6 +1,6 @@
 <?php
 /**
- * Defines the DominionEnterprises\Filter\String class.
+ * Defines the DominionEnterprises\Filter\Strings class.
  */
 
 namespace DominionEnterprises\Filter;
@@ -8,7 +8,7 @@ namespace DominionEnterprises\Filter;
 /**
  * A collection of filters for strings.
  */
-final class String
+final class Strings
 {
     /**
      * Filter a string.

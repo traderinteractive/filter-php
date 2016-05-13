@@ -22,7 +22,6 @@ final class UnsignedIntTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @uses \DominionEnterprises\Filter\Int
      */
     public function filterMinValueNullSuccess()
     {
@@ -32,7 +31,6 @@ final class UnsignedIntTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @uses \DominionEnterprises\Filter\Int
      * @expectedException \Exception
      * @expectedExceptionMessage -1 is less than 0
      */
@@ -44,7 +42,6 @@ final class UnsignedIntTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @uses \DominionEnterprises\Filter\Int
      */
     public function filterBasicUse()
     {
@@ -54,7 +51,6 @@ final class UnsignedIntTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @uses \DominionEnterprises\Filter\Int
      */
     public function filterAllowNullSuccess()
     {
@@ -64,7 +60,6 @@ final class UnsignedIntTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @uses \DominionEnterprises\Filter\Int
      * @expectedException \Exception
      * @expectedExceptionMessage "NULL" $value is not a string
      */
@@ -76,7 +71,6 @@ final class UnsignedIntTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @uses \DominionEnterprises\Filter\Int
      * @expectedException \Exception
      * @expectedExceptionMessage 0 is less than 1
      */
@@ -88,7 +82,6 @@ final class UnsignedIntTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @uses \DominionEnterprises\Filter\Int
      * @expectedException \Exception
      * @expectedExceptionMessage 2 is greater than 1
      */

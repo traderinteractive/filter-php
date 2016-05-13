@@ -1,12 +1,12 @@
 <?php
 namespace DominionEnterprises\Filter;
 
-use DominionEnterprises\Filter\Bool as B;
+use DominionEnterprises\Filter\Booleans as B;
 
 /**
- * @coversDefaultClass \DominionEnterprises\Filter\Bool
+ * @coversDefaultClass \DominionEnterprises\Filter\Booleans
  */
-final class BoolTest extends \PHPUnit_Framework_TestCase
+final class BooleansTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
