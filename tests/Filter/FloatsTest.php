@@ -165,7 +165,6 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers ::filter
      * @expectedException \Exception
-     * @expectedExceptionMessage 0xff is hex format
      */
     public function filterHexString()
     {
