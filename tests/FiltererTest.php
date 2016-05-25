@@ -136,24 +136,6 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers ::setFilterAliases
-     */
-    public function setFilterAliasFails()
-    {
-        F::setFilterAliases(['upper' => 'strtoupper', 'lower' => 'strtolower']);
-        try {
-            F::setFilterAliases(['alias' => 'nonCallable']);
-            $this->fail('No exception thrown');
-        } catch (\InvalidArgumentException $e) {
-            $this->assertSame('$filter was not callable', $e->getMessage());
-        }
-
-        // aliases remain unchanged
-        $this->assertSame(['upper' => 'strtoupper', 'lower' => 'strtolower'], F::getFilterAliases());
-    }
-
-    /**
-     * @test
      * @covers ::filter
      * @covers ::setFilterAliases
      * @covers ::getFilterAliases
@@ -364,17 +346,6 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
     public function registerAliasAliasNotString()
     {
         F::registerAlias(true, 'strtolower');
-    }
-
-    /**
-     * @test
-     * @covers ::registerAlias
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $filter was not callable
-     */
-    public function registerAliasFilterNotCallable()
-    {
-        F::registerAlias('alias', 'undefined');
     }
 
     /**
