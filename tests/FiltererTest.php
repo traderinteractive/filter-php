@@ -115,7 +115,6 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @uses \DominionEnterprises\Filter\Float
      */
     public function filterDefaultShortNamePass()
     {
@@ -127,7 +126,6 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers ::filter
      * @covers ::setFilterAliases
-     * @uses \DominionEnterprises\Filterer::registerAlias
      */
     public function filterCustomShortNamePass()
     {
@@ -138,30 +136,9 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers ::setFilterAliases
-     * @uses \DominionEnterprises\Filterer::getFilterAliases
-     * @uses \DominionEnterprises\Filterer::registerAlias
-     */
-    public function setFilterAliasFails()
-    {
-        F::setFilterAliases(['upper' => 'strtoupper', 'lower' => 'strtolower']);
-        try {
-            F::setFilterAliases(['alias' => 'nonCallable']);
-            $this->fail('No exception thrown');
-        } catch (\InvalidArgumentException $e) {
-            $this->assertSame('$filter was not callable', $e->getMessage());
-        }
-
-        // aliases remain unchanged
-        $this->assertSame(['upper' => 'strtoupper', 'lower' => 'strtolower'], F::getFilterAliases());
-    }
-
-    /**
-     * @test
      * @covers ::filter
      * @covers ::setFilterAliases
      * @covers ::getFilterAliases
-     * @uses \DominionEnterprises\Filterer::registerAlias
      */
     public function filterGetSetKnownFilters()
     {
@@ -375,17 +352,6 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers ::registerAlias
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $filter was not callable
-     */
-    public function registerAliasFilterNotCallable()
-    {
-        F::registerAlias('alias', 'undefined');
-    }
-
-    /**
-     * @test
-     * @covers ::registerAlias
-     * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage $overwrite was not a bool
      */
     public function registerAliasOverwriteNotBool()
@@ -396,7 +362,6 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::registerAlias
-     * @uses \DominionEnterprises\Filterer::setFilterAliases
      * @expectedException \Exception
      * @expectedExceptionMessage Alias 'upper' exists
      */
@@ -410,8 +375,6 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::registerAlias
-     * @uses \DominionEnterprises\Filterer::getFilterAliases
-     * @uses \DominionEnterprises\Filterer::setFilterAliases
      */
     public function registerExistingAliasOverwriteTrue()
     {

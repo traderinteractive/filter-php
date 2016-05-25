@@ -1,6 +1,6 @@
 <?php
 /**
- * Defines the DominionEnterprises\Filter\Bool class.
+ * Defines the DominionEnterprises\Filter\Booleans class.
  */
 
 namespace DominionEnterprises\Filter;
@@ -8,7 +8,7 @@ namespace DominionEnterprises\Filter;
 /**
  * A collection of filters for booleans.
  */
-final class Bool
+final class Booleans
 {
     /**
      * Filters $value to a boolean strictly.

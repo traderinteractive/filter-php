@@ -13,17 +13,17 @@ final class Filterer
     private static $filterAliases = [
         'in' => '\DominionEnterprises\Filter\Arrays::in',
         'array' => '\DominionEnterprises\Filter\Arrays::filter',
-        'bool' => '\DominionEnterprises\Filter\Bool::filter',
-        'float' => '\DominionEnterprises\Filter\Float::filter',
-        'int' => '\DominionEnterprises\Filter\Int::filter',
+        'bool' => '\DominionEnterprises\Filter\Booleans::filter',
+        'float' => '\DominionEnterprises\Filter\Floats::filter',
+        'int' => '\DominionEnterprises\Filter\Ints::filter',
         'uint' => '\DominionEnterprises\Filter\UnsignedInt::filter',
-        'string' => '\DominionEnterprises\Filter\String::filter',
+        'string' => '\DominionEnterprises\Filter\Strings::filter',
         'ofScalars' => '\DominionEnterprises\Filter\Arrays::ofScalars',
         'ofArrays' => '\DominionEnterprises\Filter\Arrays::ofArrays',
         'ofArray' => '\DominionEnterprises\Filter\Arrays::ofArray',
         'url' => '\DominionEnterprises\Filter\Url::filter',
         'email' => '\DominionEnterprises\Filter\Email::filter',
-        'explode' => '\DominionEnterprises\Filter\String::explode',
+        'explode' => '\DominionEnterprises\Filter\Strings::explode',
         'flatten' => '\DominionEnterprises\Filter\Arrays::flatten',
         'date' => '\DominionEnterprises\Filter\DateTime::filter',
         'timezone' => '\DominionEnterprises\Filter\DateTimeZone::filter',
@@ -239,18 +239,13 @@ final class Filterer
      * @return void
      *
      * @throws \InvalidArgumentException if $alias was not a string or int
-     * @throws \InvalidArgumentException if $filter was not callable
      * @throws \InvalidArgumentException if $overwrite was not a bool
      * @throws \Exception if $overwrite is false and $alias exists
      */
-    public static function registerAlias($alias, $filter, $overwrite = false)
+    public static function registerAlias($alias, callable $filter, $overwrite = false)
     {
         if (!is_string($alias) && !is_int($alias)) {
             throw new \InvalidArgumentException('$alias was not a string or int');
-        }
-
-        if (!is_callable($filter)) {
-            throw new \InvalidArgumentException('$filter was not callable');
         }
 
         if ($overwrite !== false && $overwrite !== true) {

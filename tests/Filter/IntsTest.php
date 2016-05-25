@@ -1,12 +1,12 @@
 <?php
 namespace DominionEnterprises\Filter;
 
-use DominionEnterprises\Filter\Int as S;
+use DominionEnterprises\Filter\Ints as S;
 
 /**
- * @coversDefaultClass \DominionEnterprises\Filter\Int
+ * @coversDefaultClass \DominionEnterprises\Filter\Ints
  */
-final class IntTest extends \PHPUnit_Framework_TestCase
+final class IntsTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test

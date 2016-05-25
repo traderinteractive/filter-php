@@ -1,12 +1,12 @@
 <?php
 namespace DominionEnterprises\Filter;
 
-use DominionEnterprises\Filter\Float as F;
+use DominionEnterprises\Filter\Floats as F;
 
 /**
- * @coversDefaultClass \DominionEnterprises\Filter\Float
+ * @coversDefaultClass \DominionEnterprises\Filter\Floats
  */
-final class FloatTest extends \PHPUnit_Framework_TestCase
+final class FloatsTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
@@ -165,7 +165,6 @@ final class FloatTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers ::filter
      * @expectedException \Exception
-     * @expectedExceptionMessage 0xff is hex format
      */
     public function filterHexString()
     {
