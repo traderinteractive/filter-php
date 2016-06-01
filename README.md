@@ -160,17 +160,17 @@ $value = \DominionEnterprises\Filter\Arrays::flatten([[1, 2], [3, [4, 5]]]);
 assert($value === [1, 2, 3, 4, 5]);
 ```
 
-#### Bool::filter
+#### Booleans::filter
 Aliased in the filterer as `bool`, this filter verifies that the argument is a boolean value or a string that maps to one.  The second parameter
 can be set to `true` to allow null values through without an error (they will stay null and not get converted to false).  The last parameters
 are lists of strings for true values and false values.  By default, the strings "true" and "false" map to their boolean counterparts.
 
 The following example converts `$value` to a boolean allowing the strings "on" and "of".
 ```php
-$enabled = \DominionEnterprises\Filter\Bool::filter($value, false, ['on'], ['off']);
+$enabled = \DominionEnterprises\Filter\Booleans::filter($value, false, ['on'], ['off']);
 ```
 
-#### Float/Int/UnsignedInt::filter
+#### Floats/Ints/UnsignedInt::filter
 Aliased in the filterer as `float`, `int`, and `uint`, respectively, these filters verify that the arguments are of the proper numeric type and
 allow for bounds checking.  The second parameter to each of them can be set to `true` to allow null values through without an error (they will
 stay null and not get converted to false).  The next two parameters are the min and max bounds and can be used to limit the domain of allowed
@@ -186,21 +186,21 @@ The following checks that `$value` is an integer between 1 and 100 inclusive, an
 $value = \DominionEnterprises\Filter\UnsignedInt::filter($value, false, 1, 100);
 ```
 
-#### String::filter
+#### Strings::filter
 Aliased in the filterer as `string`, this filter verifies that the argument is a string.  The second parameter can be set to `true` to allow
 null values through without an error (they will stay null and not get converted to false).  The last parameters specify the length bounds of the
 string. The default bounds are 1+, so an empty string fails by default.
 
 The following checks that `$value` is a non-empty string.
 ```php
-\DominionEnterprises\Filter\String::filter($value);
+\DominionEnterprises\Filter\Strings::filter($value);
 ```
 
-#### String::explode
+#### Strings::explode
 Aliased in the filterer as `explode`, this filter is essentially a wrapper around the built-in [`explode`](http://www.php.net/explode) method
 with the value first in order to work with the `Filterer`.  It also defaults to using `,` as a delimiter.  For example:
 ```php
-$value = \DominionEnterprises\Filter\String::explode('abc,def,ghi');
+$value = \DominionEnterprises\Filter\Strings::explode('abc,def,ghi');
 assert($value === ['abc', 'def', 'ghi']);
 ```
 
