@@ -1,8 +1,6 @@
 <?php
 namespace DominionEnterprises\Filter;
 
-use DominionEnterprises\Filter\Ints as S;
-
 /**
  * @coversDefaultClass \DominionEnterprises\Filter\Ints
  */
@@ -16,7 +14,7 @@ final class IntsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterAllowNullIsNotBool()
     {
-        S::filter('1', 1);
+        Ints::filter('1', 1);
     }
 
     /**
@@ -27,7 +25,7 @@ final class IntsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterMinValueNotInt()
     {
-        S::filter('1', false, 'boo');
+        Ints::filter('1', false, 'boo');
     }
 
     /**
@@ -38,7 +36,7 @@ final class IntsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterMaxValueNotInt()
     {
-        S::filter('1', false, 1, 1.5);
+        Ints::filter('1', false, 1, 1.5);
     }
 
     /**
@@ -47,7 +45,7 @@ final class IntsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterAllowNullIsTrueAndNullValue()
     {
-        $result = S::filter(null, true);
+        $result = Ints::filter(null, true);
         $this->assertSame(null, $result);
     }
 
@@ -57,7 +55,7 @@ final class IntsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterPositiveInt()
     {
-        $this->assertSame(123, S::filter(123));
+        $this->assertSame(123, Ints::filter(123));
     }
 
     /**
@@ -66,7 +64,7 @@ final class IntsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterNegativeInt()
     {
-        $this->assertSame(-123, S::filter(-123));
+        $this->assertSame(-123, Ints::filter(-123));
     }
 
     /**
@@ -76,8 +74,8 @@ final class IntsTest extends \PHPUnit_Framework_TestCase
     public function filterZeroInt()
     {
         $positiveZero = + 0;
-        $this->assertSame(0, S::filter($positiveZero));
-        $this->assertSame(0, S::filter(-0));
+        $this->assertSame(0, Ints::filter($positiveZero));
+        $this->assertSame(0, Ints::filter(-0));
     }
 
     /**
@@ -86,9 +84,9 @@ final class IntsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterPositiveString()
     {
-        $this->assertSame(123, S::filter('   123 '));
-        $this->assertSame(123, S::filter('   +123 '));
-        $this->assertSame(0, S::filter('   +0 '));
+        $this->assertSame(123, Ints::filter('   123 '));
+        $this->assertSame(123, Ints::filter('   +123 '));
+        $this->assertSame(0, Ints::filter('   +0 '));
     }
 
     /**
@@ -97,8 +95,8 @@ final class IntsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterNegativeString()
     {
-        $this->assertSame(-123, S::filter('   -123 '));
-        $this->assertSame(0, S::filter('   -0 '));
+        $this->assertSame(-123, Ints::filter('   -123 '));
+        $this->assertSame(0, Ints::filter('   -0 '));
     }
 
     /**
@@ -109,7 +107,7 @@ final class IntsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterNonStringOrInt()
     {
-        S::filter(true);
+        Ints::filter(true);
     }
 
     /**
@@ -120,7 +118,7 @@ final class IntsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterEmptyString()
     {
-        S::filter('');
+        Ints::filter('');
     }
 
     /**
@@ -131,7 +129,7 @@ final class IntsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterWhitespaceString()
     {
-        S::filter('   ');
+        Ints::filter('   ');
     }
 
     /**
@@ -141,7 +139,7 @@ final class IntsTest extends \PHPUnit_Framework_TestCase
     public function nonDigitString()
     {
         try {
-            S::filter('123.4');
+            Ints::filter('123.4');
             $this->fail("No exception thrown");
         } catch (\Exception $e) {
             $this->assertSame(
@@ -166,7 +164,7 @@ final class IntsTest extends \PHPUnit_Framework_TestCase
             '170141183460469231731687303715884105727' => '170141183460469231731687303715884105728',
         ];
         $oneOverMax = $maxes[(string)PHP_INT_MAX];
-        S::filter($oneOverMax);
+        Ints::filter($oneOverMax);
     }
 
     /**
@@ -183,7 +181,7 @@ final class IntsTest extends \PHPUnit_Framework_TestCase
             '-170141183460469231731687303715884105728' => '-170141183460469231731687303715884105729',
         ];
         $oneUnderMin = $mins[(string)~PHP_INT_MAX];
-        S::filter($oneUnderMin);
+        Ints::filter($oneUnderMin);
     }
 
     /**
@@ -194,7 +192,7 @@ final class IntsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterLessThanMin()
     {
-        S::filter(-1, false, 0);
+        Ints::filter(-1, false, 0);
     }
 
     /**
@@ -203,7 +201,7 @@ final class IntsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterEqualToMin()
     {
-        $this->assertSame(0, S::filter(0, false, 0));
+        $this->assertSame(0, Ints::filter(0, false, 0));
     }
 
     /**
@@ -214,7 +212,7 @@ final class IntsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterGreaterThanMax()
     {
-        S::filter(1, false, null, 0);
+        Ints::filter(1, false, null, 0);
     }
 
     /**
@@ -223,6 +221,6 @@ final class IntsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterEqualToMax()
     {
-        $this->assertSame(0, S::filter(0, false, null, 0));
+        $this->assertSame(0, Ints::filter(0, false, null, 0));
     }
 }

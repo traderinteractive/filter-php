@@ -1,8 +1,6 @@
 <?php
 namespace DominionEnterprises\Filter;
 
-use DominionEnterprises\Filter\Floats as F;
-
 /**
  * @coversDefaultClass \DominionEnterprises\Filter\Floats
  */
@@ -16,7 +14,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterAllowNullIsNotBool()
     {
-        F::filter('1', 1);
+        Floats::filter('1', 1);
     }
 
     /**
@@ -27,7 +25,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterMinValueNotFloat()
     {
-        F::filter('1', false, 'boo');
+        Floats::filter('1', false, 'boo');
     }
 
     /**
@@ -38,7 +36,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterMaxValueNotFloat()
     {
-        F::filter('1', false, 1.0, 1);
+        Floats::filter('1', false, 1.0, 1);
     }
 
     /**
@@ -47,7 +45,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterAllowNullIsTrueAndNullValue()
     {
-        $this->assertNull(F::filter(null, true));
+        $this->assertNull(Floats::filter(null, true));
     }
 
     /**
@@ -56,7 +54,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterPositiveFloat()
     {
-        $this->assertSame(123.0, F::filter(123.0));
+        $this->assertSame(123.0, Floats::filter(123.0));
     }
 
     /**
@@ -65,7 +63,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterNegativeFloat()
     {
-        $this->assertSame(-123.0, F::filter(-123.0));
+        $this->assertSame(-123.0, Floats::filter(-123.0));
     }
 
     /**
@@ -75,8 +73,8 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
     public function filterZeroFloat()
     {
         $positiveZero = + 0.0;
-        $this->assertSame(0.0, F::filter($positiveZero));
-        $this->assertSame(-0.0, F::filter(-0.0));
+        $this->assertSame(0.0, Floats::filter($positiveZero));
+        $this->assertSame(-0.0, Floats::filter(-0.0));
     }
 
     /**
@@ -85,18 +83,18 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterPositiveString()
     {
-        $this->assertSame(123.0, F::filter('   123 '));
-        $this->assertSame(123.0, F::filter('   +123 '));
-        $this->assertSame(123.0, F::filter('   123.0 '));
-        $this->assertSame(123.0, F::filter('   123E0 '));
-        $this->assertSame(123.0, F::filter('   +123e0 '));
-        $this->assertSame(123.0, F::filter('   +1230e-1 '));
-        $this->assertSame(1230.0, F::filter('   +123e+1 '));
-        $this->assertSame(0.0, F::filter('   +0 '));
-        $this->assertSame(0.0, F::filter('   +0.0 '));
-        $this->assertSame(0.0, F::filter('   0E0 '));
-        $this->assertSame(0.0, F::filter('   00e-1 '));
-        $this->assertSame(0.0, F::filter('   00e+1 '));
+        $this->assertSame(123.0, Floats::filter('   123 '));
+        $this->assertSame(123.0, Floats::filter('   +123 '));
+        $this->assertSame(123.0, Floats::filter('   123.0 '));
+        $this->assertSame(123.0, Floats::filter('   123E0 '));
+        $this->assertSame(123.0, Floats::filter('   +123e0 '));
+        $this->assertSame(123.0, Floats::filter('   +1230e-1 '));
+        $this->assertSame(1230.0, Floats::filter('   +123e+1 '));
+        $this->assertSame(0.0, Floats::filter('   +0 '));
+        $this->assertSame(0.0, Floats::filter('   +0.0 '));
+        $this->assertSame(0.0, Floats::filter('   0E0 '));
+        $this->assertSame(0.0, Floats::filter('   00e-1 '));
+        $this->assertSame(0.0, Floats::filter('   00e+1 '));
     }
 
     /**
@@ -105,16 +103,16 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterNegativeString()
     {
-        $this->assertSame(-123.0, F::filter('   -123 '));
-        $this->assertSame(-123.0, F::filter('   -123.0 '));
-        $this->assertSame(-123.0, F::filter('   -123E0 '));
-        $this->assertSame(-123.0, F::filter('   -1230E-1 '));
-        $this->assertSame(-1230.0, F::filter('   -123e+1 '));
-        $this->assertSame(-0.0, F::filter('   -0 '));
-        $this->assertSame(-0.0, F::filter('   -0.0 '));
-        $this->assertSame(-0.0, F::filter('   -0e0 '));
-        $this->assertSame(-0.0, F::filter('   -00e-1 '));
-        $this->assertSame(-0.0, F::filter('   -0e+1 '));
+        $this->assertSame(-123.0, Floats::filter('   -123 '));
+        $this->assertSame(-123.0, Floats::filter('   -123.0 '));
+        $this->assertSame(-123.0, Floats::filter('   -123E0 '));
+        $this->assertSame(-123.0, Floats::filter('   -1230E-1 '));
+        $this->assertSame(-1230.0, Floats::filter('   -123e+1 '));
+        $this->assertSame(-0.0, Floats::filter('   -0 '));
+        $this->assertSame(-0.0, Floats::filter('   -0.0 '));
+        $this->assertSame(-0.0, Floats::filter('   -0e0 '));
+        $this->assertSame(-0.0, Floats::filter('   -00e-1 '));
+        $this->assertSame(-0.0, Floats::filter('   -0e+1 '));
     }
 
     /**
@@ -125,7 +123,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterNonStringOrFloat()
     {
-        F::filter(true);
+        Floats::filter(true);
     }
 
     /**
@@ -136,7 +134,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterEmptyString()
     {
-        F::filter('');
+        Floats::filter('');
     }
 
     /**
@@ -147,7 +145,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterWhitespaceString()
     {
-        F::filter('   ');
+        Floats::filter('   ');
     }
 
     /**
@@ -158,7 +156,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterNonDigitString()
     {
-        F::filter('123-4');
+        Floats::filter('123-4');
     }
 
     /**
@@ -168,7 +166,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterHexString()
     {
-        F::filter('0xFF');
+        Floats::filter('0xFF');
     }
 
     /**
@@ -179,7 +177,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterRogueSpaceStringAfterPeriod()
     {
-        F::filter('1. 0');
+        Floats::filter('1. 0');
     }
 
     /**
@@ -190,7 +188,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterRogueSpaceStringBetweenDigits()
     {
-        F::filter('1 0');
+        Floats::filter('1 0');
     }
 
     /**
@@ -201,7 +199,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterOverflow()
     {
-        F::filter('1e999999999999');
+        Floats::filter('1e999999999999');
     }
 
     /**
@@ -212,7 +210,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterUnderflow()
     {
-        F::filter('-1e999999999999');
+        Floats::filter('-1e999999999999');
     }
 
     /**
@@ -223,7 +221,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterLessThanMin()
     {
-        F::filter(-1.0, false, 0.0);
+        Floats::filter(-1.0, false, 0.0);
     }
 
     /**
@@ -232,7 +230,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterEqualToMin()
     {
-        $this->assertSame(0.0, F::filter(0.0, false, 0.0));
+        $this->assertSame(0.0, Floats::filter(0.0, false, 0.0));
     }
 
     /**
@@ -243,7 +241,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterGreaterThanMax()
     {
-        F::filter(1.0, false, null, 0.0);
+        Floats::filter(1.0, false, null, 0.0);
     }
 
     /**
@@ -252,7 +250,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterEqualToMax()
     {
-        $this->assertSame(0.0, F::filter(0.0, false, null, 0.0));
+        $this->assertSame(0.0, Floats::filter(0.0, false, null, 0.0));
     }
 
     /**
@@ -261,7 +259,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterCastInts()
     {
-        $this->assertSame(1.0, F::filter(1, false, null, null, true));
+        $this->assertSame(1.0, Floats::filter(1, false, null, null, true));
     }
 
     /**
@@ -272,7 +270,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterCastIntsIsFalse()
     {
-        F::filter(1, false, null, null, false);
+        Floats::filter(1, false, null, null, false);
     }
 
     /**
@@ -283,6 +281,6 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterCastIntsIsNotBool()
     {
-        F::filter('1', false, null, null, 1);
+        Floats::filter('1', false, null, null, 1);
     }
 }

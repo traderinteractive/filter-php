@@ -1,8 +1,6 @@
 <?php
 namespace DominionEnterprises\Filter;
 
-use DominionEnterprises\Filter\DateTime as D;
-
 /**
  * Unit tests for the \DominionEnterprises\Filter\DateTime class.
  *
@@ -21,7 +19,7 @@ final class DateTimeTest extends \PHPUnit_Framework_TestCase
     public function filter()
     {
         $string = '2014-02-04T11:55:00-0500';
-        $dateTime = D::filter($string);
+        $dateTime = DateTime::filter($string);
 
         $this->assertSame(strtotime($string), $dateTime->getTimestamp());
     }
@@ -37,7 +35,7 @@ final class DateTimeTest extends \PHPUnit_Framework_TestCase
     public function filterTimestamp()
     {
         $now = time();
-        $dateTime = D::filter("@{$now}");
+        $dateTime = DateTime::filter("@{$now}");
 
         $this->assertSame($now, $dateTime->getTimestamp());
     }
@@ -56,7 +54,7 @@ final class DateTimeTest extends \PHPUnit_Framework_TestCase
      */
     public function filterEmptyValue()
     {
-        D::filter("\t \n");
+        DateTime::filter("\t \n");
     }
 
     /**
@@ -73,7 +71,7 @@ final class DateTimeTest extends \PHPUnit_Framework_TestCase
      */
     public function filterInvalidValue()
     {
-        D::filter(true);
+        DateTime::filter(true);
     }
 
     /**
@@ -86,7 +84,7 @@ final class DateTimeTest extends \PHPUnit_Framework_TestCase
      */
     public function filterAllowNullNotBoolean()
     {
-        D::filter('n/a', 5);
+        DateTime::filter('n/a', 5);
     }
 
     /**
@@ -97,7 +95,7 @@ final class DateTimeTest extends \PHPUnit_Framework_TestCase
      */
     public function filterNullAllowed()
     {
-        $this->assertNull(D::filter(null, true));
+        $this->assertNull(DateTime::filter(null, true));
     }
 
     /**
@@ -110,7 +108,7 @@ final class DateTimeTest extends \PHPUnit_Framework_TestCase
      */
     public function filterNullNotAllowed()
     {
-        D::filter(null, false);
+        DateTime::filter(null, false);
     }
 
     /**
@@ -122,7 +120,7 @@ final class DateTimeTest extends \PHPUnit_Framework_TestCase
     public function filterDateTimePass()
     {
         $dateTime = new \DateTime('now');
-        $this->assertSame($dateTime, D::filter($dateTime));
+        $this->assertSame($dateTime, DateTime::filter($dateTime));
     }
 
     /**
@@ -134,7 +132,7 @@ final class DateTimeTest extends \PHPUnit_Framework_TestCase
     public function filterWithTimeZone()
     {
         $timezone = new \DateTimeZone('Pacific/Honolulu');
-        $dateTime = D::filter('now', false, $timezone);
+        $dateTime = DateTime::filter('now', false, $timezone);
         $this->assertSame($timezone->getName(), $dateTime->getTimeZone()->getName());
         $this->assertSame(-36000, $dateTime->getOffset());
     }
@@ -148,7 +146,7 @@ final class DateTimeTest extends \PHPUnit_Framework_TestCase
     public function filterWithIntegerValue()
     {
         $now = time();
-        $dateTime = D::filter($now);
+        $dateTime = DateTime::filter($now);
         $this->assertSame($now, $dateTime->getTimestamp());
     }
 }
