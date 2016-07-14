@@ -127,6 +127,16 @@ final class Filterer
                 throw new \InvalidArgumentException("filters for field '{$field}' was not a array");
             }
 
+            $customError = null;
+            if (array_key_exists('error', $filters)) {
+                $customError = $filters['error'];
+                if (!is_string($customError) || trim($customError) === '') {
+                    throw new \InvalidArgumentException("error for field '{$field}' was not a non-empty string");
+                }
+
+                unset($filters['error']);//unset so its not used as a filter
+            }
+
             unset($filters['required']);//doesnt matter if required since we have this one
             unset($filters['default']);//doesnt matter if there is a default since we have a value
             foreach ($filters as $filter) {
@@ -153,8 +163,16 @@ final class Filterer
                 try {
                     $value = call_user_func_array($function, $filter);
                 } catch (\Exception $e) {
-                    $error = "Field '{$field}' with value '" . trim(var_export($value, true), "'");
-                    $error .= "' failed filtering, message '{$e->getMessage()}'";
+                    $error = $customError;
+                    if ($error === null) {
+                        $error = sprintf(
+                            "Field '%s' with value '%s' failed filtering, message '%s'",
+                            $field,
+                            trim(var_export($value, true), "'"),
+                            $e->getMessage()
+                        );
+                    }
+
                     $errors[] = $error;
                     continue 2;//next field
                 }
