@@ -429,4 +429,65 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
     {
         return $value . 'boo';
     }
+
+    /**
+     * Verify custom errors can be added to filter spec.
+     *
+     * @test
+     * @covers ::filter
+     *
+     * @return void
+     */
+    public function filterWithCustomError()
+    {
+        $result = F::filter(
+            [
+                'fieldOne' => [
+                    ['\DominionEnterprises\FiltererTest::failingFilter'],
+                    'error' => 'My custom error message'
+                ],
+            ],
+            ['fieldOne' => 'valueOne']
+        );
+        $this->assertSame(
+            [false, null, 'My custom error message', []],
+            $result
+        );
+    }
+
+    /**
+     * Verify behavior of filter() when 'error' is not a string value.
+     *
+     * @test
+     * @covers ::filter
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage error for field 'fieldOne' was not a non-empty string
+     *
+     * @return void
+     */
+    public function filterWithNonStringError()
+    {
+        F::filter(
+            ['fieldOne' => [['strtoupper'], 'error' => new \StdClass()]],
+            ['fieldOne' => 'valueOne']
+        );
+    }
+
+    /**
+     * Verify behavior of filter() when 'error' is an empty string.
+     *
+     * @test
+     * @covers ::filter
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage error for field 'fieldOne' was not a non-empty string
+     *
+     * @return void
+     */
+    public function filterWithEmptyStringError()
+    {
+        F::filter(
+            ['fieldOne' => [['strtoupper'], 'error' => "\n   \t"]],
+            ['fieldOne' => 'valueOne']
+        );
+    }
 }
