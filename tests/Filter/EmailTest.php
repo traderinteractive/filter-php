@@ -1,8 +1,6 @@
 <?php
 namespace DominionEnterprises\Filter;
 
-use DominionEnterprises\Filter\Email as E;
-
 /**
  * @coversDefaultClass \DominionEnterprises\Filter\Email
  */
@@ -15,7 +13,7 @@ final class EmailTest extends \PHPUnit_Framework_TestCase
     public function filter()
     {
         $email = 'first.last@email.com';
-        $this->assertSame($email, E::filter($email));
+        $this->assertSame($email, Email::filter($email));
     }
 
     /**
@@ -26,7 +24,7 @@ final class EmailTest extends \PHPUnit_Framework_TestCase
      */
     public function filterNonstring()
     {
-        E::filter(1);
+        Email::filter(1);
     }
 
     /**
@@ -37,6 +35,6 @@ final class EmailTest extends \PHPUnit_Framework_TestCase
      */
     public function filterNotValid()
     {
-        E::filter('@email.com');
+        Email::filter('@email.com');
     }
 }

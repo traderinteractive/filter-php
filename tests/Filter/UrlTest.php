@@ -1,8 +1,6 @@
 <?php
 namespace DominionEnterprises\Filter;
 
-use DominionEnterprises\Filter\Url as U;
-
 /**
  * @coversDefaultClass \DominionEnterprises\Filter\Url
  */
@@ -15,7 +13,7 @@ final class UrlTest extends \PHPUnit_Framework_TestCase
     public function filter()
     {
         $url = 'http://www.example.com';
-        $this->assertSame($url, U::filter($url));
+        $this->assertSame($url, Url::filter($url));
     }
 
     /**
@@ -26,7 +24,7 @@ final class UrlTest extends \PHPUnit_Framework_TestCase
      */
     public function filterNonstring()
     {
-        U::filter(1);
+        Url::filter(1);
     }
 
     /**
@@ -37,6 +35,6 @@ final class UrlTest extends \PHPUnit_Framework_TestCase
      */
     public function filterNotValid()
     {
-        U::filter('www.example.com');
+        Url::filter('www.example.com');
     }
 }

@@ -1,8 +1,6 @@
 <?php
 namespace DominionEnterprises\Filter;
 
-use DominionEnterprises\Filter\DateTimeZone as TZ;
-
 /**
  * Unit tests for the \DominionEnterprises\Filter\DateTimeZone class.
  *
@@ -21,7 +19,7 @@ final class DateTimeZoneTest extends \PHPUnit_Framework_TestCase
     public function filter()
     {
         $value = 'Pacific/Honolulu';
-        $timezone = TZ::filter($value);
+        $timezone = DateTimeZone::filter($value);
         $this->assertSame($value, $timezone->getName());
         $this->assertSame(-36000, $timezone->getOffset(new \DateTime('now', $timezone)));
     }
@@ -38,7 +36,7 @@ final class DateTimeZoneTest extends \PHPUnit_Framework_TestCase
      */
     public function filterAllowNullNotBoolean()
     {
-        TZ::filter('America/New_York', 5);
+        DateTimeZone::filter('America/New_York', 5);
     }
 
     /**
@@ -51,7 +49,7 @@ final class DateTimeZoneTest extends \PHPUnit_Framework_TestCase
      */
     public function filterNullAllowed()
     {
-        $this->assertNull(TZ::filter(null, true));
+        $this->assertNull(DateTimeZone::filter(null, true));
     }
 
     /**
@@ -66,7 +64,7 @@ final class DateTimeZoneTest extends \PHPUnit_Framework_TestCase
      */
     public function filterNullNotAllowed()
     {
-        $this->assertNull(TZ::filter(null, false));
+        $this->assertNull(DateTimeZone::filter(null, false));
     }
 
     /**
@@ -80,7 +78,7 @@ final class DateTimeZoneTest extends \PHPUnit_Framework_TestCase
     public function filterTimeZonePass()
     {
         $timezone = new \DateTimeZone('America/New_York');
-        $this->assertSame($timezone, TZ::filter($timezone));
+        $this->assertSame($timezone, DateTimeZone::filter($timezone));
     }
 
     /**
@@ -93,7 +91,7 @@ final class DateTimeZoneTest extends \PHPUnit_Framework_TestCase
      */
     public function filterInvalidName()
     {
-        $timezone = TZ::filter('INVALID');
+        $timezone = DateTimeZone::filter('INVALID');
     }
 
     /**
@@ -110,7 +108,7 @@ final class DateTimeZoneTest extends \PHPUnit_Framework_TestCase
      */
     public function filterEmptyValue()
     {
-        TZ::filter("\n\t");
+        DateTimeZone::filter("\n\t");
     }
 
     /**
@@ -125,6 +123,6 @@ final class DateTimeZoneTest extends \PHPUnit_Framework_TestCase
      */
     public function filterNonStringArgument()
     {
-        $timezone = TZ::filter(42);
+        $timezone = DateTimeZone::filter(42);
     }
 }

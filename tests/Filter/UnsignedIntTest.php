@@ -1,8 +1,6 @@
 <?php
 namespace DominionEnterprises\Filter;
 
-use DominionEnterprises\Filter\UnsignedInt as I;
-
 /**
  * @coversDefaultClass \DominionEnterprises\Filter\UnsignedInt
  */
@@ -16,7 +14,7 @@ final class UnsignedIntTest extends \PHPUnit_Framework_TestCase
      */
     public function filterMinValueNegative()
     {
-        I::filter('1', false, -1);
+        UnsignedInt::filter('1', false, -1);
     }
 
     /**
@@ -25,7 +23,7 @@ final class UnsignedIntTest extends \PHPUnit_Framework_TestCase
      */
     public function filterMinValueNullSuccess()
     {
-        $this->assertSame(1, I::filter('1', false, null));
+        $this->assertSame(1, UnsignedInt::filter('1', false, null));
     }
 
     /**
@@ -36,7 +34,7 @@ final class UnsignedIntTest extends \PHPUnit_Framework_TestCase
      */
     public function filterMinValueNullFail()
     {
-        I::filter('-1', false, null);
+        UnsignedInt::filter('-1', false, null);
     }
 
     /**
@@ -45,7 +43,7 @@ final class UnsignedIntTest extends \PHPUnit_Framework_TestCase
      */
     public function filterBasicUse()
     {
-        $this->assertSame(123, I::filter('123'));
+        $this->assertSame(123, UnsignedInt::filter('123'));
     }
 
     /**
@@ -54,7 +52,7 @@ final class UnsignedIntTest extends \PHPUnit_Framework_TestCase
      */
     public function filterAllowNullSuccess()
     {
-        $this->assertSame(null, I::filter(null, true));
+        $this->assertSame(null, UnsignedInt::filter(null, true));
     }
 
     /**
@@ -65,7 +63,7 @@ final class UnsignedIntTest extends \PHPUnit_Framework_TestCase
      */
     public function filterAllowNullFail()
     {
-        I::filter(null, false);
+        UnsignedInt::filter(null, false);
     }
 
     /**
@@ -76,7 +74,7 @@ final class UnsignedIntTest extends \PHPUnit_Framework_TestCase
      */
     public function filterMinValueFail()
     {
-        $this->assertSame(1, I::filter('0', false, 1));
+        $this->assertSame(1, UnsignedInt::filter('0', false, 1));
     }
 
     /**
@@ -87,6 +85,6 @@ final class UnsignedIntTest extends \PHPUnit_Framework_TestCase
      */
     public function filterMaxValueFail()
     {
-        I::filter('2', false, 0, 1);
+        UnsignedInt::filter('2', false, 0, 1);
     }
 }
