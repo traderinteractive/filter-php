@@ -135,6 +135,11 @@ final class Arrays
         $results = [];
         $errors = [];
         foreach ($values as $key => $item) {
+            if (!is_array($item)) {
+                $errors[] = "Value at position '{$key}' was not an array";
+                continue;
+            }
+
             list($status, $result, $error) = Filterer::filter($spec, $item);
             if (!$status) {
                 $errors[] = $error;
