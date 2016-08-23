@@ -224,11 +224,12 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
     public function ofArraysFail()
     {
         try {
-            Arrays::ofArrays([['key' => '1'], ['key' => 2], ['key' => 3]], ['key' => [['string']]]);
+            Arrays::ofArrays([['key' => '1'], ['key' => 2], ['key' => 3], 'key'], ['key' => [['string']]]);
             $this->fail();
         } catch (\Exception $e) {
             $expected = "Field 'key' with value '2' failed filtering, message 'Value '2' is not a string'\n";
-            $expected .= "Field 'key' with value '3' failed filtering, message 'Value '3' is not a string'";
+            $expected .= "Field 'key' with value '3' failed filtering, message 'Value '3' is not a string'\n";
+            $expected .= "Value at position '3' was not an array";
             $this->assertSame($expected, $e->getMessage());
         }
     }
