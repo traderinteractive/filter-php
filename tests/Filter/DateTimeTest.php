@@ -149,4 +149,29 @@ final class DateTimeTest extends \PHPUnit_Framework_TestCase
         $dateTime = DateTime::filter($now);
         $this->assertSame($now, $dateTime->getTimestamp());
     }
+
+    /**
+     * Verify behavior of format() when $format is not a string
+     *
+     * @test
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage $format is not a non-empty string
+     * @covers ::format
+     */
+    public function formatNonStringFormat()
+    {
+        DateTime::format(new \DateTime(), true);
+    }
+
+    /**
+     * Verify basic behavior of format().
+     *
+     * @test
+     * @covers ::format
+     */
+    public function format()
+    {
+        $now = new \DateTime();
+        $this->assertSame($now->format('Y-m-d H:i:s'), DateTime::format($now, 'Y-m-d H:i:s'));
+    }
 }
