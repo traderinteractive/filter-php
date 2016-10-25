@@ -16,6 +16,7 @@ final class Filterer
         'bool' => '\DominionEnterprises\Filter\Booleans::filter',
         'float' => '\DominionEnterprises\Filter\Floats::filter',
         'int' => '\DominionEnterprises\Filter\Ints::filter',
+        'bool-convert' => '\DominionEnterprises\Filter\Booleans::convert',
         'uint' => '\DominionEnterprises\Filter\UnsignedInt::filter',
         'string' => '\DominionEnterprises\Filter\Strings::filter',
         'ofScalars' => '\DominionEnterprises\Filter\Arrays::ofScalars',

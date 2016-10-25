@@ -93,4 +93,33 @@ final class BooleansTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertFalse(Booleans::filter('true', false, ['y', '1'], ['n', '0']));
     }
+
+    /**
+     * Verify basic behavior of convert().
+     *
+     * @test
+     * @covers ::convert
+     *
+     * @return void
+     */
+    public function convert()
+    {
+        $this->assertSame('yes', Booleans::convert(true, 'yes', 'no'));
+        $this->assertSame('bar', Booleans::convert(false, 'foo', 'bar'));
+    }
+
+    /**
+     * Verify behavior of convert() when $value is not boolean
+     *
+     * @test
+     * @covers ::convert
+     * @expectedException \Exception
+     * @expectedExceptionMessage $value was not a bool
+     *
+     * @return void
+     */
+    public function convertValueNotBool()
+    {
+        Booleans::convert('abc');
+    }
 }

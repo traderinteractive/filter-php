@@ -70,4 +70,24 @@ final class Booleans
             )
         );
     }
+
+    /**
+     * Filters the boolean $value to the given $true and $false cases
+     *
+     * @param boolean $value The boolean value to convert.
+     * @param mixed   $true  The value to return on the true case.
+     * @param mixed   $false The value to return on the false case.
+     *
+     * @return mixed
+     *
+     * @throws \Exception Thrown if $value is not a boolean
+     */
+    public static function convert($value, $true = 'true', $false = 'false')
+    {
+        if ($value !== false && $value !== true) {
+            throw new \Exception('$value was not a bool');
+        }
+
+        return $value ? $true : $false;
+    }
 }
