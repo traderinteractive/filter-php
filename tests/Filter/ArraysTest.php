@@ -172,11 +172,17 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
     public function ofScalarsFail()
     {
         try {
-            Arrays::ofScalars(['1', 2, 3], [['string']]);
+            Arrays::ofScalars(['1', [], new \StdClass], [['string']]);
             $this->fail();
         } catch (\Exception $e) {
-            $expected = "Field '1' with value '2' failed filtering, message 'Value '2' is not a string'\n";
-            $expected .= "Field '2' with value '3' failed filtering, message 'Value '3' is not a string'";
+            $expected = <<<TXT
+Field '1' with value 'array (
+)' failed filtering, message 'Value 'array (
+)' is not a string'
+Field '2' with value 'stdClass::__set_state(array(
+))' failed filtering, message 'Value 'stdClass::__set_state(array(
+))' is not a string'
+TXT;
             $this->assertSame($expected, $e->getMessage());
         }
     }
@@ -224,12 +230,22 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
     public function ofArraysFail()
     {
         try {
-            Arrays::ofArrays([['key' => '1'], ['key' => 2], ['key' => 3], 'key'], ['key' => [['string']]]);
+            Arrays::ofArrays(
+                [['key' => new \StdClass], ['key' => []], ['key' => null], 'key'],
+                ['key' => [['string']]]
+            );
             $this->fail();
         } catch (\Exception $e) {
-            $expected = "Field 'key' with value '2' failed filtering, message 'Value '2' is not a string'\n";
-            $expected .= "Field 'key' with value '3' failed filtering, message 'Value '3' is not a string'\n";
-            $expected .= "Value at position '3' was not an array";
+            $expected = <<<TXT
+Field 'key' with value 'stdClass::__set_state(array(
+))' failed filtering, message 'Value 'stdClass::__set_state(array(
+))' is not a string'
+Field 'key' with value 'array (
+)' failed filtering, message 'Value 'array (
+)' is not a string'
+Field 'key' with value 'NULL' failed filtering, message 'Value 'NULL' is not a string'
+Value at position '3' was not an array
+TXT;
             $this->assertSame($expected, $e->getMessage());
         }
     }
