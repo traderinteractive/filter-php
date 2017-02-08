@@ -7,14 +7,33 @@ namespace DominionEnterprises\Filter;
 final class StringsTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * Verify basic use of filter
+     *
      * @test
-     * @expectedException Exception
-     * @expectedExceptionMessage Value '1' is not a string
      * @covers ::filter
+     * @dataProvider filterData
+     *
+     * @return void
      */
-    public function filterNotString()
+    public function filter($input, $expected)
     {
-        Strings::filter(1);
+        $this->assertSame($expected, Strings::filter($input));
+    }
+
+    /**
+     * Data provider for basic filter tests
+     *
+     * @return array
+     */
+    public function filterData()
+    {
+        return [
+            'string' => ['abc', 'abc'],
+            'int' => [1, '1'],
+            'float' => [1.1, '1.1'],
+            'bool' => [true, '1'],
+            'object' => [new \SplFileInfo(__FILE__), __FILE__],
+        ];
     }
 
     /**

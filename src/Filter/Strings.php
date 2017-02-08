@@ -45,6 +45,14 @@ final class Strings
             return null;
         }
 
+        if (is_scalar($value)) {
+            $value = "{$value}";
+        }
+
+        if (is_object($value) && method_exists($value, '__toString')) {
+            $value = (string)$value;
+        }
+
         if (!is_string($value)) {
             throw new \Exception("Value '" . var_export($value, true) . "' is not a string");
         }
