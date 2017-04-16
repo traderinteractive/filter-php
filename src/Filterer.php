@@ -279,3 +279,10 @@ final class Filterer
         self::$filterAliases[$alias] = $filter;
     }
 }
+
+Filterer::registerAlias(
+    'email',
+    function($string) {
+        return filter_var($string, FILTER_VALIDATE_EMAIL);
+    }
+);
