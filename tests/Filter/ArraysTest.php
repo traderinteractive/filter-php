@@ -323,4 +323,36 @@ TXT;
     {
         $this->assertSame([1, 2, 3, 4, 5], Arrays::flatten([[1, 2], [[3, [4, 5]]]]));
     }
+
+    /**
+     * Verify the behavior of in() with callable haystack
+     *
+     * @test
+     * @covers ::in
+     *
+     * @return void
+     */
+    public function in_callableHayStack()
+    {
+        $callable = function () {
+            return ['foo', 'bar'];
+        };
+
+        $this->assertSame('bar', A::in('bar', $callable));
+    }
+
+    /**
+     * Verify the behavior of in() with invalid haystack
+     *
+     * @test
+     * @covers ::in
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Given $haystack was not an array or result from callable was not an array
+     *
+     * @return void
+     */
+    public function in_invalidHayStack()
+    {
+        A::in('foo', 'haystack');
+    }
 }
