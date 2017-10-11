@@ -37,4 +37,35 @@ final class UrlTest extends \PHPUnit_Framework_TestCase
     {
         Url::filter('www.example.com');
     }
+
+    /**
+     * @test
+     * @covers ::filter
+     */
+    public function filterNullPass()
+    {
+        $this->assertSame(null, Url::filter(null, true));
+    }
+
+    /**
+     * @test
+     * @expectedException Exception
+     * @expectedExceptionMessage Value 'NULL' is not a string
+     * @covers ::filter
+     */
+    public function filterNullFail()
+    {
+        Url::filter(null);
+    }
+
+    /**
+     * @test
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage $allowNull was not a boolean value
+     * @covers ::filter
+     */
+    public function filterAllowNullNotBoolean()
+    {
+        Url::filter('a', 5);
+    }
 }

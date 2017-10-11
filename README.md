@@ -214,7 +214,8 @@ assert($value === ['abc', 'def', 'ghi']);
 
 #### Url::filter
 Aliased in the filterer as `url`, this filter verifies that the argument is a URL string according to
-[RFC2396](http://www.faqs.org/rfcs/rfc2396).
+[RFC2396](http://www.faqs.org/rfcs/rfc2396). The second parameter can be set to `true` to allow
+null values through without an error (they will stay null and not get converted to false).
 
 The following checks that `$value` is a URL.
 ```php
