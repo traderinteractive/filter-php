@@ -25,9 +25,9 @@ final class Arrays
      *
      * @throws \InvalidArgumentException if $minCount was not an int
      * @throws \InvalidArgumentException if $maxCount was not an int
-     * @throws \Exception if $value is not an array
-     * @throws \Exception if $value count is less than $minCount
-     * @throws \Exception if $value count is greater than $maxCount
+     * @throws Exception if $value is not an array
+     * @throws Exception if $value count is less than $minCount
+     * @throws Exception if $value count is greater than $maxCount
      */
     public static function filter($value, $minCount = 1, $maxCount = PHP_INT_MAX)
     {
@@ -40,22 +40,22 @@ final class Arrays
         }
 
         if (!is_array($value)) {
-            throw new \Exception("Value '" . trim(var_export($value, true), "'") . "' is not an array");
+            throw new Exception("Value '" . trim(var_export($value, true), "'") . "' is not an array");
         }
 
         //optimization for default case
         if ($minCount === 1 && empty($value)) {
-            throw new \Exception('$value count of 0 is less than 1');
+            throw new Exception('$value count of 0 is less than 1');
         }
 
         $count = count($value);
 
         if ($count < $minCount) {
-            throw new \Exception("\$value count of {$count} is less than {$minCount}");
+            throw new Exception("\$value count of {$count} is less than {$minCount}");
         }
 
         if ($count > $maxCount) {
-            throw new \Exception("\$value count of {$count} is greater than {$maxCount}");
+            throw new Exception("\$value count of {$count} is greater than {$maxCount}");
         }
 
         return $value;
@@ -74,7 +74,7 @@ final class Arrays
      *
      * @see in_array()
      * @throws \InvalidArgumentException if $strict was not a bool
-     * @throws \Exception if $value is not in array $haystack
+     * @throws Exception if $value is not in array $haystack
      */
     public static function in($value, array $haystack, $strict = true)
     {
@@ -83,7 +83,7 @@ final class Arrays
         }
 
         if (!in_array($value, $haystack, $strict)) {
-            throw new \Exception(
+            throw new Exception(
                 "Value '" . trim(var_export($value, true), "'") . "' is not in array " . var_export($haystack, true)
             );
         }
@@ -101,7 +101,7 @@ final class Arrays
      *
      * @return array the filtered $values
      *
-     * @throws \Exception if any member of $values fails filtering
+     * @throws Exception if any member of $values fails filtering
      */
     public static function ofScalars(array $values, array $filters)
     {
@@ -112,7 +112,7 @@ final class Arrays
 
         list($status, $result, $error) = Filterer::filter($wrappedFilters, $values);
         if (!$status) {
-            throw new \Exception($error);
+            throw new Exception($error);
         }
 
         return $result;
@@ -128,7 +128,7 @@ final class Arrays
      *
      * @return array the filtered $values
      *
-     * @throws \Exception if any member of $values fails filtering
+     * @throws Exception if any member of $values fails filtering
      */
     public static function ofArrays(array $values, array $spec)
     {
@@ -150,7 +150,7 @@ final class Arrays
         }
 
         if (!empty($errors)) {
-            throw new \Exception(implode("\n", $errors));
+            throw new Exception(implode("\n", $errors));
         }
 
         return $results;
@@ -166,13 +166,13 @@ final class Arrays
      *
      * @return array the filtered $value
      *
-     * @throws \Exception if $value fails filtering
+     * @throws Exception if $value fails filtering
      */
     public static function ofArray(array $value, array $spec)
     {
         list($status, $result, $error) = Filterer::filter($spec, $value);
         if (!$status) {
-            throw new \Exception($error);
+            throw new Exception($error);
         }
 
         return $result;

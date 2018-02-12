@@ -47,7 +47,7 @@ final class StringsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      * @expectedExceptionMessage Value 'NULL' is not a string
      * @covers ::filter
      */
@@ -67,7 +67,7 @@ final class StringsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      * @covers ::filter
      */
     public function filterMinLengthFail()
@@ -86,7 +86,7 @@ final class StringsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      * @expectedExceptionMessage Value 'a' with length '1' is less than '0' or greater than '0'
      * @covers ::filter
      */
@@ -176,7 +176,7 @@ final class StringsTest extends \PHPUnit_Framework_TestCase
      * Verifies explode filter with a non-string value.
      *
      * @test
-     * @expectedException Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      * @expectedExceptionMessage Value 'true' is not a string
      * @covers ::explode
      */
@@ -189,7 +189,7 @@ final class StringsTest extends \PHPUnit_Framework_TestCase
      * Verifies explode filter with a non-string delimiter.
      *
      * @test
-     * @expectedException Exception
+     * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Delimiter '4' is not a non-empty string
      * @covers ::explode
      */
@@ -202,7 +202,7 @@ final class StringsTest extends \PHPUnit_Framework_TestCase
      * Verifies explode filter with an empty delimiter.
      *
      * @test
-     * @expectedException Exception
+     * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Delimiter '''' is not a non-empty string
      * @covers ::explode
      */

@@ -23,7 +23,7 @@ final class Url
      *
      * @return string The passed in $value.
      *
-     * @throws \Exception if the value did not pass validation.
+     * @throws Exception if the value did not pass validation.
      * @throws \InvalidArgumentException if one of the parameters was not correctly typed.
      */
     public static function filter($value, $allowNull = false)
@@ -37,12 +37,12 @@ final class Url
         }
 
         if (!is_string($value)) {
-            throw new \Exception("Value '" . var_export($value, true) . "' is not a string");
+            throw new Exception("Value '" . var_export($value, true) . "' is not a string");
         }
 
         $filteredUrl = filter_var($value, FILTER_VALIDATE_URL);
         if ($filteredUrl === false) {
-            throw new \Exception("Value '{$value}' is not a valid url");
+            throw new Exception("Value '{$value}' is not a valid url");
         }
 
         return $filteredUrl;

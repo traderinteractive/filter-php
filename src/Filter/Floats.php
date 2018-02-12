@@ -28,12 +28,12 @@ final class Floats
      * @throws \InvalidArgumentException if $minValue is not null and not a float
      * @throws \InvalidArgumentException if $maxValue is not null and not a float
      * @throws \InvalidArgumentException if $castInts is not a boolean
-     * @throws \Exception if $value does not pass is_numeric
-     * @throws \Exception if $value is hex format
-     * @throws \Exception if $value is not a string or float
-     * @throws \Exception if $value overflow or underflows
-     * @throws \Exception if $value is less than $minValue
-     * @throws \Exception if $value is greater than $maxValue
+     * @throws Exception if $value does not pass is_numeric
+     * @throws Exception if $value is hex format
+     * @throws Exception if $value is not a string or float
+     * @throws Exception if $value overflow or underflows
+     * @throws Exception if $value is less than $minValue
+     * @throws Exception if $value is greater than $maxValue
      */
     public static function filter($value, $allowNull = false, $minValue = null, $maxValue = null, $castInts = false)
     {
@@ -66,31 +66,31 @@ final class Floats
             $value = trim($value);
 
             if (!is_numeric($value)) {
-                throw new \Exception("{$value} does not pass is_numeric");
+                throw new Exception("{$value} does not pass is_numeric");
             }
 
             $value = strtolower($value);
 
             //This is the only case (that we know of) where is_numeric does not return correctly castable float
             if (strpos($value, 'x') !== false) {
-                throw new \Exception("{$value} is hex format");
+                throw new Exception("{$value} is hex format");
             }
 
             $valueFloat = (float)$value;
         } else {
-            throw new \Exception('"' . var_export($value, true) . '" $value is not a string');
+            throw new Exception('"' . var_export($value, true) . '" $value is not a string');
         }
 
         if (is_infinite($valueFloat)) {
-            throw new \Exception("{$value} overflow");
+            throw new Exception("{$value} overflow");
         }
 
         if ($minValue !== null && $valueFloat < $minValue) {
-            throw new \Exception("{$valueFloat} is less than {$minValue}");
+            throw new Exception("{$valueFloat} is less than {$minValue}");
         }
 
         if ($maxValue !== null && $valueFloat > $maxValue) {
-            throw new \Exception("{$valueFloat} is greater than {$maxValue}");
+            throw new Exception("{$valueFloat} is greater than {$maxValue}");
         }
 
         return $valueFloat;

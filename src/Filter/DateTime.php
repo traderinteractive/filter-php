@@ -17,7 +17,7 @@ class DateTime
      * @return \DateTime
      *
      * @throws \InvalidArgumentException Thrown if $allowNull was not a boolean value.
-     * @throws \Exception if the value did not pass validation.
+     * @throws Exception if the value did not pass validation.
      */
     public static function filter($value, $allowNull = false, \DateTimeZone $timezone = null)
     {
@@ -38,7 +38,7 @@ class DateTime
         }
 
         if (!is_string($value) || trim($value) == '') {
-            throw new \Exception('$value is not a non-empty string');
+            throw new Exception('$value is not a non-empty string');
         }
 
         return new \DateTime($value, $timezone);

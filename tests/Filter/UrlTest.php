@@ -18,7 +18,7 @@ final class UrlTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      * @expectedExceptionMessage Value '1' is not a string
      * @covers ::filter
      */
@@ -29,7 +29,7 @@ final class UrlTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      * @expectedExceptionMessage Value 'www.example.com' is not a valid url
      * @covers ::filter
      */
