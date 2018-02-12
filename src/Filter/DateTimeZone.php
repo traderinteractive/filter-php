@@ -15,7 +15,7 @@ class DateTimeZone
      * @return \DateTimeZone
      *
      * @throws \InvalidArgumentException Thrown if $allowNull was not a boolean value.
-     * @throws \Exception if the value did not pass validation.
+     * @throws Exception if the value did not pass validation.
      */
     public static function filter($value, $allowNull = false)
     {
@@ -32,9 +32,13 @@ class DateTimeZone
         }
 
         if (!is_string($value) || trim($value) == '') {
-            throw new \Exception('$value not a non-empty string');
+            throw new Exception('$value not a non-empty string');
         }
 
-        return new \DateTimeZone($value);
+        try {
+            return new \DateTimeZone($value);
+        } catch (\Exception $e) {
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
+        }
     }
 }

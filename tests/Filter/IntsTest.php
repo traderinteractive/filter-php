@@ -102,7 +102,7 @@ final class IntsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      * @expectedExceptionMessage "true" $value is not a string
      */
     public function filterNonStringOrInt()
@@ -113,7 +113,7 @@ final class IntsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      * @expectedExceptionMessage $value string length is zero
      */
     public function filterEmptyString()
@@ -124,7 +124,7 @@ final class IntsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      * @expectedExceptionMessage $value string length is zero
      */
     public function filterWhitespaceString()
@@ -141,7 +141,7 @@ final class IntsTest extends \PHPUnit_Framework_TestCase
         try {
             Ints::filter('123.4');
             $this->fail("No exception thrown");
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->assertSame(
                 "123.4 does not contain all digits, optionally prepended by a '+' or '-' and optionally surrounded by "
                 . "whitespace",
@@ -153,7 +153,7 @@ final class IntsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      */
     public function filterGreaterThanPhpIntMax()
     {
@@ -170,7 +170,7 @@ final class IntsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      */
     public function filterLessThanPhpIntMin()
     {
@@ -187,7 +187,7 @@ final class IntsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      * @expectedExceptionMessage -1 is less than 0
      */
     public function filterLessThanMin()
@@ -207,7 +207,7 @@ final class IntsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      * @expectedExceptionMessage 1 is greater than 0
      */
     public function filterGreaterThanMax()

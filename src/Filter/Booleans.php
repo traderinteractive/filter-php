@@ -25,8 +25,8 @@ final class Booleans
      * @return bool|null the filtered $value
      *
      * @throws \InvalidArgumentException if $allowNull is not a boolean
-     * @throws \Exception if $value is not a string
-     * @throws \Exception if $value is not 'true' or 'false' disregarding case and whitespace
+     * @throws Exception if $value is not a string
+     * @throws Exception if $value is not 'true' or 'false' disregarding case and whitespace
      */
     public static function filter(
         $value,
@@ -47,7 +47,7 @@ final class Booleans
         }
 
         if (!is_string($value)) {
-            throw new \Exception('"' . var_export($value, true) . '" $value is not a string');
+            throw new Exception('"' . var_export($value, true) . '" $value is not a string');
         }
 
         $value = trim($value);
@@ -62,7 +62,7 @@ final class Booleans
             return false;
         }
 
-        throw new \Exception(
+        throw new Exception(
             sprintf(
                 "%s is not '%s' disregarding case and whitespace",
                 $value,
@@ -80,12 +80,12 @@ final class Booleans
      *
      * @return mixed
      *
-     * @throws \Exception Thrown if $value is not a boolean
+     * @throws Exception Thrown if $value is not a boolean
      */
     public static function convert($value, $true = 'true', $false = 'false')
     {
         if ($value !== false && $value !== true) {
-            throw new \Exception('$value was not a bool');
+            throw new Exception('$value was not a bool');
         }
 
         return $value ? $true : $false;

@@ -24,7 +24,7 @@ final class Strings
      * @param int $maxLength Maximum length to allow for $value.
      * @return string|null The passed in $value.
      *
-     * @throws \Exception if the value did not pass validation.
+     * @throws Exception if the value did not pass validation.
      * @throws \InvalidArgumentException if one of the parameters was not correctly typed.
      */
     public static function filter($value, $allowNull = false, $minLength = 1, $maxLength = PHP_INT_MAX)
@@ -54,13 +54,13 @@ final class Strings
         }
 
         if (!is_string($value)) {
-            throw new \Exception("Value '" . var_export($value, true) . "' is not a string");
+            throw new Exception("Value '" . var_export($value, true) . "' is not a string");
         }
 
         $valueLength = strlen($value);
 
         if ($valueLength < $minLength || $valueLength > $maxLength) {
-            throw new \Exception(
+            throw new Exception(
                 sprintf(
                     "Value '%s' with length '%d' is less than '%d' or greater than '%d'",
                     $value,
@@ -83,13 +83,13 @@ final class Strings
      * @param string $delimiter The non-empty delimiter to explode on.
      * @return array The exploded values.
      *
-     * @throws \Exception if the value is not a string.
+     * @throws Exception if the value is not a string.
      * @throws \InvalidArgumentException if the delimiter does not pass validation.
      */
     public static function explode($value, $delimiter = ',')
     {
         if (!is_string($value)) {
-            throw new \Exception("Value '" . var_export($value, true) . "' is not a string");
+            throw new Exception("Value '" . var_export($value, true) . "' is not a string");
         }
 
         if (!is_string($delimiter) || empty($delimiter)) {

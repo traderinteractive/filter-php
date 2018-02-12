@@ -118,7 +118,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      * @expectedExceptionMessage "true" $value is not a string
      */
     public function filterNonStringOrFloat()
@@ -129,7 +129,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      * @exceptedExceptionMessage  does not pass is_numeric
      */
     public function filterEmptyString()
@@ -140,7 +140,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      * @expectedExceptionMessage  does not pass is_numeric
      */
     public function filterWhitespaceString()
@@ -151,7 +151,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      * @expectedExceptionMessage 123-4 does not pass is_numeric
      */
     public function filterNonDigitString()
@@ -162,7 +162,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      */
     public function filterHexString()
     {
@@ -172,7 +172,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      * @expectedExceptionMessage 1. 0 does not pass is_numeric
      */
     public function filterRogueSpaceStringAfterPeriod()
@@ -183,7 +183,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      * @expectedExceptionMessage 1 0 does not pass is_numeric
      */
     public function filterRogueSpaceStringBetweenDigits()
@@ -194,7 +194,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      * @expectedExceptionMessage 1e999999999999 overflow
      */
     public function filterOverflow()
@@ -205,7 +205,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      * @expectedExceptionMessage -1e999999999999 overflow
      */
     public function filterUnderflow()
@@ -216,7 +216,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      * @expectedExceptionMessage -1 is less than 0
      */
     public function filterLessThanMin()
@@ -236,7 +236,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      * @expectedExceptionMessage 1 is greater than 0
      */
     public function filterGreaterThanMax()
@@ -265,7 +265,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      * @expectedExceptionMessage "1" $value is not a string
      */
     public function filterCastIntsIsFalse()

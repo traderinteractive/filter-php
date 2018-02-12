@@ -57,7 +57,7 @@ final class DateTimeZoneTest extends \PHPUnit_Framework_TestCase
      *
      * @test
      * @covers ::filter
-     * @expectedException \Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      * @expectedExceptionMessage $value not a non-empty string
      *
      * @return void
@@ -86,7 +86,7 @@ final class DateTimeZoneTest extends \PHPUnit_Framework_TestCase
      *
      * @test
      * @covers ::filter
-     * @expectedException \Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      * @expectedExceptionMessage Unknown or bad timezone (INVALID)
      */
     public function filterInvalidName()
@@ -101,7 +101,7 @@ final class DateTimeZoneTest extends \PHPUnit_Framework_TestCase
      *
      * @test
      * @covers ::filter
-     * @expectedException \Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      * @expectedExceptionMessage $value not a non-empty string
      *
      * @return void
@@ -116,7 +116,7 @@ final class DateTimeZoneTest extends \PHPUnit_Framework_TestCase
      *
      * @test
      * @covers ::filter
-     * @expectedException \Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      * @expectedExceptionMessage $value not a non-empty string
      *
      * @return void

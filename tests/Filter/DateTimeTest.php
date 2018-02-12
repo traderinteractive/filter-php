@@ -47,7 +47,7 @@ final class DateTimeTest extends \PHPUnit_Framework_TestCase
      *
      * @test
      * @covers ::filter
-     * @expectedException \Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      * @expectedExceptionMessage $value is not a non-empty string
      *
      * @return void
@@ -64,7 +64,7 @@ final class DateTimeTest extends \PHPUnit_Framework_TestCase
      *
      * @test
      * @covers ::filter
-     * @expectedException \Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      * @expectedExceptionMessage $value is not a non-empty string
      *
      * @return void
@@ -103,7 +103,7 @@ final class DateTimeTest extends \PHPUnit_Framework_TestCase
      *
      * @test
      * @covers ::filter
-     * @expectedException \Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      * @expectedExceptionMessage $value is not a non-empty string
      */
     public function filterNullNotAllowed()

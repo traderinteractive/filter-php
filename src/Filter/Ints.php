@@ -28,14 +28,14 @@ final class Ints
      * @throws \InvalidArgumentException if $allowNull is not a boolean
      * @throws \InvalidArgumentException if $minValue is not null and not an int
      * @throws \InvalidArgumentException if $maxValue is not an int
-     * @throws \Exception if $value string length is zero
-     * @throws \Exception if $value does not contain all digits, optionally prepended by a '+' or '-' and optionally
+     * @throws Exception if $value string length is zero
+     * @throws Exception if $value does not contain all digits, optionally prepended by a '+' or '-' and optionally
      *                    surrounded by whitespace
-     * @throws \Exception if $value was greater than a max int of PHP_INT_MAX
-     * @throws \Exception if $value was less than a min int of ~PHP_INT_MAX
-     * @throws \Exception if $value is not a string
-     * @throws \Exception if $value is less than $minValue
-     * @throws \Exception if $value is greater than $maxValue
+     * @throws Exception if $value was greater than a max int of PHP_INT_MAX
+     * @throws Exception if $value was less than a min int of ~PHP_INT_MAX
+     * @throws Exception if $value is not a string
+     * @throws Exception if $value is less than $minValue
+     * @throws Exception if $value is greater than $maxValue
      */
     public static function filter($value, $allowNull = false, $minValue = null, $maxValue = PHP_INT_MAX)
     {
@@ -62,7 +62,7 @@ final class Ints
             $value = trim($value);
 
             if (strlen($value) === 0) {
-                throw new \Exception('$value string length is zero');
+                throw new Exception('$value string length is zero');
             }
 
             $stringToCheckDigits = $value;
@@ -72,7 +72,7 @@ final class Ints
             }
 
             if (!ctype_digit($stringToCheckDigits)) {
-                throw new \Exception(
+                throw new Exception(
                     "{$value} does not contain all digits, optionally prepended by a '+' or '-' and optionally "
                     . "surrounded by whitespace"
                 );
@@ -83,24 +83,24 @@ final class Ints
             $casted = (int)$value;
 
             if ($casted === PHP_INT_MAX && $value !== (string)PHP_INT_MAX) {
-                throw new \Exception("{$value} was greater than a max int of " . PHP_INT_MAX);
+                throw new Exception("{$value} was greater than a max int of " . PHP_INT_MAX);
             }
 
             if ($casted === $phpIntMin && $value !== (string)$phpIntMin) {
-                throw new \Exception("{$value} was less than a min int of {$phpIntMin}");
+                throw new Exception("{$value} was less than a min int of {$phpIntMin}");
             }
 
             $valueInt = $casted;
         } else {
-            throw new \Exception('"' . var_export($value, true) . '" $value is not a string');
+            throw new Exception('"' . var_export($value, true) . '" $value is not a string');
         }
 
         if ($minValue !== null && $valueInt < $minValue) {
-            throw new \Exception("{$valueInt} is less than {$minValue}");
+            throw new Exception("{$valueInt} is less than {$minValue}");
         }
 
         if ($valueInt > $maxValue) {
-            throw new \Exception("{$valueInt} is greater than {$maxValue}");
+            throw new Exception("{$valueInt} is greater than {$maxValue}");
         }
 
         return $valueInt;

@@ -46,7 +46,7 @@ final class BooleansTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      * @expectedExceptionMessage "1" $value is not a string
      */
     public function filterNonStringAndNonBoolValue()
@@ -57,7 +57,7 @@ final class BooleansTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      * @expectedExceptionMessage invalid is not 'true' or 'false' disregarding case and whitespace
      */
     public function filterInvalidString()
@@ -86,7 +86,7 @@ final class BooleansTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      * @expectedExceptionMessage true is not 'y' or '1' or 'n' or '0' disregarding case and whitespace
      */
     public function filterCustomBoolValuesInvalidString()
@@ -113,7 +113,7 @@ final class BooleansTest extends \PHPUnit_Framework_TestCase
      *
      * @test
      * @covers ::convert
-     * @expectedException \Exception
+     * @expectedException \DominionEnterprises\Filter\Exception
      * @expectedExceptionMessage $value was not a bool
      *
      * @return void
