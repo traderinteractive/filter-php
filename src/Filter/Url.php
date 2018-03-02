@@ -18,17 +18,13 @@ final class Url
      * @param mixed $value The value to filter.
      * @param bool $allowNull True to allow nulls through, and false (default) if nulls should not be allowed.
      *
-     * @return string The passed in $value.
+     * @return string|null The passed in $value.
      *
      * @throws Exception if the value did not pass validation.
      * @throws \InvalidArgumentException if one of the parameters was not correctly typed.
      */
-    public static function filter($value, $allowNull = false)
+    public static function filter($value, bool $allowNull = false)
     {
-        if ($allowNull !== false && $allowNull !== true) {
-            throw new \InvalidArgumentException('$allowNull was not a boolean value');
-        }
-
         if ($allowNull === true && $value === null) {
             return null;
         }

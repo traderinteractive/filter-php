@@ -61,15 +61,4 @@ final class UrlTest extends TestCase
     {
         Url::filter(null);
     }
-
-    /**
-     * @test
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage $allowNull was not a boolean value
-     * @covers ::filter
-     */
-    public function filterAllowNullNotBoolean()
-    {
-        Url::filter('a', 5);
-    }
 }
