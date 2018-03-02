@@ -64,28 +64,6 @@ final class ArraysTest extends TestCase
 
     /**
      * @test
-     * @covers ::filter
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $minCount was not an int
-     */
-    public function filterMinCountNotInt()
-    {
-        Arrays::filter([], true);
-    }
-
-    /**
-     * @test
-     * @covers ::filter
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $maxCount was not an int
-     */
-    public function filterMaxCountNotInt()
-    {
-        Arrays::filter([], 0, true);
-    }
-
-    /**
-     * @test
      * @covers ::in
      */
     public function inPassStrict()
@@ -128,17 +106,6 @@ final class ArraysTest extends TestCase
     public function inPassNotStrict()
     {
         $this->assertSame('0', Arrays::in('0', [0], false));
-    }
-
-    /**
-     * @test
-     * @covers ::in
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $strict was not a bool
-     */
-    public function inStrictNotBool()
-    {
-        Arrays::in('boo', [], 1);
     }
 
     /**

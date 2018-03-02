@@ -1,6 +1,7 @@
 <?php
 
 namespace TraderInteractive;
+
 use Exception;
 
 /**
