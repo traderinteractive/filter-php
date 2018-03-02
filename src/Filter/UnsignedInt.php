@@ -2,8 +2,6 @@
 
 namespace TraderInteractive\Filter;
 
-use TraderInteractive\Filter\Ints;
-
 /**
  * A collection of filters for unsigned integers.
  */
@@ -14,9 +12,16 @@ final class UnsignedInt
      *
      * @see \TraderInteractive\Filter\Ints::filter()
      *
-     * @throws \InvalidArgumentException if $minValue was not greater or equal to zero
+     * @param mixed $value     The value to be checked.
+     * @param bool  $allowNull Indicates if the value can be null.
+     * @param int   $minValue  Indicates the minimum acceptable value.
+     * @param int   $maxValue  Indicates the maximum acceptable value.
+     *
+     * @return int|null
+     *
+     * @throws Exception
      */
-    public static function filter($value, $allowNull = false, $minValue = null, $maxValue = PHP_INT_MAX)
+    public static function filter($value, bool $allowNull = false, int $minValue = null, int $maxValue = PHP_INT_MAX)
     {
         if ($minValue === null) {
             $minValue = 0;
