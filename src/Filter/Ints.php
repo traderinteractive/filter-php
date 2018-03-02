@@ -34,20 +34,8 @@ final class Ints
      * @throws Exception if $value is less than $minValue
      * @throws Exception if $value is greater than $maxValue
      */
-    public static function filter($value, $allowNull = false, $minValue = null, $maxValue = PHP_INT_MAX)
+    public static function filter($value, bool $allowNull = false, int $minValue = null, int $maxValue = PHP_INT_MAX)
     {
-        if ($allowNull !== false && $allowNull !== true) {
-            throw new \InvalidArgumentException('"' . var_export($allowNull, true) . '" $allowNull was not a bool');
-        }
-
-        if ($minValue !== null && !is_int($minValue)) {
-            throw new \InvalidArgumentException('"' . var_export($minValue, true) . '" $minValue was not an int');
-        }
-
-        if (!is_int($maxValue)) {
-            throw new \InvalidArgumentException('"' . var_export($maxValue, true) . '" $maxValue was not an int');
-        }
-
         if ($allowNull === true && $value === null) {
             return null;
         }

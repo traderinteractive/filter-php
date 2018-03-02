@@ -12,39 +12,6 @@ final class IntsTest extends TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage "1" $allowNull was not a bool
-     */
-    public function filterAllowNullIsNotBool()
-    {
-        Ints::filter('1', 1);
-    }
-
-    /**
-     * @test
-     * @covers ::filter
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage "'boo'" $minValue was not an int
-     */
-    public function filterMinValueNotInt()
-    {
-        Ints::filter('1', false, 'boo');
-    }
-
-    /**
-     * @test
-     * @covers ::filter
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage "1.5" $maxValue was not an int
-     */
-    public function filterMaxValueNotInt()
-    {
-        Ints::filter('1', false, 1, 1.5);
-    }
-
-    /**
-     * @test
-     * @covers ::filter
      */
     public function filterAllowNullIsTrueAndNullValue()
     {
