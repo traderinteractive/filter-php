@@ -29,17 +29,6 @@ final class BooleansTest extends TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $allowNull was not a bool
-     */
-    public function filterAllowNullIsNotBool()
-    {
-        Booleans::filter('true', 1);
-    }
-
-    /**
-     * @test
-     * @covers ::filter
      */
     public function filterAllowNullIsTrueAndNullValue()
     {
@@ -109,20 +98,5 @@ final class BooleansTest extends TestCase
     {
         $this->assertSame('yes', Booleans::convert(true, 'yes', 'no'));
         $this->assertSame('bar', Booleans::convert(false, 'foo', 'bar'));
-    }
-
-    /**
-     * Verify behavior of convert() when $value is not boolean
-     *
-     * @test
-     * @covers ::convert
-     * @expectedException \TraderInteractive\Filter\Exception
-     * @expectedExceptionMessage $value was not a bool
-     *
-     * @return void
-     */
-    public function convertValueNotBool()
-    {
-        Booleans::convert('abc');
     }
 }
