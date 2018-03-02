@@ -1,11 +1,11 @@
 <?php
 
-namespace DominionEnterprises;
+namespace TraderInteractive;
 
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \DominionEnterprises\Filterer
+ * @coversDefaultClass \TraderInteractive\Filterer
  */
 final class FiltererTest extends TestCase
 {
@@ -149,12 +149,12 @@ final class FiltererTest extends TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filterer::filter
+     * @covers \TraderInteractive\Filterer::filter
      */
     public function filterFail()
     {
         $result = Filterer::filter(
-            ['fieldOne' => [['\DominionEnterprises\FiltererTest::failingFilter']]],
+            ['fieldOne' => [['\TraderInteractive\FiltererTest::failingFilter']]],
             ['fieldOne' => 'valueOne']
         );
         $this->assertSame(
@@ -180,7 +180,7 @@ final class FiltererTest extends TestCase
     public function chainFail()
     {
         $result = Filterer::filter(
-            ['fieldOne' => [['trim'], ['\DominionEnterprises\FiltererTest::failingFilter']]],
+            ['fieldOne' => [['trim'], ['\TraderInteractive\FiltererTest::failingFilter']]],
             ['fieldOne' => 'the value']
         );
         $this->assertSame(
@@ -210,8 +210,8 @@ final class FiltererTest extends TestCase
     {
         $result = Filterer::filter(
             [
-                'fieldOne' => [['\DominionEnterprises\FiltererTest::failingFilter']],
-                'fieldTwo' => [['\DominionEnterprises\FiltererTest::failingFilter']],
+                'fieldOne' => [['\TraderInteractive\FiltererTest::failingFilter']],
+                'fieldTwo' => [['\TraderInteractive\FiltererTest::failingFilter']],
             ],
             ['fieldOne' => 'value one', 'fieldTwo' => 'value two']
         );
@@ -406,7 +406,7 @@ final class FiltererTest extends TestCase
         $result = Filterer::filter(
             [
                 'fieldOne' => [
-                    ['\DominionEnterprises\FiltererTest::failingFilter'],
+                    ['\TraderInteractive\FiltererTest::failingFilter'],
                     'error' => 'My custom error message'
                 ],
             ],

@@ -1,11 +1,11 @@
 <?php
 
-namespace DominionEnterprises\Filter;
+namespace TraderInteractive\Filter;
 
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \DominionEnterprises\Filter\Booleans
+ * @coversDefaultClass \TraderInteractive\Filter\Booleans
  */
 final class BooleansTest extends TestCase
 {
@@ -49,7 +49,7 @@ final class BooleansTest extends TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage "1" $value is not a string
      */
     public function filterNonStringAndNonBoolValue()
@@ -60,7 +60,7 @@ final class BooleansTest extends TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage invalid is not 'true' or 'false' disregarding case and whitespace
      */
     public function filterInvalidString()
@@ -89,7 +89,7 @@ final class BooleansTest extends TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage true is not 'y' or '1' or 'n' or '0' disregarding case and whitespace
      */
     public function filterCustomBoolValuesInvalidString()
@@ -116,7 +116,7 @@ final class BooleansTest extends TestCase
      *
      * @test
      * @covers ::convert
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage $value was not a bool
      *
      * @return void

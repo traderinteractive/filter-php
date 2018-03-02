@@ -1,11 +1,11 @@
 <?php
 
-namespace DominionEnterprises\Filter;
+namespace TraderInteractive\Filter;
 
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \DominionEnterprises\Filter\Email
+ * @coversDefaultClass \TraderInteractive\Filter\Email
  */
 final class EmailTest extends TestCase
 {

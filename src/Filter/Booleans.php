@@ -1,9 +1,6 @@
 <?php
-/**
- * Defines the DominionEnterprises\Filter\Booleans class.
- */
 
-namespace DominionEnterprises\Filter;
+namespace TraderInteractive\Filter;
 
 /**
  * A collection of filters for booleans.
@@ -15,7 +12,7 @@ final class Booleans
      *
      * $value must be a bool or 'true' or 'false' disregarding case and whitespace.
      *
-     * The return value is the bool, as expected by the \DominionEnterprises\Filterer class.
+     * The return value is the bool, as expected by the \TraderInteractive\Filterer class.
      *
      * @param string|bool $value the value to filter to a boolean
      * @param bool $allowNull Set to true if NULL values are allowed. The filtered result of a NULL value is NULL

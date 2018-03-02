@@ -1,11 +1,11 @@
 <?php
 
-namespace DominionEnterprises\Filter;
+namespace TraderInteractive\Filter;
 
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \DominionEnterprises\Filter\Ints
+ * @coversDefaultClass \TraderInteractive\Filter\Ints
  */
 final class IntsTest extends TestCase
 {
@@ -105,7 +105,7 @@ final class IntsTest extends TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage "true" $value is not a string
      */
     public function filterNonStringOrInt()
@@ -116,7 +116,7 @@ final class IntsTest extends TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage $value string length is zero
      */
     public function filterEmptyString()
@@ -127,7 +127,7 @@ final class IntsTest extends TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage $value string length is zero
      */
     public function filterWhitespaceString()
@@ -156,7 +156,7 @@ final class IntsTest extends TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      */
     public function filterGreaterThanPhpIntMax()
     {
@@ -173,7 +173,7 @@ final class IntsTest extends TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      */
     public function filterLessThanPhpIntMin()
     {
@@ -190,7 +190,7 @@ final class IntsTest extends TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage -1 is less than 0
      */
     public function filterLessThanMin()
@@ -210,7 +210,7 @@ final class IntsTest extends TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage 1 is greater than 0
      */
     public function filterGreaterThanMax()

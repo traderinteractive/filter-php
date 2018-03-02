@@ -1,13 +1,13 @@
 #filter-php
 A filtering implementation for verifying correct data and performing typical modifications to data.
 
-[![Build Status](http://img.shields.io/travis/dominionenterprises/filter-php.svg?style=flat)](https://travis-ci.org/dominionenterprises/filter-php)
-[![Scrutinizer Code Quality](http://img.shields.io/scrutinizer/g/dominionenterprises/filter-php.svg?style=flat)](https://scrutinizer-ci.com/g/dominionenterprises/filter-php/)
-[![Code Coverage](http://img.shields.io/coveralls/dominionenterprises/filter-php.svg?style=flat)](https://coveralls.io/r/dominionenterprises/filter-php)
+[![Build Status](http://img.shields.io/travis/traderinteractive/filter-php.svg?style=flat)](https://travis-ci.org/traderinteractive/filter-php)
+[![Scrutinizer Code Quality](http://img.shields.io/scrutinizer/g/traderinteractive/filter-php.svg?style=flat)](https://scrutinizer-ci.com/g/traderinteractive/filter-php/)
+[![Code Coverage](http://img.shields.io/coveralls/traderinteractive/filter-php.svg?style=flat)](https://coveralls.io/r/traderinteractive/filter-php)
 
-[![Latest Stable Version](http://img.shields.io/packagist/v/dominionenterprises/filter.svg?style=flat)](https://packagist.org/packages/dominionenterprises/filter)
-[![Total Downloads](http://img.shields.io/packagist/dt/dominionenterprises/filter.svg?style=flat)](https://packagist.org/packages/dominionenterprises/filter)
-[![License](http://img.shields.io/packagist/l/dominionenterprises/filter.svg?style=flat)](https://packagist.org/packages/dominionenterprises/filter)
+[![Latest Stable Version](http://img.shields.io/packagist/v/traderinteractive/filter.svg?style=flat)](https://packagist.org/packages/traderinteractive/filter)
+[![Total Downloads](http://img.shields.io/packagist/dt/traderinteractive/filter.svg?style=flat)](https://packagist.org/packages/traderinteractive/filter)
+[![License](http://img.shields.io/packagist/l/traderinteractive/filter.svg?style=flat)](https://packagist.org/packages/traderinteractive/filter)
 
 ##Features
  * Compact, readable specification
@@ -34,7 +34,7 @@ $appendFilter = new AppendFilter();
 
 $trimFunc = function($val) { return trim($val); };
 
-list($status, $result, $error, $unknowns) = DominionEnterprises\Filterer::filter(
+list($status, $result, $error, $unknowns) = TraderInteractive\Filterer::filter(
     [
         'field one' => [[$trimFunc], ['substr', 0, 3], [[$appendFilter, 'filter'], 'boo']],
         'field two' => ['required' => true, ['floatval']],
@@ -68,14 +68,10 @@ array(0) {
 
 ##Composer
 To add the library as a local, per-project dependency use [Composer](http://getcomposer.org)! Simply add a dependency on
-`dominionenterprises/filter` to your project's `composer.json` file such as:
+`traderinteractive/filter` to your project's `composer.json` file such as:
 
-```json
-{
-    "require": {
-        "dominionenterprises/filter": "~1.0"
-    }
-}
+```sh
+composer require traderinteractive/filter
 ```
 
 ##Documentation
@@ -117,7 +113,7 @@ Aliased in the filterer as `in`, this filter is a wrapper around `in_array` incl
 
 The following does a strict check for `$value` against the 3 accepted values.
 ```php
-\DominionEnterprises\Filter\Arrays::in($value, ['a', 'b', 'c']);
+\TraderInteractive\Filter\Arrays::in($value, ['a', 'b', 'c']);
 ```
 
 #### Arrays::filter
@@ -126,7 +122,7 @@ default bounds are 1+, so an empty array fails by default.
 
 The following checks that the `$value` is an array with exactly 3 elements.
 ```php
-\DominionEnterprises\Filter\Arrays::filter($value, 3, 3);
+\TraderInteractive\Filter\Arrays::filter($value, 3, 3);
 ```
 
 #### Arrays::ofScalars
@@ -135,7 +131,7 @@ given filters (given in the same format as used by `Filterer::filter`.
 
 The following checks that `$value` is an array of unsigned integers.
 ```php
-$value = \DominionEnterprises\Filter\Arrays::ofScalars($value, [['uint']]);
+$value = \TraderInteractive\Filter\Arrays::ofScalars($value, [['uint']]);
 ```
 
 #### Arrays::ofArrays
@@ -145,7 +141,7 @@ filters (given in the same format as used by `Filterer::filter`.
 The following checks that `$value` is an array of items that each have an `id` key with a numeric value.  No other keys would be allowed.  For
 example, the following is valid input: `[['id' => '1'], ['id' => '2']]`.
 ```php
-$value = \DominionEnterprises\Filter\Arrays::ofArrays($value, ['id' => [['uint']]]);
+$value = \TraderInteractive\Filter\Arrays::ofArrays($value, ['id' => [['uint']]]);
 ```
 
 #### Arrays::ofArray
@@ -156,7 +152,7 @@ essentially a flipped version of `Filterer::filter` that allows for testing nest
 Aliased in the filterer as `flatten`, this filter flattens a multi-dimensional array to a single dimension.  The order of values will be
 maintained, but the keys themselves will not.  For example:
 ```php
-$value = \DominionEnterprises\Filter\Arrays::flatten([[1, 2], [3, [4, 5]]]);
+$value = \TraderInteractive\Filter\Arrays::flatten([[1, 2], [3, [4, 5]]]);
 assert($value === [1, 2, 3, 4, 5]);
 ```
 
@@ -167,7 +163,7 @@ are lists of strings for true values and false values.  By default, the strings 
 
 The following example converts `$value` to a boolean allowing the strings "on" and "of".
 ```php
-$enabled = \DominionEnterprises\Filter\Booleans::filter($value, false, ['on'], ['off']);
+$enabled = \TraderInteractive\Filter\Booleans::filter($value, false, ['on'], ['off']);
 ```
 #### Booleans::convert
 Aliased in the filterer as `bool-convert`, this filter will convert a given boolean value into the provided true or false conditions. By default the
@@ -175,7 +171,7 @@ return values are the strings 'true' and 'false'
 
 The following converts the boolean `$value` to either 'yes' or 'no'
 ```php
-$answer = \DominionEnterprises\Filter\Booleans::convert($value, 'yes', 'no');
+$answer = \TraderInteractive\Filter\Booleans::convert($value, 'yes', 'no');
 ```
 
 #### Floats/Ints/UnsignedInt::filter
@@ -191,7 +187,7 @@ validation.
 
 The following checks that `$value` is an integer between 1 and 100 inclusive, and returns the integer (after casting it if it was a string).
 ```php
-$value = \DominionEnterprises\Filter\UnsignedInt::filter($value, false, 1, 100);
+$value = \TraderInteractive\Filter\UnsignedInt::filter($value, false, 1, 100);
 ```
 
 #### Strings::filter
@@ -201,14 +197,14 @@ string. The default bounds are 1+, so an empty string fails by default.
 
 The following checks that `$value` is a non-empty string.
 ```php
-\DominionEnterprises\Filter\Strings::filter($value);
+\TraderInteractive\Filter\Strings::filter($value);
 ```
 
 #### Strings::explode
 Aliased in the filterer as `explode`, this filter is essentially a wrapper around the built-in [`explode`](http://www.php.net/explode) method
 with the value first in order to work with the `Filterer`.  It also defaults to using `,` as a delimiter.  For example:
 ```php
-$value = \DominionEnterprises\Filter\Strings::explode('abc,def,ghi');
+$value = \TraderInteractive\Filter\Strings::explode('abc,def,ghi');
 assert($value === ['abc', 'def', 'ghi']);
 ```
 
@@ -219,7 +215,7 @@ null values through without an error (they will stay null and not get converted 
 
 The following checks that `$value` is a URL.
 ```php
-\DominionEnterprises\Filter\Url::filter($value);
+\TraderInteractive\Filter\Url::filter($value);
 ```
 
 #### Email::filter
@@ -227,7 +223,7 @@ Aliased in the filterer as `email`, this filter verifies that the argument is an
 
 The following checks that `$value` is an email.
 ```php
-\DominionEnterprises\Filter\Email::filter($value);
+\TraderInteractive\Filter\Email::filter($value);
 ```
 
 #### DateTime::filter
@@ -235,7 +231,7 @@ Aliased in the filterer as `date`, this will filter the value as a `\DateTime` o
 
 The following checks that `$value` is a date/time.
 ```php
-$dateTime = \DominionEnterprises\Filter\DateTime::filter('2014-02-04T11:55:00-0500');
+$dateTime = \TraderInteractive\Filter\DateTime::filter('2014-02-04T11:55:00-0500');
 ```
 
 #### DateTime::format
@@ -243,7 +239,7 @@ Aliased in the filterer as `date-format`, this will filter a given `\DateTime' v
 
 The following returns formatted string for a given `\DateTime` `$value`
 ```php
-$formatted = \DominionEnterprises\Filter\DateTime::format($value, 'Y-m-d H:i:s');
+$formatted = \TraderInteractive\Filter\DateTime::format($value, 'Y-m-d H:i:s');
 ```
 
 #### DateTimeZone::filter
@@ -251,14 +247,14 @@ Aliased in the filterer as `date`, this will filter the value as a `\DateTimeZon
 
 The following checks that `$value` is a timezone
 ```php
-$timezone = \DominionEnterprises\Filter\DateTimeZone::filter('America/New_York');
+$timezone = \TraderInteractive\Filter\DateTimeZone::filter('America/New_York');
 ```
 
 ##Contact
 Developers may be contacted at:
 
- * [Pull Requests](https://github.com/dominionenterprises/filter-php/pulls)
- * [Issues](https://github.com/dominionenterprises/filter-php/issues)
+ * [Pull Requests](https://github.com/traderinteractive/filter-php/pulls)
+ * [Issues](https://github.com/traderinteractive/filter-php/issues)
 
 ##Project Build
 With a checkout of the code get [Composer](http://getcomposer.org) in your PATH and run:

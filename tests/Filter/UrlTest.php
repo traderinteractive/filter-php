@@ -1,11 +1,11 @@
 <?php
 
-namespace DominionEnterprises\Filter;
+namespace TraderInteractive\Filter;
 
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \DominionEnterprises\Filter\Url
+ * @coversDefaultClass \TraderInteractive\Filter\Url
  */
 final class UrlTest extends TestCase
 {
@@ -21,7 +21,7 @@ final class UrlTest extends TestCase
 
     /**
      * @test
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage Value '1' is not a string
      * @covers ::filter
      */
@@ -32,7 +32,7 @@ final class UrlTest extends TestCase
 
     /**
      * @test
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage Value 'www.example.com' is not a valid url
      * @covers ::filter
      */

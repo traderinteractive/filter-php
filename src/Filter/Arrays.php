@@ -1,11 +1,8 @@
 <?php
-/**
- * Defines the DominionEnterprises\Filter\Arrays class.
- */
 
-namespace DominionEnterprises\Filter;
+namespace TraderInteractive\Filter;
 
-use DominionEnterprises\Filterer;
+use TraderInteractive\Filterer;
 
 /**
  * A collection of filters for arrays.
@@ -15,7 +12,7 @@ final class Arrays
     /**
      * Filter an array by throwing if not an array or count not in the min/max range.
      *
-     * The return value is the $value, as expected by the \DominionEnterprises\Filterer class.
+     * The return value is the $value, as expected by the \TraderInteractive\Filterer class.
      *
      * @param mixed $value the value to filter
      * @param int $minCount the minimum allowed count in the array
@@ -64,7 +61,7 @@ final class Arrays
     /**
      * Filter an array by throwing if $value is not in $haystack adhering to $strict.
      *
-     * The return value is the $value, as expected by the \DominionEnterprises\Filterer class.
+     * The return value is the $value, as expected by the \TraderInteractive\Filterer class.
      *
      * @param mixed $value value to search for
      * @param array $haystack array to search in

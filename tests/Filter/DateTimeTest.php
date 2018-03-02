@@ -1,13 +1,13 @@
 <?php
 
-namespace DominionEnterprises\Filter;
+namespace TraderInteractive\Filter;
 
 use PHPUnit\Framework\TestCase;
 
 /**
- * Unit tests for the \DominionEnterprises\Filter\DateTime class.
+ * Unit tests for the \TraderInteractive\Filter\DateTime class.
  *
- * @coversDefaultClass \DominionEnterprises\Filter\DateTime
+ * @coversDefaultClass \TraderInteractive\Filter\DateTime
  */
 final class DateTimeTest extends TestCase
 {
@@ -50,7 +50,7 @@ final class DateTimeTest extends TestCase
      *
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage $value is not a non-empty string
      *
      * @return void
@@ -67,7 +67,7 @@ final class DateTimeTest extends TestCase
      *
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage $value is not a non-empty string
      *
      * @return void
@@ -106,7 +106,7 @@ final class DateTimeTest extends TestCase
      *
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage $value is not a non-empty string
      */
     public function filterNullNotAllowed()

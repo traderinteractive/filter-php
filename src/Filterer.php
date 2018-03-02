@@ -1,9 +1,6 @@
 <?php
-/**
- * Defines the DominionEnterprises\Filterer class.
- */
 
-namespace DominionEnterprises;
+namespace TraderInteractive;
 
 /**
  * Class to filter an array of input.
@@ -11,24 +8,24 @@ namespace DominionEnterprises;
 final class Filterer
 {
     private static $filterAliases = [
-        'in' => '\DominionEnterprises\Filter\Arrays::in',
-        'array' => '\DominionEnterprises\Filter\Arrays::filter',
-        'bool' => '\DominionEnterprises\Filter\Booleans::filter',
-        'float' => '\DominionEnterprises\Filter\Floats::filter',
-        'int' => '\DominionEnterprises\Filter\Ints::filter',
-        'bool-convert' => '\DominionEnterprises\Filter\Booleans::convert',
-        'uint' => '\DominionEnterprises\Filter\UnsignedInt::filter',
-        'string' => '\DominionEnterprises\Filter\Strings::filter',
-        'ofScalars' => '\DominionEnterprises\Filter\Arrays::ofScalars',
-        'ofArrays' => '\DominionEnterprises\Filter\Arrays::ofArrays',
-        'ofArray' => '\DominionEnterprises\Filter\Arrays::ofArray',
-        'url' => '\DominionEnterprises\Filter\Url::filter',
-        'email' => '\DominionEnterprises\Filter\Email::filter',
-        'explode' => '\DominionEnterprises\Filter\Strings::explode',
-        'flatten' => '\DominionEnterprises\Filter\Arrays::flatten',
-        'date' => '\DominionEnterprises\Filter\DateTime::filter',
-        'date-format' => '\DominionEnterprises\Filter\DateTime::format',
-        'timezone' => '\DominionEnterprises\Filter\DateTimeZone::filter',
+        'in' => '\TraderInteractive\Filter\Arrays::in',
+        'array' => '\TraderInteractive\Filter\Arrays::filter',
+        'bool' => '\TraderInteractive\Filter\Booleans::filter',
+        'float' => '\TraderInteractive\Filter\Floats::filter',
+        'int' => '\TraderInteractive\Filter\Ints::filter',
+        'bool-convert' => '\TraderInteractive\Filter\Booleans::convert',
+        'uint' => '\TraderInteractive\Filter\UnsignedInt::filter',
+        'string' => '\TraderInteractive\Filter\Strings::filter',
+        'ofScalars' => '\TraderInteractive\Filter\Arrays::ofScalars',
+        'ofArrays' => '\TraderInteractive\Filter\Arrays::ofArrays',
+        'ofArray' => '\TraderInteractive\Filter\Arrays::ofArray',
+        'url' => '\TraderInteractive\Filter\Url::filter',
+        'email' => '\TraderInteractive\Filter\Email::filter',
+        'explode' => '\TraderInteractive\Filter\Strings::explode',
+        'flatten' => '\TraderInteractive\Filter\Arrays::flatten',
+        'date' => '\TraderInteractive\Filter\DateTime::filter',
+        'date-format' => '\TraderInteractive\Filter\DateTime::format',
+        'timezone' => '\TraderInteractive\Filter\DateTimeZone::filter',
     ];
 
     /**
@@ -46,7 +43,7 @@ final class Filterer
      *
      * $trimFunc = function($val) { return trim($val); };
      *
-     * list($status, $result, $error, $unknowns) = DominionEnterprises\Filterer::filter(
+     * list($status, $result, $error, $unknowns) = TraderInteractive\Filterer::filter(
      *     [
      *         'field one' => [[$trimFunc], ['substr', 0, 3], [[$appendFilter, 'filter'], 'boo']],
      *         'field two' => ['required' => true, ['floatval']],

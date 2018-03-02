@@ -1,11 +1,11 @@
 <?php
 
-namespace DominionEnterprises\Filter;
+namespace TraderInteractive\Filter;
 
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \DominionEnterprises\Filter\Arrays
+ * @coversDefaultClass \TraderInteractive\Filter\Arrays
  */
 final class ArraysTest extends TestCase
 {
@@ -21,7 +21,7 @@ final class ArraysTest extends TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage Value '1' is not an array
      */
     public function filterFailNotArray()
@@ -32,7 +32,7 @@ final class ArraysTest extends TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage $value count of 0 is less than 1
      */
     public function filterFailEmpty()
@@ -43,7 +43,7 @@ final class ArraysTest extends TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage $value count of 1 is less than 2
      */
     public function filterCountLessThanMin()
@@ -54,7 +54,7 @@ final class ArraysTest extends TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage $value count of 2 is greater than 1
      */
     public function filterCountGreaterThanMax()

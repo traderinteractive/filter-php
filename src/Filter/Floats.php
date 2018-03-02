@@ -1,9 +1,6 @@
 <?php
-/**
- * Defines the DominionEnterprises\Filter\Floats class.
- */
 
-namespace DominionEnterprises\Filter;
+namespace TraderInteractive\Filter;
 
 /**
  * A collection of filters for floats.
@@ -13,7 +10,7 @@ final class Floats
     /**
      * Filters $value to a float strictly.
      *
-     * The return value is the float, as expected by the \DominionEnterprises\Filterer class.
+     * The return value is the float, as expected by the \TraderInteractive\Filterer class.
      *
      * @param string|float $value the value to filter to a float
      * @param bool $allowNull Set to true if NULL values are allowed. The filtered result of a NULL value is NULL

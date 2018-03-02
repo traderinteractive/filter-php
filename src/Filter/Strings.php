@@ -1,9 +1,6 @@
 <?php
-/**
- * Defines the DominionEnterprises\Filter\Strings class.
- */
 
-namespace DominionEnterprises\Filter;
+namespace TraderInteractive\Filter;
 
 /**
  * A collection of filters for strings.
@@ -16,7 +13,7 @@ final class Strings
      * Verify that the passed in value  is a string.  By default, nulls are not allowed, and the length is restricted
      * between 1 and PHP_INT_MAX.  These parameters can be overwritten for custom behavior.
      *
-     * The return value is the string, as expected by the \DominionEnterprises\Filterer class.
+     * The return value is the string, as expected by the \TraderInteractive\Filterer class.
      *
      * @param mixed $value The value to filter.
      * @param bool $allowNull True to allow nulls through, and false (default) if nulls should not be allowed.

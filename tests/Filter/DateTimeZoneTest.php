@@ -1,13 +1,13 @@
 <?php
 
-namespace DominionEnterprises\Filter;
+namespace TraderInteractive\Filter;
 
 use PHPUnit\Framework\TestCase;
 
 /**
- * Unit tests for the \DominionEnterprises\Filter\DateTimeZone class.
+ * Unit tests for the \TraderInteractive\Filter\DateTimeZone class.
  *
- * @coversDefaultClass \DominionEnterprises\Filter\DateTimeZone
+ * @coversDefaultClass \TraderInteractive\Filter\DateTimeZone
  */
 final class DateTimeZoneTest extends TestCase
 {
@@ -60,7 +60,7 @@ final class DateTimeZoneTest extends TestCase
      *
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage $value not a non-empty string
      *
      * @return void
@@ -89,7 +89,7 @@ final class DateTimeZoneTest extends TestCase
      *
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage Unknown or bad timezone (INVALID)
      */
     public function filterInvalidName()
@@ -104,7 +104,7 @@ final class DateTimeZoneTest extends TestCase
      *
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage $value not a non-empty string
      *
      * @return void
@@ -119,7 +119,7 @@ final class DateTimeZoneTest extends TestCase
      *
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage $value not a non-empty string
      *
      * @return void

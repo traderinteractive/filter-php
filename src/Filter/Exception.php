@@ -1,6 +1,6 @@
 <?php
 
-namespace DominionEnterprises\Filter;
+namespace TraderInteractive\Filter;
 
 class Exception extends \Exception
 {

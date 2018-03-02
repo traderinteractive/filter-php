@@ -1,9 +1,6 @@
 <?php
-/**
- * Defines the DominionEnterprises\Filter\Url class.
- */
 
-namespace DominionEnterprises\Filter;
+namespace TraderInteractive\Filter;
 
 /**
  * A collection of filters for urls.
@@ -15,7 +12,7 @@ final class Url
      *
      * Filters value as URL (according to » http://www.faqs.org/rfcs/rfc2396)
      *
-     * The return value is the url, as expected by the \DominionEnterprises\Filterer class.
+     * The return value is the url, as expected by the \TraderInteractive\Filterer class.
      * By default, nulls are not allowed.
      *
      * @param mixed $value The value to filter.

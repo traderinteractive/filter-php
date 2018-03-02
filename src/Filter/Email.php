@@ -1,9 +1,6 @@
 <?php
-/**
- * Defines the DominionEnterprises\Filter\Email class.
- */
 
-namespace DominionEnterprises\Filter;
+namespace TraderInteractive\Filter;
 
 /**
  * A collection of filters for emails.
@@ -13,7 +10,7 @@ final class Email
     /**
      * Filter an email
      *
-     * The return value is the email, as expected by the \DominionEnterprises\Filterer class.
+     * The return value is the email, as expected by the \TraderInteractive\Filterer class.
      *
      * @param mixed $value The value to filter.
      *

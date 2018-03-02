@@ -1,9 +1,6 @@
 <?php
-/**
- * Defines the DominionEnterprises\Filter\Ints class.
- */
 
-namespace DominionEnterprises\Filter;
+namespace TraderInteractive\Filter;
 
 /**
  * A collection of filters for integers.
@@ -16,7 +13,7 @@ final class Ints
      * $value must be an int or contain all digits, optionally prepended by a '+' or '-' and optionally surrounded by
      * whitespace to pass the filter.
      *
-     * The return value is the int, as expected by the \DominionEnterprises\Filterer class.
+     * The return value is the int, as expected by the \TraderInteractive\Filterer class.
      *
      * @param string|int $value the value to make an integer
      * @param bool $allowNull Set to true if NULL values are allowed. The filtered result of a NULL value is NULL

@@ -1,5 +1,6 @@
 <?php
-namespace DominionEnterprises\Filter;
+
+namespace TraderInteractive\Filter;
 
 /**
  * A collection of filters for filtering strings into \DateTimeZone objects.

@@ -1,11 +1,11 @@
 <?php
 
-namespace DominionEnterprises\Filter;
+namespace TraderInteractive\Filter;
 
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \DominionEnterprises\Filter\Strings
+ * @coversDefaultClass \TraderInteractive\Filter\Strings
  */
 final class StringsTest extends TestCase
 {
@@ -50,7 +50,7 @@ final class StringsTest extends TestCase
 
     /**
      * @test
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage Value 'NULL' is not a string
      * @covers ::filter
      */
@@ -70,7 +70,7 @@ final class StringsTest extends TestCase
 
     /**
      * @test
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @covers ::filter
      */
     public function filterMinLengthFail()
@@ -89,7 +89,7 @@ final class StringsTest extends TestCase
 
     /**
      * @test
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage Value 'a' with length '1' is less than '0' or greater than '0'
      * @covers ::filter
      */
@@ -179,7 +179,7 @@ final class StringsTest extends TestCase
      * Verifies explode filter with a non-string value.
      *
      * @test
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage Value 'true' is not a string
      * @covers ::explode
      */

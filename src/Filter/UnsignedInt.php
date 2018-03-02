@@ -1,11 +1,8 @@
 <?php
-/**
- * Defines the DominionEnterprises\Filter\UnsignedInt class.
- */
 
-namespace DominionEnterprises\Filter;
+namespace TraderInteractive\Filter;
 
-use DominionEnterprises\Filter\Ints;
+use TraderInteractive\Filter\Ints;
 
 /**
  * A collection of filters for unsigned integers.
@@ -15,7 +12,7 @@ final class UnsignedInt
     /**
      * Filters $value to an unsigned integer strictly.
      *
-     * @see \DominionEnterprises\Filter\Ints::filter()
+     * @see \TraderInteractive\Filter\Ints::filter()
      *
      * @throws \InvalidArgumentException if $minValue was not greater or equal to zero
      */

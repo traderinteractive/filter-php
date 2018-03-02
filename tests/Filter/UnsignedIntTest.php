@@ -1,11 +1,11 @@
 <?php
 
-namespace DominionEnterprises\Filter;
+namespace TraderInteractive\Filter;
 
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \DominionEnterprises\Filter\UnsignedInt
+ * @coversDefaultClass \TraderInteractive\Filter\UnsignedInt
  */
 final class UnsignedIntTest extends TestCase
 {
@@ -32,7 +32,7 @@ final class UnsignedIntTest extends TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage -1 is less than 0
      */
     public function filterMinValueNullFail()
@@ -61,7 +61,7 @@ final class UnsignedIntTest extends TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage "NULL" $value is not a string
      */
     public function filterAllowNullFail()
@@ -72,7 +72,7 @@ final class UnsignedIntTest extends TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage 0 is less than 1
      */
     public function filterMinValueFail()
@@ -83,7 +83,7 @@ final class UnsignedIntTest extends TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage 2 is greater than 1
      */
     public function filterMaxValueFail()
