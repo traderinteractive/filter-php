@@ -94,13 +94,11 @@ final class DateTimeZoneTest extends TestCase
      */
     public function filterInvalidName()
     {
-        $timezone = DateTimeZone::filter('INVALID');
+        DateTimeZone::filter('INVALID');
     }
 
     /**
      * Verify behavior of filter() $value is a string with only whitespace.
-     *
-     * @param mixed $value The value to be filtered.
      *
      * @test
      * @covers ::filter
@@ -126,6 +124,6 @@ final class DateTimeZoneTest extends TestCase
      */
     public function filterNonStringArgument()
     {
-        $timezone = DateTimeZone::filter(42);
+        DateTimeZone::filter(42);
     }
 }

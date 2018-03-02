@@ -25,7 +25,7 @@ final class EmailTest extends TestCase
      * @expectedExceptionMessage Value '1' is not a string
      * @covers ::filter
      */
-    public function filterNonstring()
+    public function filterNonString()
     {
         Email::filter(1);
     }

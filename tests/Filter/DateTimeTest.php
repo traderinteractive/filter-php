@@ -46,8 +46,6 @@ final class DateTimeTest extends TestCase
     /**
      * Verify behavior of filter() when $value is a string with only whitespace.
      *
-     * @param mixed $value The value to be filtered.
-     *
      * @test
      * @covers ::filter
      * @expectedException \TraderInteractive\Filter\Exception
@@ -62,8 +60,6 @@ final class DateTimeTest extends TestCase
 
     /**
      * Verify behavior of filter() when $value is not a string or integer.
-     *
-     * @param mixed $value The value to be filtered.
      *
      * @test
      * @covers ::filter

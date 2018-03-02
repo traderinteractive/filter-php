@@ -2,6 +2,7 @@
 
 namespace TraderInteractive\Filter;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -16,7 +17,11 @@ final class StringsTest extends TestCase
      * @covers ::filter
      * @dataProvider filterData
      *
+     * @param mixed $input    The input.
+     * @param mixed $expected The expected value(s).
+     *
      * @return void
+     * @throws Exception
      */
     public function filter($input, $expected)
     {

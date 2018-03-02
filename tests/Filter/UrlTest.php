@@ -2,6 +2,7 @@
 
 namespace TraderInteractive\Filter;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -25,7 +26,7 @@ final class UrlTest extends TestCase
      * @expectedExceptionMessage Value '1' is not a string
      * @covers ::filter
      */
-    public function filterNonstring()
+    public function filterNonString()
     {
         Url::filter(1);
     }
