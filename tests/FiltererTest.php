@@ -354,17 +354,6 @@ final class FiltererTest extends TestCase
     /**
      * @test
      * @covers ::registerAlias
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage $overwrite was not a bool
-     */
-    public function registerAliasOverwriteNotBool()
-    {
-        Filterer::registerAlias('lower', 'strtolower', 'foo');
-    }
-
-    /**
-     * @test
-     * @covers ::registerAlias
      * @expectedException Exception
      * @expectedExceptionMessage Alias 'upper' exists
      */

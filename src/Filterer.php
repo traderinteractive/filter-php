@@ -1,6 +1,7 @@
 <?php
 
 namespace TraderInteractive;
+use Exception;
 
 /**
  * Class to filter an array of input.
@@ -92,14 +93,14 @@ final class Filterer
      * @return array on success [true, $input filtered, null, array of unknown fields]
      *     on error [false, null, 'error message', array of unknown fields]
      *
-     * @throws \Exception
+     * @throws Exception
      * @throws \InvalidArgumentException if 'allowUnknowns' option was not a bool
      * @throws \InvalidArgumentException if 'defaultRequired' option was not a bool
      * @throws \InvalidArgumentException if filters for a field was not a array
      * @throws \InvalidArgumentException if a filter for a field was not a array
      * @throws \InvalidArgumentException if 'required' for a field was not a bool
      */
-    public static function filter(array $spec, array $input, array $options = [])
+    public static function filter(array $spec, array $input, array $options = []) : array
     {
         $options += ['allowUnknowns' => false, 'defaultRequired' => false];
 
@@ -136,8 +137,8 @@ final class Filterer
                 unset($filters['error']);//unset so its not used as a filter
             }
 
-            unset($filters['required']);//doesnt matter if required since we have this one
-            unset($filters['default']);//doesnt matter if there is a default since we have a value
+            unset($filters['required']);//doesn't matter if required since we have this one
+            unset($filters['default']);//doesn't matter if there is a default since we have a value
             foreach ($filters as $filter) {
                 if (!is_array($filter)) {
                     throw new \InvalidArgumentException("filter for field '{$field}' was not a array");
@@ -153,7 +154,7 @@ final class Filterer
                 }
 
                 if (!is_callable($function)) {
-                    throw new \Exception(
+                    throw new Exception(
                         "Function '" . trim(var_export($function, true), "'") . "' for field '{$field}' is not callable"
                     );
                 }
@@ -161,7 +162,7 @@ final class Filterer
                 array_unshift($filter, $value);
                 try {
                     $value = call_user_func_array($function, $filter);
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $error = $customError;
                     if ($error === null) {
                         $error = sprintf(
@@ -219,7 +220,7 @@ final class Filterer
      *
      * @return array array where keys are aliases and values pass is_callable().
      */
-    public static function getFilterAliases()
+    public static function getFilterAliases() : array
     {
         return self::$filterAliases;
     }
@@ -230,7 +231,7 @@ final class Filterer
      * @param array $aliases array where keys are aliases and values pass is_callable().
      * @return void
      *
-     * @throws \Exception Thrown if any of the given $aliases is not valid. @see registerAlias()
+     * @throws Exception Thrown if any of the given $aliases is not valid. @see registerAlias()
      */
     public static function setFilterAliases(array $aliases)
     {
@@ -240,7 +241,7 @@ final class Filterer
             foreach ($aliases as $alias => $callback) {
                 self::registerAlias($alias, $callback);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             self::$filterAliases = $originalAliases;
             throw $e;
         }
@@ -257,9 +258,9 @@ final class Filterer
      *
      * @throws \InvalidArgumentException if $alias was not a string or int
      * @throws \InvalidArgumentException if $overwrite was not a bool
-     * @throws \Exception if $overwrite is false and $alias exists
+     * @throws Exception if $overwrite is false and $alias exists
      */
-    public static function registerAlias($alias, callable $filter, $overwrite = false)
+    public static function registerAlias($alias, callable $filter, bool $overwrite = false)
     {
         if (!is_string($alias) && !is_int($alias)) {
             throw new \InvalidArgumentException('$alias was not a string or int');
@@ -270,7 +271,7 @@ final class Filterer
         }
 
         if (array_key_exists($alias, self::$filterAliases) && !$overwrite) {
-            throw new \Exception("Alias '{$alias}' exists");
+            throw new Exception("Alias '{$alias}' exists");
         }
 
         self::$filterAliases[$alias] = $filter;
