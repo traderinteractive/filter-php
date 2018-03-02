@@ -1,10 +1,13 @@
 <?php
+
 namespace DominionEnterprises\Filter;
+
+use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \DominionEnterprises\Filter\UnsignedInt
  */
-final class UnsignedIntTest extends \PHPUnit_Framework_TestCase
+final class UnsignedIntTest extends TestCase
 {
     /**
      * @test

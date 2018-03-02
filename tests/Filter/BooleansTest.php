@@ -1,10 +1,13 @@
 <?php
+
 namespace DominionEnterprises\Filter;
+
+use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \DominionEnterprises\Filter\Booleans
  */
-final class BooleansTest extends \PHPUnit_Framework_TestCase
+final class BooleansTest extends TestCase
 {
     /**
      * @test

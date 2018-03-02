@@ -1,10 +1,13 @@
 <?php
+
 namespace DominionEnterprises\Filter;
+
+use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \DominionEnterprises\Filter\Floats
  */
-final class FloatsTest extends \PHPUnit_Framework_TestCase
+final class FloatsTest extends TestCase
 {
     /**
      * @test

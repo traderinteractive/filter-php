@@ -1,12 +1,15 @@
 <?php
+
 namespace DominionEnterprises\Filter;
+
+use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for the \DominionEnterprises\Filter\DateTime class.
  *
  * @coversDefaultClass \DominionEnterprises\Filter\DateTime
  */
-final class DateTimeTest extends \PHPUnit_Framework_TestCase
+final class DateTimeTest extends TestCase
 {
     /**
      * Verify basic usage of filter().

@@ -1,10 +1,13 @@
 <?php
+
 namespace DominionEnterprises\Filter;
+
+use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \DominionEnterprises\Filter\Strings
  */
-final class StringsTest extends \PHPUnit_Framework_TestCase
+final class StringsTest extends TestCase
 {
     /**
      * Verify basic use of filter

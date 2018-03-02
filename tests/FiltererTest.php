@@ -2,10 +2,12 @@
 
 namespace DominionEnterprises;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * @coversDefaultClass \DominionEnterprises\Filterer
  */
-final class FiltererTest extends \PHPUnit_Framework_TestCase
+final class FiltererTest extends TestCase
 {
     /**
      * @test

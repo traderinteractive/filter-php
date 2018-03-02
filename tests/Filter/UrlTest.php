@@ -1,10 +1,13 @@
 <?php
+
 namespace DominionEnterprises\Filter;
+
+use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \DominionEnterprises\Filter\Url
  */
-final class UrlTest extends \PHPUnit_Framework_TestCase
+final class UrlTest extends TestCase
 {
     /**
      * @test

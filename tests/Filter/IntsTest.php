@@ -1,10 +1,13 @@
 <?php
+
 namespace DominionEnterprises\Filter;
+
+use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \DominionEnterprises\Filter\Ints
  */
-final class IntsTest extends \PHPUnit_Framework_TestCase
+final class IntsTest extends TestCase
 {
     /**
      * @test

@@ -1,10 +1,13 @@
 <?php
+
 namespace DominionEnterprises\Filter;
+
+use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \DominionEnterprises\Filter\Email
  */
-final class EmailTest extends \PHPUnit_Framework_TestCase
+final class EmailTest extends TestCase
 {
     /**
      * @test
