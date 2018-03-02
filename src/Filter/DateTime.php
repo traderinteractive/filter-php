@@ -1,6 +1,7 @@
 <?php
 
 namespace TraderInteractive\Filter;
+
 use DateTimeInterface;
 use DateTimeZone;
 use DateTime as DateTimeStandard;
