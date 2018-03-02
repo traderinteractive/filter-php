@@ -12,39 +12,6 @@ final class FloatsTest extends TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage "1" $allowNull was not a bool
-     */
-    public function filterAllowNullIsNotBool()
-    {
-        Floats::filter('1', 1);
-    }
-
-    /**
-     * @test
-     * @covers ::filter
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage "'boo'" $minValue was not a float
-     */
-    public function filterMinValueNotFloat()
-    {
-        Floats::filter('1', false, 'boo');
-    }
-
-    /**
-     * @test
-     * @covers ::filter
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage "1" $maxValue was not a float
-     */
-    public function filterMaxValueNotFloat()
-    {
-        Floats::filter('1', false, 1.0, 1);
-    }
-
-    /**
-     * @test
-     * @covers ::filter
      */
     public function filterAllowNullIsTrueAndNullValue()
     {
@@ -274,16 +241,5 @@ final class FloatsTest extends TestCase
     public function filterCastIntsIsFalse()
     {
         Floats::filter(1, false, null, null, false);
-    }
-
-    /**
-     * @test
-     * @covers ::filter
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage "1" $castInts was not a bool
-     */
-    public function filterCastIntsIsNotBool()
-    {
-        Floats::filter('1', false, null, null, 1);
     }
 }
