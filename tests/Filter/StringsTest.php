@@ -106,23 +106,12 @@ final class StringsTest extends TestCase
     /**
      * @test
      * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage $allowNull was not a boolean value
-     * @covers ::filter
-     */
-    public function filterAllowNullNotBoolean()
-    {
-        Strings::filter('a', 5);
-    }
-
-    /**
-     * @test
-     * @expectedException InvalidArgumentException
      * @expectedExceptionMessage $minLength was not a positive integer value
      * @covers ::filter
      */
     public function filterMinLengthNotInteger()
     {
-        Strings::filter('a', false, 5.2);
+        Strings::filter('a', false, -1);
     }
 
     /**
@@ -133,7 +122,7 @@ final class StringsTest extends TestCase
      */
     public function filterMaxLengthNotInteger()
     {
-        Strings::filter('a', false, 1, 5.2);
+        Strings::filter('a', false, 1, -1);
     }
 
     /**
@@ -178,32 +167,6 @@ final class StringsTest extends TestCase
     public function explodeCustomDelimiter()
     {
         $this->assertSame(['a', 'b', 'c', 'd,e'], Strings::explode('a b c d,e', ' '));
-    }
-
-    /**
-     * Verifies explode filter with a non-string value.
-     *
-     * @test
-     * @expectedException \TraderInteractive\Filter\Exception
-     * @expectedExceptionMessage Value 'true' is not a string
-     * @covers ::explode
-     */
-    public function explodeNonStringValue()
-    {
-        Strings::explode(true);
-    }
-
-    /**
-     * Verifies explode filter with a non-string delimiter.
-     *
-     * @test
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Delimiter '4' is not a non-empty string
-     * @covers ::explode
-     */
-    public function explodeNonStringDelimiter()
-    {
-        Strings::explode('test', 4);
     }
 
     /**

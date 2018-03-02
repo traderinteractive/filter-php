@@ -24,17 +24,13 @@ final class Strings
      * @throws Exception if the value did not pass validation.
      * @throws \InvalidArgumentException if one of the parameters was not correctly typed.
      */
-    public static function filter($value, $allowNull = false, $minLength = 1, $maxLength = PHP_INT_MAX)
+    public static function filter($value, bool $allowNull = false, int $minLength = 1, int $maxLength = PHP_INT_MAX)
     {
-        if ($allowNull !== false && $allowNull !== true) {
-            throw new \InvalidArgumentException('$allowNull was not a boolean value');
-        }
-
-        if (!is_int($minLength) || $minLength < 0) {
+        if ($minLength < 0) {
             throw new \InvalidArgumentException('$minLength was not a positive integer value');
         }
 
-        if (!is_int($maxLength) || $maxLength < 0) {
+        if ($maxLength < 0) {
             throw new \InvalidArgumentException('$maxLength was not a positive integer value');
         }
 
@@ -80,16 +76,11 @@ final class Strings
      * @param string $delimiter The non-empty delimiter to explode on.
      * @return array The exploded values.
      *
-     * @throws Exception if the value is not a string.
      * @throws \InvalidArgumentException if the delimiter does not pass validation.
      */
-    public static function explode($value, $delimiter = ',')
+    public static function explode(string $value, string $delimiter = ',')
     {
-        if (!is_string($value)) {
-            throw new Exception("Value '" . var_export($value, true) . "' is not a string");
-        }
-
-        if (!is_string($delimiter) || empty($delimiter)) {
+        if (empty($delimiter)) {
             throw new \InvalidArgumentException(
                 "Delimiter '" . var_export($delimiter, true) . "' is not a non-empty string"
             );
