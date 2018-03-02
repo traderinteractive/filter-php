@@ -28,21 +28,6 @@ final class DateTimeZoneTest extends TestCase
     }
 
     /**
-     * Verify behavior of filter() when $allowNull is not true or false.
-     *
-     * @test
-     * @covers ::filter
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $allowNull was not a boolean value
-     *
-     * @return void
-     */
-    public function filterAllowNullNotBoolean()
-    {
-        DateTimeZone::filter('America/New_York', 5);
-    }
-
-    /**
      * Verify behavior of filter() when $allowNull is true and $value is null.
      *
      * @test

@@ -13,17 +13,13 @@ class DateTimeZone
      * @param mixed   $value     The value to be filtered.
      * @param boolean $allowNull True to allow nulls through, and false (default) if nulls should not be allowed.
      *
-     * @return \DateTimeZone
+     * @return \DateTimeZone|null
      *
      * @throws \InvalidArgumentException Thrown if $allowNull was not a boolean value.
      * @throws Exception if the value did not pass validation.
      */
-    public static function filter($value, $allowNull = false)
+    public static function filter($value, bool $allowNull = false)
     {
-        if ($allowNull !== false && $allowNull !== true) {
-            throw new \InvalidArgumentException('$allowNull was not a boolean value');
-        }
-
         if ($value === null && $allowNull) {
             return null;
         }
