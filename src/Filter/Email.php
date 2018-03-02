@@ -18,7 +18,7 @@ final class Email
      *
      * @throws Exception if the value did not pass validation.
      */
-    public static function filter($value)
+    public static function filter($value) : string
     {
         if (!is_string($value)) {
             throw new Exception("Value '" . var_export($value, true) . "' is not a string");
