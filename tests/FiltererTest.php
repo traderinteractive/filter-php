@@ -2,7 +2,10 @@
 
 namespace TraderInteractive;
 
+use Exception;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use StdClass;
 
 /**
  * @coversDefaultClass \TraderInteractive\Filterer
@@ -149,7 +152,7 @@ final class FiltererTest extends TestCase
 
     /**
      * @test
-     * @covers \TraderInteractive\Filterer::filter
+     * @covers ::filter
      */
     public function filterFail()
     {
@@ -340,7 +343,7 @@ final class FiltererTest extends TestCase
     /**
      * @test
      * @covers ::registerAlias
-     * @expectedException \InvalidArgumentException
+     * @expectedException InvalidArgumentException
      * @expectedExceptionMessage $alias was not a string or int
      */
     public function registerAliasAliasNotString()
@@ -351,7 +354,7 @@ final class FiltererTest extends TestCase
     /**
      * @test
      * @covers ::registerAlias
-     * @expectedException \InvalidArgumentException
+     * @expectedException InvalidArgumentException
      * @expectedExceptionMessage $overwrite was not a bool
      */
     public function registerAliasOverwriteNotBool()
@@ -362,7 +365,7 @@ final class FiltererTest extends TestCase
     /**
      * @test
      * @covers ::registerAlias
-     * @expectedException \Exception
+     * @expectedException Exception
      * @expectedExceptionMessage Alias 'upper' exists
      */
     public function registerExistingAliasOverwriteFalse()
@@ -383,9 +386,9 @@ final class FiltererTest extends TestCase
         $this->assertSame(['upper' => 'ucfirst', 'lower' => 'strtolower'], Filterer::getFilterAliases());
     }
 
-    public static function failingFilter($val)
+    public static function failingFilter()
     {
-        throw new \Exception('i failed');
+        throw new Exception('i failed');
     }
 
     public static function passingFilter($value)
@@ -423,7 +426,7 @@ final class FiltererTest extends TestCase
      *
      * @test
      * @covers ::filter
-     * @expectedException \InvalidArgumentException
+     * @expectedException InvalidArgumentException
      * @expectedExceptionMessage error for field 'fieldOne' was not a non-empty string
      *
      * @return void
@@ -431,7 +434,7 @@ final class FiltererTest extends TestCase
     public function filterWithNonStringError()
     {
         Filterer::filter(
-            ['fieldOne' => [['strtoupper'], 'error' => new \StdClass()]],
+            ['fieldOne' => [['strtoupper'], 'error' => new StdClass()]],
             ['fieldOne' => 'valueOne']
         );
     }
@@ -441,7 +444,7 @@ final class FiltererTest extends TestCase
      *
      * @test
      * @covers ::filter
-     * @expectedException \InvalidArgumentException
+     * @expectedException InvalidArgumentException
      * @expectedExceptionMessage error for field 'fieldOne' was not a non-empty string
      *
      * @return void
