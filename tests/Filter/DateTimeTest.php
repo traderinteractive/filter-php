@@ -74,19 +74,6 @@ final class DateTimeTest extends TestCase
     }
 
     /**
-     * Verify behavior of filter() when $allowNull is not a boolean.
-     *
-     * @test
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $allowNull was not a boolean value
-     * @covers ::filter
-     */
-    public function filterAllowNullNotBoolean()
-    {
-        DateTime::filter('n/a', 5);
-    }
-
-    /**
      * Verify behavior of filter() when null is given for $value and $allowNull is true.
      *
      * @test
@@ -147,19 +134,6 @@ final class DateTimeTest extends TestCase
         $now = time();
         $dateTime = DateTime::filter($now);
         $this->assertSame($now, $dateTime->getTimestamp());
-    }
-
-    /**
-     * Verify behavior of format() when $format is not a string
-     *
-     * @test
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $format is not a non-empty string
-     * @covers ::format
-     */
-    public function formatNonStringFormat()
-    {
-        DateTime::format(new \DateTime(), true);
     }
 
     /**
