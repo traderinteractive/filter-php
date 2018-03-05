@@ -136,7 +136,7 @@ final class Filterer
                 try {
                     $value = call_user_func_array($function, $filter);
                 } catch (Exception $e) {
-                    $errors = self::handleCustomError($customError, $field, $value, $e, $errors);
+                    $errors = self::handleCustomError($field, $value, $e, $errors, $customError);
                     continue 2;//next field
                 }
             }
@@ -273,11 +273,11 @@ final class Filterer
     }
 
     private static function handleCustomError(
-        string $customError = null,
         string $field,
         $value,
         Throwable $e,
-        array $errors
+        array $errors,
+        string $customError = null
     ) : array {
         $error = $customError;
         if ($error === null) {

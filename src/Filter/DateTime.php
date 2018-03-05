@@ -3,7 +3,7 @@
 namespace TraderInteractive\Filter;
 
 use DateTimeInterface;
-use DateTimeZone;
+use DateTimeZone as DateTimeZoneStandard;
 use DateTime as DateTimeStandard;
 
 /**
@@ -14,16 +14,17 @@ class DateTime
     /**
      * Filters the given value into a \DateTime object.
      *
-     * @param mixed        $value      The value to be filtered.
-     * @param boolean      $allowNull  True to allow nulls through, and false (default) if nulls should not be allowed.
-     * @param DateTimeZone $timezone   A \DateTimeZone object representing the timezone of $value.
-     *                                 If $timezone is omitted, the current timezone will be used.
+     * @param mixed                $value     The value to be filtered.
+     * @param boolean $allowNull              True to allow nulls through, and false (default) if nulls should
+     *                                        not be allowed.
+     * @param DateTimeZoneStandard $timezone  A \DateTimeZone object representing the timezone of $value.
+     *                                        If $timezone is omitted, the current timezone will be used.
      *
      * @return DateTimeStandard|null
      *
      * @throws Exception if the value did not pass validation.
      */
-    public static function filter($value, bool $allowNull = false, DateTimeZone $timezone = null)
+    public static function filter($value, bool $allowNull = false, DateTimeZoneStandard $timezone = null)
     {
         if ($value === null && $allowNull) {
             return null;
@@ -48,7 +49,7 @@ class DateTime
      * Filters the give \DateTime object to a formatted string.
      *
      * @param DateTimeInterface $dateTime The date to be formatted.
-     * @param string             $format   The format of the outputted date string.
+     * @param string            $format   The format of the outputted date string.
      *
      * @return string
      *
