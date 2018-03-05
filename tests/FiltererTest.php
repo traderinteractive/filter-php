@@ -1,11 +1,16 @@
 <?php
 
-namespace DominionEnterprises;
+namespace TraderInteractive;
+
+use Exception;
+use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
+use StdClass;
 
 /**
- * @coversDefaultClass \DominionEnterprises\Filterer
+ * @coversDefaultClass \TraderInteractive\Filterer
  */
-final class FiltererTest extends \PHPUnit_Framework_TestCase
+final class FiltererTest extends TestCase
 {
     /**
      * @test
@@ -147,12 +152,12 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filterer::filter
+     * @covers ::filter
      */
     public function filterFail()
     {
         $result = Filterer::filter(
-            ['fieldOne' => [['\DominionEnterprises\FiltererTest::failingFilter']]],
+            ['fieldOne' => [['\TraderInteractive\FiltererTest::failingFilter']]],
             ['fieldOne' => 'valueOne']
         );
         $this->assertSame(
@@ -178,7 +183,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
     public function chainFail()
     {
         $result = Filterer::filter(
-            ['fieldOne' => [['trim'], ['\DominionEnterprises\FiltererTest::failingFilter']]],
+            ['fieldOne' => [['trim'], ['\TraderInteractive\FiltererTest::failingFilter']]],
             ['fieldOne' => 'the value']
         );
         $this->assertSame(
@@ -208,8 +213,8 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
     {
         $result = Filterer::filter(
             [
-                'fieldOne' => [['\DominionEnterprises\FiltererTest::failingFilter']],
-                'fieldTwo' => [['\DominionEnterprises\FiltererTest::failingFilter']],
+                'fieldOne' => [['\TraderInteractive\FiltererTest::failingFilter']],
+                'fieldTwo' => [['\TraderInteractive\FiltererTest::failingFilter']],
             ],
             ['fieldOne' => 'value one', 'fieldTwo' => 'value two']
         );
@@ -338,7 +343,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::registerAlias
-     * @expectedException \InvalidArgumentException
+     * @expectedException InvalidArgumentException
      * @expectedExceptionMessage $alias was not a string or int
      */
     public function registerAliasAliasNotString()
@@ -349,18 +354,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::registerAlias
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $overwrite was not a bool
-     */
-    public function registerAliasOverwriteNotBool()
-    {
-        Filterer::registerAlias('lower', 'strtolower', 'foo');
-    }
-
-    /**
-     * @test
-     * @covers ::registerAlias
-     * @expectedException \Exception
+     * @expectedException Exception
      * @expectedExceptionMessage Alias 'upper' exists
      */
     public function registerExistingAliasOverwriteFalse()
@@ -381,9 +375,9 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(['upper' => 'ucfirst', 'lower' => 'strtolower'], Filterer::getFilterAliases());
     }
 
-    public static function failingFilter($val)
+    public static function failingFilter()
     {
-        throw new \Exception('i failed');
+        throw new Exception('i failed');
     }
 
     public static function passingFilter($value)
@@ -404,7 +398,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
         $result = Filterer::filter(
             [
                 'fieldOne' => [
-                    ['\DominionEnterprises\FiltererTest::failingFilter'],
+                    ['\TraderInteractive\FiltererTest::failingFilter'],
                     'error' => 'My custom error message'
                 ],
             ],
@@ -421,7 +415,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
      *
      * @test
      * @covers ::filter
-     * @expectedException \InvalidArgumentException
+     * @expectedException InvalidArgumentException
      * @expectedExceptionMessage error for field 'fieldOne' was not a non-empty string
      *
      * @return void
@@ -429,7 +423,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
     public function filterWithNonStringError()
     {
         Filterer::filter(
-            ['fieldOne' => [['strtoupper'], 'error' => new \StdClass()]],
+            ['fieldOne' => [['strtoupper'], 'error' => new StdClass()]],
             ['fieldOne' => 'valueOne']
         );
     }
@@ -439,7 +433,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
      *
      * @test
      * @covers ::filter
-     * @expectedException \InvalidArgumentException
+     * @expectedException InvalidArgumentException
      * @expectedExceptionMessage error for field 'fieldOne' was not a non-empty string
      *
      * @return void

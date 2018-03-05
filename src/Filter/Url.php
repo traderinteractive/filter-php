@@ -1,9 +1,6 @@
 <?php
-/**
- * Defines the DominionEnterprises\Filter\Url class.
- */
 
-namespace DominionEnterprises\Filter;
+namespace TraderInteractive\Filter;
 
 /**
  * A collection of filters for urls.
@@ -15,23 +12,19 @@ final class Url
      *
      * Filters value as URL (according to » http://www.faqs.org/rfcs/rfc2396)
      *
-     * The return value is the url, as expected by the \DominionEnterprises\Filterer class.
+     * The return value is the url, as expected by the \TraderInteractive\Filterer class.
      * By default, nulls are not allowed.
      *
      * @param mixed $value The value to filter.
      * @param bool $allowNull True to allow nulls through, and false (default) if nulls should not be allowed.
      *
-     * @return string The passed in $value.
+     * @return string|null The passed in $value.
      *
      * @throws Exception if the value did not pass validation.
      * @throws \InvalidArgumentException if one of the parameters was not correctly typed.
      */
-    public static function filter($value, $allowNull = false)
+    public static function filter($value, bool $allowNull = false)
     {
-        if ($allowNull !== false && $allowNull !== true) {
-            throw new \InvalidArgumentException('$allowNull was not a boolean value');
-        }
-
         if ($allowNull === true && $value === null) {
             return null;
         }

@@ -1,9 +1,6 @@
 <?php
-/**
- * Defines the DominionEnterprises\Filter\Ints class.
- */
 
-namespace DominionEnterprises\Filter;
+namespace TraderInteractive\Filter;
 
 /**
  * A collection of filters for integers.
@@ -16,7 +13,7 @@ final class Ints
      * $value must be an int or contain all digits, optionally prepended by a '+' or '-' and optionally surrounded by
      * whitespace to pass the filter.
      *
-     * The return value is the int, as expected by the \DominionEnterprises\Filterer class.
+     * The return value is the int, as expected by the \TraderInteractive\Filterer class.
      *
      * @param string|int $value the value to make an integer
      * @param bool $allowNull Set to true if NULL values are allowed. The filtered result of a NULL value is NULL
@@ -37,20 +34,8 @@ final class Ints
      * @throws Exception if $value is less than $minValue
      * @throws Exception if $value is greater than $maxValue
      */
-    public static function filter($value, $allowNull = false, $minValue = null, $maxValue = PHP_INT_MAX)
+    public static function filter($value, bool $allowNull = false, int $minValue = null, int $maxValue = PHP_INT_MAX)
     {
-        if ($allowNull !== false && $allowNull !== true) {
-            throw new \InvalidArgumentException('"' . var_export($allowNull, true) . '" $allowNull was not a bool');
-        }
-
-        if ($minValue !== null && !is_int($minValue)) {
-            throw new \InvalidArgumentException('"' . var_export($minValue, true) . '" $minValue was not an int');
-        }
-
-        if (!is_int($maxValue)) {
-            throw new \InvalidArgumentException('"' . var_export($maxValue, true) . '" $maxValue was not an int');
-        }
-
         if ($allowNull === true && $value === null) {
             return null;
         }

@@ -1,10 +1,13 @@
 <?php
-namespace DominionEnterprises\Filter;
+
+namespace TraderInteractive\Filter;
+
+use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \DominionEnterprises\Filter\Email
+ * @coversDefaultClass \TraderInteractive\Filter\Email
  */
-final class EmailTest extends \PHPUnit_Framework_TestCase
+final class EmailTest extends TestCase
 {
     /**
      * @test
@@ -22,7 +25,7 @@ final class EmailTest extends \PHPUnit_Framework_TestCase
      * @expectedExceptionMessage Value '1' is not a string
      * @covers ::filter
      */
-    public function filterNonstring()
+    public function filterNonString()
     {
         Email::filter(1);
     }

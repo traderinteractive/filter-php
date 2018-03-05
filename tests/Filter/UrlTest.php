@@ -1,10 +1,14 @@
 <?php
-namespace DominionEnterprises\Filter;
+
+namespace TraderInteractive\Filter;
+
+use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \DominionEnterprises\Filter\Url
+ * @coversDefaultClass \TraderInteractive\Filter\Url
  */
-final class UrlTest extends \PHPUnit_Framework_TestCase
+final class UrlTest extends TestCase
 {
     /**
      * @test
@@ -18,18 +22,18 @@ final class UrlTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage Value '1' is not a string
      * @covers ::filter
      */
-    public function filterNonstring()
+    public function filterNonString()
     {
         Url::filter(1);
     }
 
     /**
      * @test
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage Value 'www.example.com' is not a valid url
      * @covers ::filter
      */
@@ -56,16 +60,5 @@ final class UrlTest extends \PHPUnit_Framework_TestCase
     public function filterNullFail()
     {
         Url::filter(null);
-    }
-
-    /**
-     * @test
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage $allowNull was not a boolean value
-     * @covers ::filter
-     */
-    public function filterAllowNullNotBoolean()
-    {
-        Url::filter('a', 5);
     }
 }

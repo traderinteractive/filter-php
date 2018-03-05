@@ -1,10 +1,13 @@
 <?php
-namespace DominionEnterprises\Filter;
+
+namespace TraderInteractive\Filter;
+
+use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \DominionEnterprises\Filter\Booleans
+ * @coversDefaultClass \TraderInteractive\Filter\Booleans
  */
-final class BooleansTest extends \PHPUnit_Framework_TestCase
+final class BooleansTest extends TestCase
 {
     /**
      * @test
@@ -26,17 +29,6 @@ final class BooleansTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $allowNull was not a bool
-     */
-    public function filterAllowNullIsNotBool()
-    {
-        Booleans::filter('true', 1);
-    }
-
-    /**
-     * @test
-     * @covers ::filter
      */
     public function filterAllowNullIsTrueAndNullValue()
     {
@@ -46,7 +38,7 @@ final class BooleansTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage "1" $value is not a string
      */
     public function filterNonStringAndNonBoolValue()
@@ -57,7 +49,7 @@ final class BooleansTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage invalid is not 'true' or 'false' disregarding case and whitespace
      */
     public function filterInvalidString()
@@ -86,7 +78,7 @@ final class BooleansTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage true is not 'y' or '1' or 'n' or '0' disregarding case and whitespace
      */
     public function filterCustomBoolValuesInvalidString()
@@ -106,20 +98,5 @@ final class BooleansTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame('yes', Booleans::convert(true, 'yes', 'no'));
         $this->assertSame('bar', Booleans::convert(false, 'foo', 'bar'));
-    }
-
-    /**
-     * Verify behavior of convert() when $value is not boolean
-     *
-     * @test
-     * @covers ::convert
-     * @expectedException \DominionEnterprises\Filter\Exception
-     * @expectedExceptionMessage $value was not a bool
-     *
-     * @return void
-     */
-    public function convertValueNotBool()
-    {
-        Booleans::convert('abc');
     }
 }

@@ -1,10 +1,14 @@
 <?php
-namespace DominionEnterprises\Filter;
+
+namespace TraderInteractive\Filter;
+
+use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \DominionEnterprises\Filter\Strings
+ * @coversDefaultClass \TraderInteractive\Filter\Strings
  */
-final class StringsTest extends \PHPUnit_Framework_TestCase
+final class StringsTest extends TestCase
 {
     /**
      * Verify basic use of filter
@@ -13,7 +17,11 @@ final class StringsTest extends \PHPUnit_Framework_TestCase
      * @covers ::filter
      * @dataProvider filterData
      *
+     * @param mixed $input    The input.
+     * @param mixed $expected The expected value(s).
+     *
      * @return void
+     * @throws Exception
      */
     public function filter($input, $expected)
     {
@@ -47,7 +55,7 @@ final class StringsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage Value 'NULL' is not a string
      * @covers ::filter
      */
@@ -67,7 +75,7 @@ final class StringsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @covers ::filter
      */
     public function filterMinLengthFail()
@@ -86,7 +94,7 @@ final class StringsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage Value 'a' with length '1' is less than '0' or greater than '0'
      * @covers ::filter
      */
@@ -98,23 +106,12 @@ final class StringsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage $allowNull was not a boolean value
-     * @covers ::filter
-     */
-    public function filterAllowNullNotBoolean()
-    {
-        Strings::filter('a', 5);
-    }
-
-    /**
-     * @test
-     * @expectedException InvalidArgumentException
      * @expectedExceptionMessage $minLength was not a positive integer value
      * @covers ::filter
      */
     public function filterMinLengthNotInteger()
     {
-        Strings::filter('a', false, 5.2);
+        Strings::filter('a', false, -1);
     }
 
     /**
@@ -125,7 +122,7 @@ final class StringsTest extends \PHPUnit_Framework_TestCase
      */
     public function filterMaxLengthNotInteger()
     {
-        Strings::filter('a', false, 1, 5.2);
+        Strings::filter('a', false, 1, -1);
     }
 
     /**
@@ -170,32 +167,6 @@ final class StringsTest extends \PHPUnit_Framework_TestCase
     public function explodeCustomDelimiter()
     {
         $this->assertSame(['a', 'b', 'c', 'd,e'], Strings::explode('a b c d,e', ' '));
-    }
-
-    /**
-     * Verifies explode filter with a non-string value.
-     *
-     * @test
-     * @expectedException \DominionEnterprises\Filter\Exception
-     * @expectedExceptionMessage Value 'true' is not a string
-     * @covers ::explode
-     */
-    public function explodeNonStringValue()
-    {
-        Strings::explode(true);
-    }
-
-    /**
-     * Verifies explode filter with a non-string delimiter.
-     *
-     * @test
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Delimiter '4' is not a non-empty string
-     * @covers ::explode
-     */
-    public function explodeNonStringDelimiter()
-    {
-        Strings::explode('test', 4);
     }
 
     /**

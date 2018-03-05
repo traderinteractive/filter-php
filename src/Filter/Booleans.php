@@ -1,9 +1,6 @@
 <?php
-/**
- * Defines the DominionEnterprises\Filter\Booleans class.
- */
 
-namespace DominionEnterprises\Filter;
+namespace TraderInteractive\Filter;
 
 /**
  * A collection of filters for booleans.
@@ -15,29 +12,24 @@ final class Booleans
      *
      * $value must be a bool or 'true' or 'false' disregarding case and whitespace.
      *
-     * The return value is the bool, as expected by the \DominionEnterprises\Filterer class.
+     * The return value is the bool, as expected by the \TraderInteractive\Filterer class.
      *
      * @param string|bool $value the value to filter to a boolean
      * @param bool $allowNull Set to true if NULL values are allowed. The filtered result of a NULL value is NULL
-     * @param array $trueValues Array of values which represent the boolean true value. Values should be lowercased
-     * @param array $falseValues Array of values which represent the boolean false value. Values should be lowercased
+     * @param array $trueValues Array of values which represent the boolean true value. Values should be lower cased
+     * @param array $falseValues Array of values which represent the boolean false value. Values should be lower cased
      *
      * @return bool|null the filtered $value
      *
-     * @throws \InvalidArgumentException if $allowNull is not a boolean
      * @throws Exception if $value is not a string
      * @throws Exception if $value is not 'true' or 'false' disregarding case and whitespace
      */
     public static function filter(
         $value,
-        $allowNull = false,
+        bool $allowNull = false,
         array $trueValues = ['true'],
         array $falseValues = ['false']
     ) {
-        if ($allowNull !== false && $allowNull !== true) {
-            throw new \InvalidArgumentException('$allowNull was not a bool');
-        }
-
         if ($allowNull === true && $value === null) {
             return null;
         }
@@ -79,15 +71,9 @@ final class Booleans
      * @param mixed   $false The value to return on the false case.
      *
      * @return mixed
-     *
-     * @throws Exception Thrown if $value is not a boolean
      */
-    public static function convert($value, $true = 'true', $false = 'false')
+    public static function convert(bool $value, $true = 'true', $false = 'false')
     {
-        if ($value !== false && $value !== true) {
-            throw new Exception('$value was not a bool');
-        }
-
         return $value ? $true : $false;
     }
 }

@@ -1,10 +1,13 @@
 <?php
-namespace DominionEnterprises\Filter;
+
+namespace TraderInteractive\Filter;
+
+use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \DominionEnterprises\Filter\Arrays
+ * @coversDefaultClass \TraderInteractive\Filter\Arrays
  */
-final class ArraysTest extends \PHPUnit_Framework_TestCase
+final class ArraysTest extends TestCase
 {
     /**
      * @test
@@ -18,7 +21,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage Value '1' is not an array
      */
     public function filterFailNotArray()
@@ -29,7 +32,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage $value count of 0 is less than 1
      */
     public function filterFailEmpty()
@@ -40,7 +43,7 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage $value count of 1 is less than 2
      */
     public function filterCountLessThanMin()
@@ -51,34 +54,12 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage $value count of 2 is greater than 1
      */
     public function filterCountGreaterThanMax()
     {
         Arrays::filter([0, 1], 1, 1);
-    }
-
-    /**
-     * @test
-     * @covers ::filter
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $minCount was not an int
-     */
-    public function filterMinCountNotInt()
-    {
-        Arrays::filter([], true);
-    }
-
-    /**
-     * @test
-     * @covers ::filter
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $maxCount was not an int
-     */
-    public function filterMaxCountNotInt()
-    {
-        Arrays::filter([], 0, true);
     }
 
     /**
@@ -125,17 +106,6 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
     public function inPassNotStrict()
     {
         $this->assertSame('0', Arrays::in('0', [0], false));
-    }
-
-    /**
-     * @test
-     * @covers ::in
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $strict was not a bool
-     */
-    public function inStrictNotBool()
-    {
-        Arrays::in('boo', [], 1);
     }
 
     /**

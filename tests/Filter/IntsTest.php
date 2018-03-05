@@ -1,44 +1,14 @@
 <?php
-namespace DominionEnterprises\Filter;
+
+namespace TraderInteractive\Filter;
+
+use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \DominionEnterprises\Filter\Ints
+ * @coversDefaultClass \TraderInteractive\Filter\Ints
  */
-final class IntsTest extends \PHPUnit_Framework_TestCase
+final class IntsTest extends TestCase
 {
-    /**
-     * @test
-     * @covers ::filter
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage "1" $allowNull was not a bool
-     */
-    public function filterAllowNullIsNotBool()
-    {
-        Ints::filter('1', 1);
-    }
-
-    /**
-     * @test
-     * @covers ::filter
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage "'boo'" $minValue was not an int
-     */
-    public function filterMinValueNotInt()
-    {
-        Ints::filter('1', false, 'boo');
-    }
-
-    /**
-     * @test
-     * @covers ::filter
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage "1.5" $maxValue was not an int
-     */
-    public function filterMaxValueNotInt()
-    {
-        Ints::filter('1', false, 1, 1.5);
-    }
-
     /**
      * @test
      * @covers ::filter
@@ -102,7 +72,7 @@ final class IntsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage "true" $value is not a string
      */
     public function filterNonStringOrInt()
@@ -113,7 +83,7 @@ final class IntsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage $value string length is zero
      */
     public function filterEmptyString()
@@ -124,7 +94,7 @@ final class IntsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage $value string length is zero
      */
     public function filterWhitespaceString()
@@ -153,7 +123,7 @@ final class IntsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      */
     public function filterGreaterThanPhpIntMax()
     {
@@ -170,7 +140,7 @@ final class IntsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      */
     public function filterLessThanPhpIntMin()
     {
@@ -187,7 +157,7 @@ final class IntsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage -1 is less than 0
      */
     public function filterLessThanMin()
@@ -207,7 +177,7 @@ final class IntsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage 1 is greater than 0
      */
     public function filterGreaterThanMax()

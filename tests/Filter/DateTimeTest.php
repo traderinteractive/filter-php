@@ -1,12 +1,15 @@
 <?php
-namespace DominionEnterprises\Filter;
+
+namespace TraderInteractive\Filter;
+
+use PHPUnit\Framework\TestCase;
 
 /**
- * Unit tests for the \DominionEnterprises\Filter\DateTime class.
+ * Unit tests for the \TraderInteractive\Filter\DateTime class.
  *
- * @coversDefaultClass \DominionEnterprises\Filter\DateTime
+ * @coversDefaultClass \TraderInteractive\Filter\DateTime
  */
-final class DateTimeTest extends \PHPUnit_Framework_TestCase
+final class DateTimeTest extends TestCase
 {
     /**
      * Verify basic usage of filter().
@@ -43,11 +46,9 @@ final class DateTimeTest extends \PHPUnit_Framework_TestCase
     /**
      * Verify behavior of filter() when $value is a string with only whitespace.
      *
-     * @param mixed $value The value to be filtered.
-     *
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage $value is not a non-empty string
      *
      * @return void
@@ -60,11 +61,9 @@ final class DateTimeTest extends \PHPUnit_Framework_TestCase
     /**
      * Verify behavior of filter() when $value is not a string or integer.
      *
-     * @param mixed $value The value to be filtered.
-     *
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage $value is not a non-empty string
      *
      * @return void
@@ -72,19 +71,6 @@ final class DateTimeTest extends \PHPUnit_Framework_TestCase
     public function filterInvalidValue()
     {
         DateTime::filter(true);
-    }
-
-    /**
-     * Verify behavior of filter() when $allowNull is not a boolean.
-     *
-     * @test
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $allowNull was not a boolean value
-     * @covers ::filter
-     */
-    public function filterAllowNullNotBoolean()
-    {
-        DateTime::filter('n/a', 5);
     }
 
     /**
@@ -103,7 +89,7 @@ final class DateTimeTest extends \PHPUnit_Framework_TestCase
      *
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage $value is not a non-empty string
      */
     public function filterNullNotAllowed()
@@ -148,19 +134,6 @@ final class DateTimeTest extends \PHPUnit_Framework_TestCase
         $now = time();
         $dateTime = DateTime::filter($now);
         $this->assertSame($now, $dateTime->getTimestamp());
-    }
-
-    /**
-     * Verify behavior of format() when $format is not a string
-     *
-     * @test
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $format is not a non-empty string
-     * @covers ::format
-     */
-    public function formatNonStringFormat()
-    {
-        DateTime::format(new \DateTime(), true);
     }
 
     /**

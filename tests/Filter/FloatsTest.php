@@ -1,44 +1,14 @@
 <?php
-namespace DominionEnterprises\Filter;
+
+namespace TraderInteractive\Filter;
+
+use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \DominionEnterprises\Filter\Floats
+ * @coversDefaultClass \TraderInteractive\Filter\Floats
  */
-final class FloatsTest extends \PHPUnit_Framework_TestCase
+final class FloatsTest extends TestCase
 {
-    /**
-     * @test
-     * @covers ::filter
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage "1" $allowNull was not a bool
-     */
-    public function filterAllowNullIsNotBool()
-    {
-        Floats::filter('1', 1);
-    }
-
-    /**
-     * @test
-     * @covers ::filter
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage "'boo'" $minValue was not a float
-     */
-    public function filterMinValueNotFloat()
-    {
-        Floats::filter('1', false, 'boo');
-    }
-
-    /**
-     * @test
-     * @covers ::filter
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage "1" $maxValue was not a float
-     */
-    public function filterMaxValueNotFloat()
-    {
-        Floats::filter('1', false, 1.0, 1);
-    }
-
     /**
      * @test
      * @covers ::filter
@@ -118,7 +88,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage "true" $value is not a string
      */
     public function filterNonStringOrFloat()
@@ -129,7 +99,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @exceptedExceptionMessage  does not pass is_numeric
      */
     public function filterEmptyString()
@@ -140,7 +110,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage  does not pass is_numeric
      */
     public function filterWhitespaceString()
@@ -151,7 +121,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage 123-4 does not pass is_numeric
      */
     public function filterNonDigitString()
@@ -162,7 +132,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      */
     public function filterHexString()
     {
@@ -172,7 +142,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage 1. 0 does not pass is_numeric
      */
     public function filterRogueSpaceStringAfterPeriod()
@@ -183,7 +153,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage 1 0 does not pass is_numeric
      */
     public function filterRogueSpaceStringBetweenDigits()
@@ -194,7 +164,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage 1e999999999999 overflow
      */
     public function filterOverflow()
@@ -205,7 +175,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage -1e999999999999 overflow
      */
     public function filterUnderflow()
@@ -216,7 +186,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage -1 is less than 0
      */
     public function filterLessThanMin()
@@ -236,7 +206,7 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage 1 is greater than 0
      */
     public function filterGreaterThanMax()
@@ -265,22 +235,11 @@ final class FloatsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage "1" $value is not a string
      */
     public function filterCastIntsIsFalse()
     {
         Floats::filter(1, false, null, null, false);
-    }
-
-    /**
-     * @test
-     * @covers ::filter
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage "1" $castInts was not a bool
-     */
-    public function filterCastIntsIsNotBool()
-    {
-        Floats::filter('1', false, null, null, 1);
     }
 }

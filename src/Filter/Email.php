@@ -1,9 +1,6 @@
 <?php
-/**
- * Defines the DominionEnterprises\Filter\Email class.
- */
 
-namespace DominionEnterprises\Filter;
+namespace TraderInteractive\Filter;
 
 /**
  * A collection of filters for emails.
@@ -13,7 +10,7 @@ final class Email
     /**
      * Filter an email
      *
-     * The return value is the email, as expected by the \DominionEnterprises\Filterer class.
+     * The return value is the email, as expected by the \TraderInteractive\Filterer class.
      *
      * @param mixed $value The value to filter.
      *
@@ -21,7 +18,7 @@ final class Email
      *
      * @throws Exception if the value did not pass validation.
      */
-    public static function filter($value)
+    public static function filter($value) : string
     {
         if (!is_string($value)) {
             throw new Exception("Value '" . var_export($value, true) . "' is not a string");

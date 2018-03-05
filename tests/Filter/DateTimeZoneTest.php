@@ -1,12 +1,15 @@
 <?php
-namespace DominionEnterprises\Filter;
+
+namespace TraderInteractive\Filter;
+
+use PHPUnit\Framework\TestCase;
 
 /**
- * Unit tests for the \DominionEnterprises\Filter\DateTimeZone class.
+ * Unit tests for the \TraderInteractive\Filter\DateTimeZone class.
  *
- * @coversDefaultClass \DominionEnterprises\Filter\DateTimeZone
+ * @coversDefaultClass \TraderInteractive\Filter\DateTimeZone
  */
-final class DateTimeZoneTest extends \PHPUnit_Framework_TestCase
+final class DateTimeZoneTest extends TestCase
 {
     /**
      * Verify basic usage of filter().
@@ -22,21 +25,6 @@ final class DateTimeZoneTest extends \PHPUnit_Framework_TestCase
         $timezone = DateTimeZone::filter($value);
         $this->assertSame($value, $timezone->getName());
         $this->assertSame(-36000, $timezone->getOffset(new \DateTime('now', $timezone)));
-    }
-
-    /**
-     * Verify behavior of filter() when $allowNull is not true or false.
-     *
-     * @test
-     * @covers ::filter
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $allowNull was not a boolean value
-     *
-     * @return void
-     */
-    public function filterAllowNullNotBoolean()
-    {
-        DateTimeZone::filter('America/New_York', 5);
     }
 
     /**
@@ -57,7 +45,7 @@ final class DateTimeZoneTest extends \PHPUnit_Framework_TestCase
      *
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage $value not a non-empty string
      *
      * @return void
@@ -86,22 +74,20 @@ final class DateTimeZoneTest extends \PHPUnit_Framework_TestCase
      *
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage Unknown or bad timezone (INVALID)
      */
     public function filterInvalidName()
     {
-        $timezone = DateTimeZone::filter('INVALID');
+        DateTimeZone::filter('INVALID');
     }
 
     /**
      * Verify behavior of filter() $value is a string with only whitespace.
      *
-     * @param mixed $value The value to be filtered.
-     *
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage $value not a non-empty string
      *
      * @return void
@@ -116,13 +102,13 @@ final class DateTimeZoneTest extends \PHPUnit_Framework_TestCase
      *
      * @test
      * @covers ::filter
-     * @expectedException \DominionEnterprises\Filter\Exception
+     * @expectedException \TraderInteractive\Filter\Exception
      * @expectedExceptionMessage $value not a non-empty string
      *
      * @return void
      */
     public function filterNonStringArgument()
     {
-        $timezone = DateTimeZone::filter(42);
+        DateTimeZone::filter(42);
     }
 }

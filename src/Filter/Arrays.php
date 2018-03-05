@@ -1,11 +1,8 @@
 <?php
-/**
- * Defines the DominionEnterprises\Filter\Arrays class.
- */
 
-namespace DominionEnterprises\Filter;
+namespace TraderInteractive\Filter;
 
-use DominionEnterprises\Filterer;
+use TraderInteractive\Filterer;
 
 /**
  * A collection of filters for arrays.
@@ -15,13 +12,13 @@ final class Arrays
     /**
      * Filter an array by throwing if not an array or count not in the min/max range.
      *
-     * The return value is the $value, as expected by the \DominionEnterprises\Filterer class.
+     * The return value is the $value, as expected by the \TraderInteractive\Filterer class.
      *
      * @param mixed $value the value to filter
      * @param int $minCount the minimum allowed count in the array
      * @param int $maxCount the maximum allowed count in the array
      *
-     * @return the passed in value
+     * @return mixed The passed in value
      *
      * @throws \InvalidArgumentException if $minCount was not an int
      * @throws \InvalidArgumentException if $maxCount was not an int
@@ -29,7 +26,7 @@ final class Arrays
      * @throws Exception if $value count is less than $minCount
      * @throws Exception if $value count is greater than $maxCount
      */
-    public static function filter($value, $minCount = 1, $maxCount = PHP_INT_MAX)
+    public static function filter($value, int $minCount = 1, int $maxCount = PHP_INT_MAX)
     {
         if (!is_int($minCount)) {
             throw new \InvalidArgumentException('$minCount was not an int');
@@ -64,24 +61,20 @@ final class Arrays
     /**
      * Filter an array by throwing if $value is not in $haystack adhering to $strict.
      *
-     * The return value is the $value, as expected by the \DominionEnterprises\Filterer class.
+     * The return value is the $value, as expected by the \TraderInteractive\Filterer class.
      *
      * @param mixed $value value to search for
      * @param array $haystack array to search in
      * @param bool $strict to compare strictly or not. @see in_array()
      *
-     * @return the passed in value
+     * @return mixed The passed in value
      *
      * @see in_array()
-     * @throws \InvalidArgumentException if $strict was not a bool
+     *
      * @throws Exception if $value is not in array $haystack
      */
-    public static function in($value, array $haystack, $strict = true)
+    public static function in($value, array $haystack, bool $strict = true)
     {
-        if ($strict !== true && $strict !== false) {
-            throw new \InvalidArgumentException('$strict was not a bool');
-        }
-
         if (!in_array($value, $haystack, $strict)) {
             throw new Exception(
                 "Value '" . trim(var_export($value, true), "'") . "' is not in array " . var_export($haystack, true)
@@ -103,7 +96,7 @@ final class Arrays
      *
      * @throws Exception if any member of $values fails filtering
      */
-    public static function ofScalars(array $values, array $filters)
+    public static function ofScalars(array $values, array $filters) : array
     {
         $wrappedFilters = [];
         foreach ($values as $key => $item) {
@@ -130,7 +123,7 @@ final class Arrays
      *
      * @throws Exception if any member of $values fails filtering
      */
-    public static function ofArrays(array $values, array $spec)
+    public static function ofArrays(array $values, array $spec) : array
     {
         $results = [];
         $errors = [];
@@ -168,7 +161,7 @@ final class Arrays
      *
      * @throws Exception if $value fails filtering
      */
-    public static function ofArray(array $value, array $spec)
+    public static function ofArray(array $value, array $spec) : array
     {
         list($status, $result, $error) = Filterer::filter($spec, $value);
         if (!$status) {
@@ -189,7 +182,7 @@ final class Arrays
      *
      * @return array The single-dimension array.
      */
-    public static function flatten(array $value)
+    public static function flatten(array $value) : array
     {
         $result = [];
 
