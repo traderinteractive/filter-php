@@ -12,6 +12,11 @@ use StdClass;
  */
 final class FiltererTest extends TestCase
 {
+    public function setUp()
+    {
+        Filterer::setFilterAliases(Filterer::DEFAULT_FILTER_ALIASES);
+    }
+
     /**
      * @test
      * @covers ::filter

@@ -10,7 +10,10 @@ use Throwable;
  */
 final class Filterer
 {
-    private static $filterAliases = [
+    /**
+     * @var array
+     */
+    const DEFAULT_FILTER_ALIASES = [
         'in' => '\TraderInteractive\Filter\Arrays::in',
         'array' => '\TraderInteractive\Filter\Arrays::filter',
         'bool' => '\TraderInteractive\Filter\Booleans::filter',
@@ -30,6 +33,11 @@ final class Filterer
         'date-format' => '\TraderInteractive\Filter\DateTime::format',
         'timezone' => '\TraderInteractive\Filter\DateTimeZone::filter',
     ];
+
+    /**
+     * @var array
+     */
+    private static $filterAliases = self::DEFAULT_FILTER_ALIASES;
 
     /**
      * Example:
