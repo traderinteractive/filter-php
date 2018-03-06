@@ -1,4 +1,4 @@
-#filter-php
+# filter-php
 A filtering implementation for verifying correct data and performing typical modifications to data.
 
 [![Build Status](http://img.shields.io/travis/traderinteractive/filter-php.svg?style=flat)](https://travis-ci.org/traderinteractive/filter-php)
@@ -9,7 +9,7 @@ A filtering implementation for verifying correct data and performing typical mod
 [![Total Downloads](http://img.shields.io/packagist/dt/traderinteractive/filter.svg?style=flat)](https://packagist.org/packages/traderinteractive/filter)
 [![License](http://img.shields.io/packagist/l/traderinteractive/filter.svg?style=flat)](https://packagist.org/packages/traderinteractive/filter)
 
-##Features
+## Features
  * Compact, readable specification
  * Filter with any php callable such as
   * Anonymous function
@@ -21,7 +21,18 @@ A filtering implementation for verifying correct data and performing typical mod
  * Optionally returns unknown fields
  * Filter alias support
 
-##Example
+## Components
+
+This package is a partial metapackage aggregating the following components:
+
+* [traderinteractive/filter-arrays](https://github.com/traderinteractive/filter-arrays-php)
+* [traderinteractive/filter-bools](https://github.com/traderinteractive/filter-bools-php)
+* [traderinteractive/filter-dates](https://github.com/traderinteractive/filter-dates-php)
+* [traderinteractive/filter-floats](https://github.com/traderinteractive/filter-floats-php)
+* [traderinteractive/filter-ints](https://github.com/traderinteractive/filter-ints-php)
+* [traderinteractive/filter-strings](https://github.com/traderinteractive/filter-strings-php)
+
+## Example
 ```php
 class AppendFilter
 {
@@ -66,7 +77,7 @@ array(0) {
 }
 ```
 
-##Composer
+## Composer
 To add the library as a local, per-project dependency use [Composer](http://getcomposer.org)! Simply add a dependency on
 `traderinteractive/filter` to your project's `composer.json` file such as:
 
@@ -74,7 +85,7 @@ To add the library as a local, per-project dependency use [Composer](http://getc
 composer require traderinteractive/filter
 ```
 
-##Documentation
+## Documentation
 Found in the [source](src/Filterer.php) itself, take a look!
 
 ### Filterer
@@ -108,6 +119,29 @@ The example above should help clarify all this.
 ### Included Filters
 Of course, any function can potentially be used as a filter, but we include some useful filters with aliases for common circumstances.
 
+#### Filterer::ofScalars
+Aliased in the filterer as `ofScalars`, this filter verifies that the argument is an array (possibly empty) of scalar items that each pass the
+given filters (given in the same format as used by `Filterer::filter`.
+
+The following checks that `$value` is an array of unsigned integers.
+```php
+$value = \TraderInteractive\Filter\Filterer::ofScalars($value, [['uint']]);
+```
+
+#### Filterer::ofArrays
+Aliased in the filterer as `ofArrays`, this filter verifies that the argument is an array (possibly empty) of arrays that each pass the given
+filters (given in the same format as used by `Filterer::filter`.
+
+The following checks that `$value` is an array of items that each have an `id` key with a numeric value.  No other keys would be allowed.  For
+example, the following is valid input: `[['id' => '1'], ['id' => '2']]`.
+```php
+$value = \TraderInteractive\Filter\Filterer::ofArrays($value, ['id' => [['uint']]]);
+```
+
+#### Filterer::ofArray
+Aliased in the filterer as `ofArray`, this filter verifies that the argument is an array that passes the given specification.  This is
+essentially a flipped version of `Filterer::filter` that allows for testing nested associative arrays.
+
 #### Arrays::in
 Aliased in the filterer as `in`, this filter is a wrapper around `in_array` including support for strict equality testing.
 
@@ -124,29 +158,6 @@ The following checks that the `$value` is an array with exactly 3 elements.
 ```php
 \TraderInteractive\Filter\Arrays::filter($value, 3, 3);
 ```
-
-#### Arrays::ofScalars
-Aliased in the filterer as `ofScalars`, this filter verifies that the argument is an array (possibly empty) of scalar items that each pass the
-given filters (given in the same format as used by `Filterer::filter`.
-
-The following checks that `$value` is an array of unsigned integers.
-```php
-$value = \TraderInteractive\Filter\Arrays::ofScalars($value, [['uint']]);
-```
-
-#### Arrays::ofArrays
-Aliased in the filterer as `ofArrays`, this filter verifies that the argument is an array (possibly empty) of arrays that each pass the given
-filters (given in the same format as used by `Filterer::filter`.
-
-The following checks that `$value` is an array of items that each have an `id` key with a numeric value.  No other keys would be allowed.  For
-example, the following is valid input: `[['id' => '1'], ['id' => '2']]`.
-```php
-$value = \TraderInteractive\Filter\Arrays::ofArrays($value, ['id' => [['uint']]]);
-```
-
-#### Arrays::ofArray
-Aliased in the filterer as `ofArray`, this filter verifies that the argument is an array that passes the given specification.  This is
-essentially a flipped version of `Filterer::filter` that allows for testing nested associative arrays.
 
 #### Arrays::flatten
 Aliased in the filterer as `flatten`, this filter flattens a multi-dimensional array to a single dimension.  The order of values will be
