@@ -22,9 +22,9 @@ final class Filterer
         'bool-convert' => '\TraderInteractive\Filter\Booleans::convert',
         'uint' => '\TraderInteractive\Filter\UnsignedInt::filter',
         'string' => '\TraderInteractive\Filter\Strings::filter',
-        'ofScalars' => '\TraderInteractive\Filter\Arrays::ofScalars',
-        'ofArrays' => '\TraderInteractive\Filter\Arrays::ofArrays',
-        'ofArray' => '\TraderInteractive\Filter\Arrays::ofArray',
+        'ofScalars' => '\TraderInteractive\Filterer::ofScalars',
+        'ofArrays' => '\TraderInteractive\Filterer::ofArrays',
+        'ofArray' => '\TraderInteractive\Filterer::ofArray',
         'url' => '\TraderInteractive\Filter\Url::filter',
         'email' => '\TraderInteractive\Filter\Email::filter',
         'explode' => '\TraderInteractive\Filter\Strings::explode',
@@ -221,6 +221,93 @@ final class Filterer
         self::assertIfStringOrInt($alias);
         self::assertIfAliasExists($alias, $overwrite);
         self::$filterAliases[$alias] = $filter;
+    }
+
+    /**
+     * Filter an array by applying filters to each member
+     *
+     * @param array $values an array to be filtered. Use the Arrays::filter() before this method to ensure counts when
+     *                      you pass into Filterer
+     * @param array $filters filters with each specified the same as in @see self::filter.
+     *                       Eg [['string', false, 2], ['uint']]
+     *
+     * @return array the filtered $values
+     *
+     * @throws Exception if any member of $values fails filtering
+     */
+    public static function ofScalars(array $values, array $filters) : array
+    {
+        $wrappedFilters = [];
+        foreach ($values as $key => $item) {
+            $wrappedFilters[$key] = $filters;
+        }
+
+        list($status, $result, $error) = self::filter($wrappedFilters, $values);
+        if (!$status) {
+            throw new Exception($error);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Filter an array by applying filters to each member
+     *
+     * @param array $values as array to be filtered. Use the Arrays::filter() before this method to ensure counts when
+     *                      you pass into Filterer
+     * @param array $spec spec to apply to each $values member, specified the same as in @see self::filter.
+     *     Eg ['key' => ['required' => true, ['string', false], ['unit']], 'key2' => ...]
+     *
+     * @return array the filtered $values
+     *
+     * @throws Exception if any member of $values fails filtering
+     */
+    public static function ofArrays(array $values, array $spec) : array
+    {
+        $results = [];
+        $errors = [];
+        foreach ($values as $key => $item) {
+            if (!is_array($item)) {
+                $errors[] = "Value at position '{$key}' was not an array";
+                continue;
+            }
+
+            list($status, $result, $error) = self::filter($spec, $item);
+            if (!$status) {
+                $errors[] = $error;
+                continue;
+            }
+
+            $results[$key] = $result;
+        }
+
+        if (!empty($errors)) {
+            throw new Exception(implode("\n", $errors));
+        }
+
+        return $results;
+    }
+
+    /**
+     * Filter $value by using a Filterer $spec and Filterer's default options.
+     *
+     * @param array $value array to be filtered. Use the Arrays::filter() before this method to ensure counts when you
+     *                     pass into Filterer
+     * @param array $spec spec to apply to $value, specified the same as in @see self::filter.
+     *     Eg ['key' => ['required' => true, ['string', false], ['unit']], 'key2' => ...]
+     *
+     * @return array the filtered $value
+     *
+     * @throws Exception if $value fails filtering
+     */
+    public static function ofArray(array $value, array $spec) : array
+    {
+        list($status, $result, $error) = self::filter($spec, $value);
+        if (!$status) {
+            throw new Exception($error);
+        }
+
+        return $result;
     }
 
     private static function assertIfStringOrInt($alias)
