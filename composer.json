@@ -29,7 +29,8 @@
     },
     "license": "MIT",
     "require": {
-        "php": "^7.0"
+        "php": "^7.0",
+        "traderinteractive/filter-strings": "^3.0"
     },
     "suggest": {
         "ext-timezonedb": "The latest version of the timezone database"

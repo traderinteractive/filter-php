@@ -556,7 +556,7 @@ Field 'key' with value 'stdClass::__set_state(array(
 Field 'key' with value 'array (
 )' failed filtering, message 'Value 'array (
 )' is not a string'
-Field 'key' with value 'NULL' failed filtering, message 'Value 'NULL' is not a string'
+Field 'key' with value 'NULL' failed filtering, message 'Value failed filtering, \$allowNull is set to false'
 Value at position '3' was not an array
 TXT;
             $this->assertSame($expected, $e->getMessage());
