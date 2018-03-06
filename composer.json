@@ -34,6 +34,7 @@
         "traderinteractive/filter-bools": "^3.0",
         "traderinteractive/filter-dates": "^3.0",
         "traderinteractive/filter-floats": "^3.0",
+        "traderinteractive/filter-ints": "^3.0",
         "traderinteractive/filter-strings": "^3.0"
     },
     "require-dev": {
