@@ -31,11 +31,9 @@
     "require": {
         "php": "^7.0",
         "traderinteractive/filter-arrays": "^3.0",
+        "traderinteractive/filter-dates": "^3.0",
         "traderinteractive/filter-floats": "^3.0",
         "traderinteractive/filter-strings": "^3.0"
-    },
-    "suggest": {
-        "ext-timezonedb": "The latest version of the timezone database"
     },
     "require-dev": {
         "php-coveralls/php-coveralls": "^1.0",
