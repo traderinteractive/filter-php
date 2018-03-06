@@ -30,6 +30,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.0",
+        "traderinteractive/filter-arrays": "^3.0",
         "traderinteractive/filter-strings": "^3.0"
     },
     "suggest": {
