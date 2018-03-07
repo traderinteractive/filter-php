@@ -1,13 +1,17 @@
 # filter-php
 A filtering implementation for verifying correct data and performing typical modifications to data.
 
-[![Build Status](http://img.shields.io/travis/traderinteractive/filter-php.svg?style=flat)](https://travis-ci.org/traderinteractive/filter-php)
-[![Scrutinizer Code Quality](http://img.shields.io/scrutinizer/g/traderinteractive/filter-php.svg?style=flat)](https://scrutinizer-ci.com/g/traderinteractive/filter-php/)
-[![Code Coverage](http://img.shields.io/coveralls/traderinteractive/filter-php.svg?style=flat)](https://coveralls.io/r/traderinteractive/filter-php)
+[![Build Status](https://travis-ci.org/traderinteractive/filter-php.svg?branch=master)](https://travis-ci.org/traderinteractive/filter-php)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/traderinteractive/filter-php/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/traderinteractive/filter-php/?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/traderinteractive/filter-php/badge.svg?branch=master)](https://coveralls.io/github/traderinteractive/filter-php?branch=master)
 
-[![Latest Stable Version](http://img.shields.io/packagist/v/traderinteractive/filter.svg?style=flat)](https://packagist.org/packages/traderinteractive/filter)
-[![Total Downloads](http://img.shields.io/packagist/dt/traderinteractive/filter.svg?style=flat)](https://packagist.org/packages/traderinteractive/filter)
-[![License](http://img.shields.io/packagist/l/traderinteractive/filter.svg?style=flat)](https://packagist.org/packages/traderinteractive/filter)
+[![Latest Stable Version](https://poser.pugx.org/traderinteractive/filter/v/stable)](https://packagist.org/packages/traderinteractive/filter)
+[![Latest Unstable Version](https://poser.pugx.org/traderinteractive/filter/v/unstable)](https://packagist.org/packages/traderinteractive/filter)
+[![License](https://poser.pugx.org/traderinteractive/filter/license)](https://packagist.org/packages/traderinteractive/filter)
+
+[![Total Downloads](https://poser.pugx.org/traderinteractive/filter/downloads)](https://packagist.org/packages/traderinteractive/filter)
+[![Daily Downloads](https://poser.pugx.org/traderinteractive/filter/d/daily)](https://packagist.org/packages/traderinteractive/filter)
+[![Monthly Downloads](https://poser.pugx.org/traderinteractive/filter/d/monthly)](https://packagist.org/packages/traderinteractive/filter)
 
 ## Features
  * Compact, readable specification
