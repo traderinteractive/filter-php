@@ -9,6 +9,7 @@ use StdClass;
 
 /**
  * @coversDefaultClass \TraderInteractive\Filterer
+ * @covers ::<private>
  */
 final class FiltererTest extends TestCase
 {
