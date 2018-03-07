@@ -6,6 +6,7 @@ use Exception;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use StdClass;
+use TraderInteractive\Exceptions\FilterException;
 
 /**
  * @coversDefaultClass \TraderInteractive\Filterer
@@ -488,7 +489,7 @@ final class FiltererTest extends TestCase
         try {
             Filterer::ofScalars(['1', [], new \StdClass], [['string']]);
             $this->fail();
-        } catch (Exception $e) {
+        } catch (FilterException $e) {
             $expected = <<<TXT
 Field '1' with value 'array (
 )' failed filtering, message 'Value 'array (
@@ -549,7 +550,7 @@ TXT;
                 ['key' => [['string']]]
             );
             $this->fail();
-        } catch (Exception $e) {
+        } catch (FilterException $e) {
             $expected = <<<TXT
 Field 'key' with value 'stdClass::__set_state(array(
 ))' failed filtering, message 'Value 'stdClass::__set_state(array(
@@ -606,7 +607,7 @@ TXT;
         try {
             Filterer::ofArray(['key1' => '1'], ['key1' => [['uint']], 'key2' => ['required' => true, ['uint']]]);
             $this->fail();
-        } catch (Exception $e) {
+        } catch (FilterException $e) {
             $expected = "Field 'key2' was required and not present";
             $this->assertSame($expected, $e->getMessage());
         }
@@ -621,7 +622,7 @@ TXT;
         try {
             Filterer::ofArray(['key' => '1'], ['key2' => [['uint']]]);
             $this->fail();
-        } catch (Exception $e) {
+        } catch (FilterException $e) {
             $expected = "Field 'key' with value '1' is unknown";
             $this->assertSame($expected, $e->getMessage());
         }

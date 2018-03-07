@@ -4,6 +4,7 @@ namespace TraderInteractive;
 
 use Exception;
 use Throwable;
+use TraderInteractive\Exceptions\FilterException;
 
 /**
  * Class to filter an array of input.
@@ -233,7 +234,7 @@ final class Filterer
      *
      * @return array the filtered $values
      *
-     * @throws Exception if any member of $values fails filtering
+     * @throws FilterException if any member of $values fails filtering
      */
     public static function ofScalars(array $values, array $filters) : array
     {
@@ -244,7 +245,7 @@ final class Filterer
 
         list($status, $result, $error) = self::filter($wrappedFilters, $values);
         if (!$status) {
-            throw new Exception($error);
+            throw new FilterException($error);
         }
 
         return $result;
@@ -282,7 +283,7 @@ final class Filterer
         }
 
         if (!empty($errors)) {
-            throw new Exception(implode("\n", $errors));
+            throw new FilterException(implode("\n", $errors));
         }
 
         return $results;
@@ -298,13 +299,13 @@ final class Filterer
      *
      * @return array the filtered $value
      *
-     * @throws Exception if $value fails filtering
+     * @throws FilterException if $value fails filtering
      */
     public static function ofArray(array $value, array $spec) : array
     {
         list($status, $result, $error) = self::filter($spec, $value);
         if (!$status) {
-            throw new Exception($error);
+            throw new FilterException($error);
         }
 
         return $result;
