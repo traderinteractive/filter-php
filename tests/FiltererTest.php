@@ -1,12 +1,24 @@
 <?php
 
-namespace DominionEnterprises;
+namespace TraderInteractive;
+
+use Exception;
+use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
+use StdClass;
+use TraderInteractive\Exceptions\FilterException;
 
 /**
- * @coversDefaultClass \DominionEnterprises\Filterer
+ * @coversDefaultClass \TraderInteractive\Filterer
+ * @covers ::<private>
  */
-final class FiltererTest extends \PHPUnit_Framework_TestCase
+final class FiltererTest extends TestCase
 {
+    public function setUp()
+    {
+        Filterer::setFilterAliases(Filterer::DEFAULT_FILTER_ALIASES);
+    }
+
     /**
      * @test
      * @covers ::filter
@@ -147,12 +159,12 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @covers \DominionEnterprises\Filterer::filter
+     * @covers ::filter
      */
     public function filterFail()
     {
         $result = Filterer::filter(
-            ['fieldOne' => [['\DominionEnterprises\FiltererTest::failingFilter']]],
+            ['fieldOne' => [['\TraderInteractive\FiltererTest::failingFilter']]],
             ['fieldOne' => 'valueOne']
         );
         $this->assertSame(
@@ -178,7 +190,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
     public function chainFail()
     {
         $result = Filterer::filter(
-            ['fieldOne' => [['trim'], ['\DominionEnterprises\FiltererTest::failingFilter']]],
+            ['fieldOne' => [['trim'], ['\TraderInteractive\FiltererTest::failingFilter']]],
             ['fieldOne' => 'the value']
         );
         $this->assertSame(
@@ -208,8 +220,8 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
     {
         $result = Filterer::filter(
             [
-                'fieldOne' => [['\DominionEnterprises\FiltererTest::failingFilter']],
-                'fieldTwo' => [['\DominionEnterprises\FiltererTest::failingFilter']],
+                'fieldOne' => [['\TraderInteractive\FiltererTest::failingFilter']],
+                'fieldTwo' => [['\TraderInteractive\FiltererTest::failingFilter']],
             ],
             ['fieldOne' => 'value one', 'fieldTwo' => 'value two']
         );
@@ -338,7 +350,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::registerAlias
-     * @expectedException \InvalidArgumentException
+     * @expectedException InvalidArgumentException
      * @expectedExceptionMessage $alias was not a string or int
      */
     public function registerAliasAliasNotString()
@@ -349,18 +361,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @covers ::registerAlias
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $overwrite was not a bool
-     */
-    public function registerAliasOverwriteNotBool()
-    {
-        Filterer::registerAlias('lower', 'strtolower', 'foo');
-    }
-
-    /**
-     * @test
-     * @covers ::registerAlias
-     * @expectedException \Exception
+     * @expectedException Exception
      * @expectedExceptionMessage Alias 'upper' exists
      */
     public function registerExistingAliasOverwriteFalse()
@@ -381,9 +382,9 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(['upper' => 'ucfirst', 'lower' => 'strtolower'], Filterer::getFilterAliases());
     }
 
-    public static function failingFilter($val)
+    public static function failingFilter()
     {
-        throw new \Exception('i failed');
+        throw new Exception('i failed');
     }
 
     public static function passingFilter($value)
@@ -404,7 +405,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
         $result = Filterer::filter(
             [
                 'fieldOne' => [
-                    ['\DominionEnterprises\FiltererTest::failingFilter'],
+                    ['\TraderInteractive\FiltererTest::failingFilter'],
                     'error' => 'My custom error message'
                 ],
             ],
@@ -421,7 +422,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
      *
      * @test
      * @covers ::filter
-     * @expectedException \InvalidArgumentException
+     * @expectedException InvalidArgumentException
      * @expectedExceptionMessage error for field 'fieldOne' was not a non-empty string
      *
      * @return void
@@ -429,7 +430,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
     public function filterWithNonStringError()
     {
         Filterer::filter(
-            ['fieldOne' => [['strtoupper'], 'error' => new \StdClass()]],
+            ['fieldOne' => [['strtoupper'], 'error' => new StdClass()]],
             ['fieldOne' => 'valueOne']
         );
     }
@@ -439,7 +440,7 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
      *
      * @test
      * @covers ::filter
-     * @expectedException \InvalidArgumentException
+     * @expectedException InvalidArgumentException
      * @expectedExceptionMessage error for field 'fieldOne' was not a non-empty string
      *
      * @return void
@@ -450,5 +451,180 @@ final class FiltererTest extends \PHPUnit_Framework_TestCase
             ['fieldOne' => [['strtoupper'], 'error' => "\n   \t"]],
             ['fieldOne' => 'valueOne']
         );
+    }
+
+    /**
+     * @test
+     * @covers ::ofScalars
+     */
+    public function ofScalars()
+    {
+        $this->assertSame([1, 2], Filterer::ofScalars(['1', '2'], [['uint']]));
+    }
+
+    /**
+     * @test
+     * @covers ::ofScalars
+     */
+    public function ofScalarsChained()
+    {
+        $this->assertSame([3.3, 5.5], Filterer::ofScalars(['a3.3', 'a5.5'], [['trim', 'a'], ['floatval']]));
+    }
+
+    /**
+     * @test
+     * @covers ::ofScalars
+     */
+    public function ofScalarsWithMeaninglessKeys()
+    {
+        $this->assertSame(['key1' => 1, 'key2' => 2], Filterer::ofScalars(['key1' => '1', 'key2' => '2'], [['uint']]));
+    }
+
+    /**
+     * @test
+     * @covers ::ofScalars
+     */
+    public function ofScalarsFail()
+    {
+        try {
+            Filterer::ofScalars(['1', [], new \StdClass], [['string']]);
+            $this->fail();
+        } catch (FilterException $e) {
+            $expected = <<<TXT
+Field '1' with value 'array (
+)' failed filtering, message 'Value 'array (
+)' is not a string'
+Field '2' with value 'stdClass::__set_state(array(
+))' failed filtering, message 'Value 'stdClass::__set_state(array(
+))' is not a string'
+TXT;
+            $this->assertSame($expected, $e->getMessage());
+        }
+    }
+
+    /**
+     * @test
+     * @covers ::ofArrays
+     */
+    public function ofArrays()
+    {
+        $expected = [['key' => 1], ['key' => 2]];
+        $this->assertSame($expected, Filterer::ofArrays([['key' => '1'], ['key' => '2']], ['key' => [['uint']]]));
+    }
+
+    /**
+     * @test
+     * @covers ::ofArrays
+     */
+    public function ofArraysChained()
+    {
+        $expected = [['key' => 3.3], ['key' => 5.5]];
+        $spec = ['key' => [['trim', 'a'], ['floatval']]];
+        $this->assertSame($expected, Filterer::ofArrays([['key' => 'a3.3'], ['key' => 'a5.5']], $spec));
+    }
+
+    /**
+     * @test
+     * @covers ::ofArrays
+     */
+    public function ofArraysRequiredAndUnknown()
+    {
+        try {
+            Filterer::ofArrays([['key' => '1'], ['key2' => '2']], ['key' => ['required' => true, ['uint']]]);
+            $this->fail();
+        } catch (Exception $e) {
+            $expected = "Field 'key' was required and not present\nField 'key2' with value '2' is unknown";
+            $this->assertSame($expected, $e->getMessage());
+        }
+    }
+
+    /**
+     * @test
+     * @covers ::ofArrays
+     */
+    public function ofArraysFail()
+    {
+        try {
+            Filterer::ofArrays(
+                [['key' => new \StdClass], ['key' => []], ['key' => null], 'key'],
+                ['key' => [['string']]]
+            );
+            $this->fail();
+        } catch (FilterException $e) {
+            $expected = <<<TXT
+Field 'key' with value 'stdClass::__set_state(array(
+))' failed filtering, message 'Value 'stdClass::__set_state(array(
+))' is not a string'
+Field 'key' with value 'array (
+)' failed filtering, message 'Value 'array (
+)' is not a string'
+Field 'key' with value 'NULL' failed filtering, message 'Value failed filtering, \$allowNull is set to false'
+Value at position '3' was not an array
+TXT;
+            $this->assertSame($expected, $e->getMessage());
+        }
+    }
+
+    /**
+     * @test
+     * @covers ::ofArray
+     */
+    public function ofArray()
+    {
+        $expected = ['key1' => 1, 'key2' => 2];
+        $spec = ['key1' => [['uint']], 'key2' => [['uint']]];
+        $this->assertSame($expected, Filterer::ofArray(['key1' => '1', 'key2' => '2'], $spec));
+    }
+
+    /**
+     * @test
+     * @covers ::ofArray
+     */
+    public function ofArrayChained()
+    {
+        $expected = ['key' => 3.3];
+        $spec = ['key' => [['trim', 'a'], ['floatval']]];
+        $this->assertSame($expected, Filterer::ofArray(['key' => 'a3.3'], $spec));
+    }
+
+    /**
+     * @test
+     * @covers ::ofArray
+     */
+    public function ofArrayRequiredSuccess()
+    {
+        $expected = ['key2' => 2];
+        $spec = ['key1' => [['uint']], 'key2' => ['required' => true, ['uint']]];
+        $this->assertSame($expected, Filterer::ofArray(['key2' => '2'], $spec));
+    }
+
+    /**
+     * @test
+     * @covers ::ofArray
+     */
+    public function ofArrayRequiredFail()
+    {
+        try {
+            Filterer::ofArray(['key1' => '1'], ['key1' => [['uint']], 'key2' => ['required' => true, ['uint']]]);
+            $this->fail();
+        } catch (FilterException $e) {
+            $expected = "Field 'key2' was required and not present";
+            $this->assertSame($expected, $e->getMessage());
+        }
+    }
+
+    /**
+     * @test
+     * @covers ::ofArray
+     */
+    public function ofArrayUnknown()
+    {
+        try {
+            Filterer::ofArray(['key' => '1'], ['key2' => [['uint']]]);
+            $this->fail();
+        } catch (FilterException $e) {
+            $expected = "Field 'key' with value '1' is unknown";
+            $this->assertSame($expected, $e->getMessage());
+        }
     }
 }
