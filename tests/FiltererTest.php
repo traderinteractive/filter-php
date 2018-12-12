@@ -405,8 +405,8 @@ final class FiltererTest extends TestCase
         $result = Filterer::filter(
             [
                 'fieldOne' => [
+                    'error' => 'My custom error message',
                     ['\TraderInteractive\FiltererTest::failingFilter'],
-                    'error' => 'My custom error message'
                 ],
             ],
             ['fieldOne' => 'valueOne']
