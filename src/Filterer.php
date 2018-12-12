@@ -414,7 +414,7 @@ final class Filterer
         }
     }
 
-    private static function validateCustomError(array $filters, string $field)
+    private static function validateCustomError(array &$filters, string $field)
     {
         $customError = null;
         if (array_key_exists('error', $filters)) {
