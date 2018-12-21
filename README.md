@@ -223,6 +223,14 @@ $value = \TraderInteractive\Filter\Strings::explode('abc,def,ghi');
 assert($value === ['abc', 'def', 'ghi']);
 ```
 
+#### Strings::stripTags
+Aliased in the filterer as `strip-tags`, this filter is essentially a wrapper around the built-in [`strip_tags`](http://php.net/manual/en/function.strip-tags.php) function. However, unlike the
+native function the stripTags method will return null when given a null value.
+```php
+$value = \TraderInteractive\Filter\Strings::stripTags('A string with <p>tags</p>');
+assert($value === 'a string with tags');
+```
+
 #### Url::filter
 Aliased in the filterer as `url`, this filter verifies that the argument is a URL string according to
 [RFC2396](http://www.faqs.org/rfcs/rfc2396). The second parameter can be set to `true` to allow

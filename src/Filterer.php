@@ -29,6 +29,7 @@ final class Filterer
         'url' => '\TraderInteractive\Filter\Url::filter',
         'email' => '\TraderInteractive\Filter\Email::filter',
         'explode' => '\TraderInteractive\Filter\Strings::explode',
+        'strip-tags' => '\TraderInteractive\Filter\Strings::stripTags',
         'flatten' => '\TraderInteractive\Filter\Arrays::flatten',
         'date' => '\TraderInteractive\Filter\DateTime::filter',
         'date-format' => '\TraderInteractive\Filter\DateTime::format',

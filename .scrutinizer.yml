@@ -19,4 +19,4 @@ build_failure_conditions:
     - 'elements.rating(< C).new.exists'
     - 'issues.label("coding-style").new.exists'
     - 'issues.severity(>= MAJOR).new.exists'
-    - 'project.metric("scrutinizer.quality", < 7)'
+    - 'project.metric("scrutinizer.quality", < 6.37)'
