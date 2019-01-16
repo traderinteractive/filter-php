@@ -418,6 +418,26 @@ final class FiltererTest extends TestCase
     }
 
     /**
+     * @test
+     * @covers ::filter
+     */
+    public function filterWithCustomErrorContainingValuePlaceholder()
+    {
+        $result = Filterer::filter(
+            [
+                'fieldOne' => [
+                    'error' => "The value '{value}' is invalid.",
+                    ['uint'],
+                ],
+            ],
+            ['fieldOne' => 'abc']
+        );
+        $this->assertSame(
+            [false, null, "The value 'abc' is invalid.", []],
+            $result
+        );
+    }
+    /**
      * Verify behavior of filter() when 'error' is not a string value.
      *
      * @test
