@@ -379,14 +379,13 @@ final class Filterer
         $error = $customError;
         if ($error === null) {
             $error = sprintf(
-                "Field '%s' with value '%s' failed filtering, message '%s'",
+                "Field '%s' with value '{value}' failed filtering, message '%s'",
                 $field,
-                trim(var_export($value, true), "'"),
                 $e->getMessage()
             );
         }
 
-        $errors[] = $error;
+        $errors[] = str_replace('{value}', trim(var_export($value, true), "'"), $error);
         return $errors;
     }
 

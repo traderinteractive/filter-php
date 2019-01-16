@@ -107,6 +107,8 @@ The filter specification for a single field is also an array.  It can contain tw
   `defaultRequired` option.
 * `default` defines what the default value of this field is if none is given.  A field with a default value will be guaranteed to be in the
   result.  The `required` value does not affect `default` behavior.
+* `error` defines a custom error message to be returned if the value fails filtering. Within the error string, `{value}` can be used as a placeholder
+  for the value that failed filtering.
 
 The rest of the specification for the field are the filters to apply.
 
