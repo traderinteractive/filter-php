@@ -156,6 +156,13 @@ The following does a strict check for `$value` against the 3 accepted values.
 \TraderInteractive\Filter\Arrays::in($value, ['a', 'b', 'c']);
 ```
 
+#### Arrays::arrayize
+Aliased in the filterer as `arrayize`, this filter returns this original input if it is an array, otherwise returns input wrapped in an array. If the original input is null, an empty array is returned.
+```php
+$value = \TraderInteractive\Filter\Arrays::arrayize('a string value');
+assert($value === ['a string value']);
+```
+
 #### Arrays::filter
 Aliased in the filterer as `array`, this filter verifies that the argument is an array and checks the length of the array against bounds.  The
 default bounds are 1+, so an empty array fails by default.

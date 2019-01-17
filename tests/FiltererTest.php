@@ -647,4 +647,16 @@ TXT;
             $this->assertSame($expected, $e->getMessage());
         }
     }
+
+    /**
+     * @tests
+     * @covers ::filter
+     */
+    public function arrayizeAliasIsCalledProperly()
+    {
+        $this->assertSame(
+            [true, ['field' => ['a string value']], null, []],
+            Filterer::filter(['field' => [['arrayize']]], ['field' => 'a string value'])
+        );
+    }
 }
