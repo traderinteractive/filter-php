@@ -16,6 +16,7 @@ final class Filterer
      */
     const DEFAULT_FILTER_ALIASES = [
         'array' => '\\TraderInteractive\\Filter\\Arrays::filter',
+        'arrayize' => '\\TraderInteractive\\Filter\\Arrays::arrayize',
         'bool' => '\\TraderInteractive\\Filter\\Booleans::filter',
         'bool-convert' => '\\TraderInteractive\\Filter\\Booleans::convert',
         'date' => '\\TraderInteractive\\Filter\\DateTime::filter',
