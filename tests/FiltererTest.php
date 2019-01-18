@@ -659,4 +659,16 @@ TXT;
             Filterer::filter(['field' => [['arrayize']]], ['field' => 'a string value'])
         );
     }
+
+    /**
+     * @tests
+     * @covers ::filter
+     */
+    public function concatAliasIsCalledProperly()
+    {
+        $this->assertSame(
+            [true, ['field' => '%value%'], null, []],
+            Filterer::filter(['field' => [['concat', '%', '%']]], ['field' => 'value'])
+        );
+    }
 }

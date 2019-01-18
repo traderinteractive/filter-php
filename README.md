@@ -224,6 +224,13 @@ The following checks that `$value` is a non-empty string.
 \TraderInteractive\Filter\Strings::filter($value);
 ```
 
+#### Strings::concat
+Aliased in the filterer as `concat`, this filter concatenates the given $value, $prefix and $suffix and returns the resulting string.
+```php
+$value = \TraderInteractive\Filter\Strings::concat('middle', 'begining_', '_end');
+assert($value === 'begining_middle_end');
+```
+
 #### Strings::explode
 Aliased in the filterer as `explode`, this filter is essentially a wrapper around the built-in [`explode`](http://www.php.net/explode) method
 with the value first in order to work with the `Filterer`.  It also defaults to using `,` as a delimiter.  For example:
