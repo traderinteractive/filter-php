@@ -19,6 +19,7 @@ final class Filterer
         'arrayize' => '\\TraderInteractive\\Filter\\Arrays::arrayize',
         'bool' => '\\TraderInteractive\\Filter\\Booleans::filter',
         'bool-convert' => '\\TraderInteractive\\Filter\\Booleans::convert',
+        'concat' => '\\TraderInteractive\\Filter\\Strings::concat',
         'date' => '\\TraderInteractive\\Filter\\DateTime::filter',
         'date-format' => '\\TraderInteractive\\Filter\\DateTime::format',
         'email' => '\\TraderInteractive\\Filter\\Email::filter',

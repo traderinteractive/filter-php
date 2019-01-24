@@ -22,114 +22,195 @@ final class FiltererTest extends TestCase
     /**
      * @test
      * @covers ::filter
+     * @dataProvider provideValidFilterData
+     *
+     * @param array $spec  The filter specification to be use.
+     * @param array $input The input to be filtered.
+     * @param array $options The filterer options
+     * @param array $expectedResult The expected filterer result.
      */
-    public function requiredPass()
+    public function filter(array $spec, array $input, array $options, array $expectedResult)
     {
-        $result = Filterer::filter(['fieldOne' => ['required' => false]], []);
-        $this->assertSame([true, [], null, []], $result);
+        $this->assertSame($expectedResult, Filterer::filter($spec, $input, $options));
     }
 
-    /**
-     * @test
-     * @covers ::filter
-     */
-    public function requiredFail()
+    public function provideValidFilterData() : array
     {
-        $result = Filterer::filter(['fieldOne' => ['required' => true]], []);
-        $this->assertSame([false, null, "Field 'fieldOne' was required and not present", []], $result);
-    }
-
-    /**
-     * @test
-     * @covers ::filter
-     */
-    public function requiredWithADefaultWithoutInput()
-    {
-        $result = Filterer::filter(['fieldOne' => ['required' => true, 'default' => 'theDefault']], []);
-        $this->assertSame([true, ['fieldOne' => 'theDefault'], null, []], $result);
-    }
-
-    /**
-     * @test
-     * @covers ::filter
-     */
-    public function requiredWithANullDefaultWithoutInput()
-    {
-        $result = Filterer::filter(['fieldOne' => ['required' => true, 'default' => null]], []);
-        $this->assertSame([true, ['fieldOne' => null], null, []], $result);
-    }
-
-    /**
-     * @test
-     * @covers ::filter
-     */
-    public function requiredWithADefaultWithInput()
-    {
-        $result = Filterer::filter(
-            ['fieldOne' => ['required' => true, 'default' => 'theDefault']],
-            ['fieldOne' => 'notTheDefault']
-        );
-        $this->assertSame([true, ['fieldOne' => 'notTheDefault'], null, []], $result);
-    }
-
-    /**
-     * @test
-     * @covers ::filter
-     */
-    public function notRequiredWithADefaultWithoutInput()
-    {
-        $result = Filterer::filter(['fieldOne' => ['default' => 'theDefault']], []);
-        $this->assertSame([true, ['fieldOne' => 'theDefault'], null, []], $result);
-    }
-
-    /**
-     * @test
-     * @covers ::filter
-     */
-    public function notRequiredWithADefaultWithInput()
-    {
-        $result = Filterer::filter(['fieldOne' => ['default' => 'theDefault']], ['fieldOne' => 'notTheDefault']);
-        $this->assertSame([true, ['fieldOne' => 'notTheDefault'], null, []], $result);
-    }
-
-    /**
-     * @test
-     * @covers ::filter
-     */
-    public function requiredDefaultPass()
-    {
-        $result = Filterer::filter(['fieldOne' => []], []);
-        $this->assertSame([true, [], null, []], $result);
-    }
-
-    /**
-     * @test
-     * @covers ::filter
-     */
-    public function requiredDefaultFail()
-    {
-        $result = Filterer::filter(['fieldOne' => []], [], ['defaultRequired' => true]);
-        $this->assertSame([false, null, "Field 'fieldOne' was required and not present", []], $result);
-    }
-
-    /**
-     * @test
-     * @covers ::filter
-     */
-    public function filterPass()
-    {
-        $result = Filterer::filter(['fieldOne' => [['floatval']]], ['fieldOne' => '3.14']);
-        $this->assertSame([true, ['fieldOne' => 3.14], null, []], $result);
-    }
-
-    /**
-     * @test
-     * @covers ::filter
-     */
-    public function filterDefaultShortNamePass()
-    {
-        $result = Filterer::filter(['fieldOne' => [['float']]], ['fieldOne' => '3.14']);
-        $this->assertSame([true, ['fieldOne' => 3.14], null, []], $result);
+        return [
+            'not required field not present' => [
+                'spec' => ['fieldOne' => ['required' => false]],
+                'input' => [],
+                'options' => [],
+                'result' => [true, [], null, []],
+            ],
+            'Required With A Default Without Input' => [
+                'spec' => ['fieldOne' => ['required' => true, 'default' => 'theDefault']],
+                'input' => [],
+                'options' => [],
+                'result' => [true, ['fieldOne' => 'theDefault'], null, []],
+            ],
+            'Required With A Null Default Without Input' => [
+                'spec' => ['fieldOne' => ['required' => true, 'default' => null]],
+                'input' => [],
+                'options' => [],
+                'result' => [true, ['fieldOne' => null], null, []],
+            ],
+            'Required With A Default With Input' => [
+                'spec' => ['fieldOne' => ['required' => true, 'default' => 'theDefault']],
+                'input' => ['fieldOne' => 'notTheDefault'],
+                'options' => [],
+                'result' => [true, ['fieldOne' => 'notTheDefault'], null, []],
+            ],
+            'Not Required With A Default Without Input' => [
+                'spec' => ['fieldOne' => ['default' => 'theDefault']],
+                'input' => [],
+                'options' => [],
+                'result' => [true, ['fieldOne' => 'theDefault'], null, []],
+            ],
+            'Not Required With A Default With Input' => [
+                'spec' => ['fieldOne' => ['default' => 'theDefault']],
+                'input' => ['fieldOne' => 'notTheDefault'],
+                'options' => [],
+                'result' => [true, ['fieldOne' => 'notTheDefault'], null, []],
+            ],
+            'Required Fail' => [
+                'spec' => ['fieldOne' => ['required' => true]],
+                'input' => [],
+                'options' => [],
+                'result' => [false, null, "Field 'fieldOne' was required and not present", []],
+            ],
+            'Required Default Pass' => [
+                'spec' => ['fieldOne' => []],
+                'input' => [],
+                'options' => [],
+                'result' => [true, [], null, []],
+            ],
+            'requiredDefaultFail' => [
+                'spec' => ['fieldOne' => []],
+                'input' => [],
+                'options' => ['defaultRequired' => true],
+                'result' => [false, null, "Field 'fieldOne' was required and not present", []],
+            ],
+            'filterPass' => [
+                'spec' => ['fieldOne' => [['floatval']]],
+                'input' => ['fieldOne' => '3.14'],
+                'options' => [],
+                'result' => [true, ['fieldOne' => 3.14], null, []],
+            ],
+            'filterDefaultShortNamePass' => [
+                'spec' => ['fieldOne' => [['float']]],
+                'input' => ['fieldOne' => '3.14'],
+                'options' => [],
+                'result' => [true, ['fieldOne' => 3.14], null, []],
+            ],
+            'filterFail' => [
+                'spec' => ['fieldOne' => [['\TraderInteractive\FiltererTest::failingFilter']]],
+                'input' => ['fieldOne' => 'valueOne'],
+                'options' => [],
+                'result' => [
+                    false,
+                    null,
+                    "Field 'fieldOne' with value 'valueOne' failed filtering, message 'i failed'",
+                    [],
+                ],
+            ],
+            'chainPass' => [
+                'spec' => ['fieldOne' => [['trim', 'a'], ['floatval']]],
+                'input' => ['fieldOne' => 'a3.14'],
+                'options' => [],
+                'result' => [true, ['fieldOne' => 3.14], null, []],
+            ],
+            'chainFail' => [
+                'spec' => ['fieldOne' => [['trim'], ['\TraderInteractive\FiltererTest::failingFilter']]],
+                'input' => ['fieldOne' => 'the value'],
+                'options' => [],
+                'result' => [
+                    false,
+                    null,
+                    "Field 'fieldOne' with value 'the value' failed filtering, message 'i failed'",
+                    [],
+                ],
+            ],
+            'multiInputPass' => [
+                'spec' => ['fieldOne' => [['trim']], 'fieldTwo' => [['strtoupper']]],
+                'input' => ['fieldOne' => ' value', 'fieldTwo' => 'bob'],
+                'options' => [],
+                'result' => [true, ['fieldOne' => 'value', 'fieldTwo' => 'BOB'], null, []],
+            ],
+            'multiInputFail' => [
+                'spec' => [
+                    'fieldOne' => [['\TraderInteractive\FiltererTest::failingFilter']],
+                    'fieldTwo' => [['\TraderInteractive\FiltererTest::failingFilter']],
+                ],
+                'input' => ['fieldOne' => 'value one', 'fieldTwo' => 'value two'],
+                'options' => [],
+                'result' => [
+                    false,
+                    null,
+                    "Field 'fieldOne' with value 'value one' failed filtering, message 'i failed'\n"
+                    . "Field 'fieldTwo' with value 'value two' failed filtering, message 'i failed'",
+                    [],
+                ],
+            ],
+            'emptyFilter' => [
+                'spec' => ['fieldOne' => [[]]],
+                'input' => ['fieldOne' => 0],
+                'options' => [],
+                'result' => [true, ['fieldOne' => 0], null, []],
+            ],
+            'unknownsAllowed' => [
+                'spec' => [],
+                'input'=> ['fieldTwo' => 0],
+                'options' => ['allowUnknowns' => true],
+                'result' => [true, [], null, ['fieldTwo' => 0]],
+            ],
+            'unknownsNotAllowed' => [
+                'spec' => [],
+                'input' => ['fieldTwo' => 0],
+                'options' => [],
+                'result' => [false, null, "Field 'fieldTwo' with value '0' is unknown", ['fieldTwo' => 0]],
+            ],
+            'objectFilter' => [
+                'spec' => ['fieldOne' => [[[$this, 'passingFilter']]]],
+                'input' => ['fieldOne' => 'foo'],
+                'options' => [],
+                'result' => [true, ['fieldOne' => 'fooboo'], null, []],
+            ],
+            'filterWithCustomError' => [
+                'spec' => [
+                    'fieldOne' => [
+                        'error' => 'My custom error message',
+                        ['\TraderInteractive\FiltererTest::failingFilter'],
+                    ],
+                ],
+                'input' => ['fieldOne' => 'valueOne'],
+                'options' => [],
+                'result' => [false, null, 'My custom error message', []],
+            ],
+            'filterWithCustomErrorContainingValuePlaceholder' => [
+                'spec' => [
+                    'fieldOne' => [
+                        'error' => "The value '{value}' is invalid.",
+                        ['uint'],
+                    ],
+                ],
+                'input' => ['fieldOne' => 'abc'],
+                'options' => [],
+                'result' => [false, null, "The value 'abc' is invalid.", []],
+            ],
+            'arrayizeAliasIsCalledProperly' => [
+                'spec' => ['field' => [['arrayize']]],
+                'input' => ['field' => 'a string value'],
+                'options' => [],
+                'result' => [true, ['field' => ['a string value']], null, []],
+            ],
+            'concatAliasIsCalledProperly' => [
+                'spec' => ['field' => [['concat', '%', '%']]],
+                'input' => ['field' => 'value'],
+                'options' => [],
+                'result' => [true, ['field' => '%value%'], null, []],
+            ],
+        ];
     }
 
     /**
@@ -155,119 +236,6 @@ final class FiltererTest extends TestCase
         $knownFilters = ['lower' => 'strtolower', 'upper' => 'strtoupper'];
         Filterer::setFilterAliases($knownFilters);
         $this->assertSame($knownFilters, Filterer::getFilterAliases());
-    }
-
-    /**
-     * @test
-     * @covers ::filter
-     */
-    public function filterFail()
-    {
-        $result = Filterer::filter(
-            ['fieldOne' => [['\TraderInteractive\FiltererTest::failingFilter']]],
-            ['fieldOne' => 'valueOne']
-        );
-        $this->assertSame(
-            [false, null, "Field 'fieldOne' with value 'valueOne' failed filtering, message 'i failed'", []],
-            $result
-        );
-    }
-
-    /**
-     * @test
-     * @covers ::filter
-     */
-    public function chainPass()
-    {
-        $result = Filterer::filter(['fieldOne' => [['trim', 'a'], ['floatval']]], ['fieldOne' => 'a3.14']);
-        $this->assertSame([true, ['fieldOne' => 3.14], null, []], $result);
-    }
-
-    /**
-     * @test
-     * @covers ::filter
-     */
-    public function chainFail()
-    {
-        $result = Filterer::filter(
-            ['fieldOne' => [['trim'], ['\TraderInteractive\FiltererTest::failingFilter']]],
-            ['fieldOne' => 'the value']
-        );
-        $this->assertSame(
-            [false, null, "Field 'fieldOne' with value 'the value' failed filtering, message 'i failed'", []],
-            $result
-        );
-    }
-
-    /**
-     * @test
-     * @covers ::filter
-     */
-    public function multiInputPass()
-    {
-        $result = Filterer::filter(
-            ['fieldOne' => [['trim']], 'fieldTwo' => [['strtoupper']]],
-            ['fieldOne' => ' value', 'fieldTwo' => 'bob']
-        );
-        $this->assertSame([true, ['fieldOne' => 'value', 'fieldTwo' => 'BOB'], null, []], $result);
-    }
-
-    /**
-     * @test
-     * @covers ::filter
-     */
-    public function multiInputFail()
-    {
-        $result = Filterer::filter(
-            [
-                'fieldOne' => [['\TraderInteractive\FiltererTest::failingFilter']],
-                'fieldTwo' => [['\TraderInteractive\FiltererTest::failingFilter']],
-            ],
-            ['fieldOne' => 'value one', 'fieldTwo' => 'value two']
-        );
-        $expectedMessage = "Field 'fieldOne' with value 'value one' failed filtering, message 'i failed'\n";
-        $expectedMessage .= "Field 'fieldTwo' with value 'value two' failed filtering, message 'i failed'";
-        $this->assertSame([false, null, $expectedMessage, []], $result);
-    }
-
-    /**
-     * @test
-     * @covers ::filter
-     */
-    public function emptyFilter()
-    {
-        $result = Filterer::filter(['fieldOne' => [[]]], ['fieldOne' => 0]);
-        $this->assertSame([true, ['fieldOne' => 0], null, []], $result);
-    }
-
-    /**
-     * @test
-     * @covers ::filter
-     */
-    public function unknownsAllowed()
-    {
-        $result = Filterer::filter([], ['fieldTwo' => 0], ['allowUnknowns' => true]);
-        $this->assertSame([true, [], null, ['fieldTwo' => 0]], $result);
-    }
-
-    /**
-     * @test
-     * @covers ::filter
-     */
-    public function unknownsNotAllowed()
-    {
-        $result = Filterer::filter([], ['fieldTwo' => 0]);
-        $this->assertSame([false, null, "Field 'fieldTwo' with value '0' is unknown", ['fieldTwo' => 0]], $result);
-    }
-
-    /**
-     * @test
-     * @covers ::filter
-     */
-    public function objectFilter()
-    {
-        $result = Filterer::filter(['fieldOne' => [[[$this, 'passingFilter']]]], ['fieldOne' => 'foo']);
-        $this->assertSame([true, ['fieldOne' => 'fooboo'], null, []], $result);
     }
 
     /**
@@ -392,51 +360,6 @@ final class FiltererTest extends TestCase
         return $value . 'boo';
     }
 
-    /**
-     * Verify custom errors can be added to filter spec.
-     *
-     * @test
-     * @covers ::filter
-     *
-     * @return void
-     */
-    public function filterWithCustomError()
-    {
-        $result = Filterer::filter(
-            [
-                'fieldOne' => [
-                    'error' => 'My custom error message',
-                    ['\TraderInteractive\FiltererTest::failingFilter'],
-                ],
-            ],
-            ['fieldOne' => 'valueOne']
-        );
-        $this->assertSame(
-            [false, null, 'My custom error message', []],
-            $result
-        );
-    }
-
-    /**
-     * @test
-     * @covers ::filter
-     */
-    public function filterWithCustomErrorContainingValuePlaceholder()
-    {
-        $result = Filterer::filter(
-            [
-                'fieldOne' => [
-                    'error' => "The value '{value}' is invalid.",
-                    ['uint'],
-                ],
-            ],
-            ['fieldOne' => 'abc']
-        );
-        $this->assertSame(
-            [false, null, "The value 'abc' is invalid.", []],
-            $result
-        );
-    }
     /**
      * Verify behavior of filter() when 'error' is not a string value.
      *
@@ -646,17 +569,5 @@ TXT;
             $expected = "Field 'key' with value '1' is unknown";
             $this->assertSame($expected, $e->getMessage());
         }
-    }
-
-    /**
-     * @tests
-     * @covers ::filter
-     */
-    public function arrayizeAliasIsCalledProperly()
-    {
-        $this->assertSame(
-            [true, ['field' => ['a string value']], null, []],
-            Filterer::filter(['field' => [['arrayize']]], ['field' => 'a string value'])
-        );
     }
 }
