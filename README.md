@@ -247,6 +247,13 @@ $value = \TraderInteractive\Filter\Strings::stripTags('A string with <p>tags</p>
 assert($value === 'a string with tags');
 ```
 
+#### Strings::translate
+Aliased in the filterer as `translate`, this filter will accept a string value and return its translated value found in the given $valueMap.
+```php
+$value = \TraderInteractive\Filter\Strings::tranlsate('bar', ['foo' => 'translated to bar', 'bar' => 'translated to foo']);
+assert($value === 'translated to foo');
+```
+
 #### Url::filter
 Aliased in the filterer as `url`, this filter verifies that the argument is a URL string according to
 [RFC2396](http://www.faqs.org/rfcs/rfc2396). The second parameter can be set to `true` to allow

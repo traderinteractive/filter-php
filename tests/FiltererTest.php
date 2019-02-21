@@ -210,6 +210,12 @@ final class FiltererTest extends TestCase
                 'options' => [],
                 'result' => [true, ['field' => '%value%'], null, []],
             ],
+            'translate alias' => [
+                'spec' => ['field' => [['translate', ['active' => 'A', 'inactive' => 'I']]]],
+                'input' => ['field' => 'inactive'],
+                'options' => [],
+                'result' => [true, ['field' => 'I'], null, []],
+            ],
         ];
     }
 
