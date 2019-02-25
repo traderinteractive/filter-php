@@ -34,6 +34,7 @@ final class Filterer
         'string' => '\\TraderInteractive\\Filter\\Strings::filter',
         'strip-tags' => '\\TraderInteractive\\Filter\\Strings::stripTags',
         'timezone' => '\\TraderInteractive\\Filter\\DateTimeZone::filter',
+        'translate' => '\\TraderInteractive\\Filter\\Strings::translate',
         'uint' => '\\TraderInteractive\\Filter\\UnsignedInt::filter',
         'url' => '\\TraderInteractive\\Filter\\Url::filter',
     ];
