@@ -31,6 +31,7 @@ final class Filterer
         'ofArray' => '\\TraderInteractive\\Filterer::ofArray',
         'ofArrays' => '\\TraderInteractive\\Filterer::ofArrays',
         'ofScalars' => '\\TraderInteractive\\Filterer::ofScalars',
+        'redact' => '\\TraderInteractive\\Filter\\Strings::redact',
         'string' => '\\TraderInteractive\\Filter\\Strings::filter',
         'strip-tags' => '\\TraderInteractive\\Filter\\Strings::stripTags',
         'timezone' => '\\TraderInteractive\\Filter\\DateTimeZone::filter',
