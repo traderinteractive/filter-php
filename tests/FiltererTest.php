@@ -5,7 +5,7 @@ namespace TraderInteractive;
 use Exception;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use StdClass;
+use stdClass;
 use TraderInteractive\Exceptions\FilterException;
 
 /**
@@ -379,7 +379,7 @@ final class FiltererTest extends TestCase
     public function filterWithNonStringError()
     {
         Filterer::filter(
-            ['fieldOne' => [['strtoupper'], 'error' => new StdClass()]],
+            ['fieldOne' => [['strtoupper'], 'error' => new stdClass()]],
             ['fieldOne' => 'valueOne']
         );
     }
@@ -436,7 +436,7 @@ final class FiltererTest extends TestCase
     public function ofScalarsFail()
     {
         try {
-            Filterer::ofScalars(['1', [], new \StdClass], [['string']]);
+            Filterer::ofScalars(['1', [], new stdClass], [['string']]);
             $this->fail();
         } catch (FilterException $e) {
             $expected = <<<TXT
@@ -495,7 +495,7 @@ TXT;
     {
         try {
             Filterer::ofArrays(
-                [['key' => new \StdClass], ['key' => []], ['key' => null], 'key'],
+                [['key' => new stdClass], ['key' => []], ['key' => null], 'key'],
                 ['key' => [['string']]]
             );
             $this->fail();
