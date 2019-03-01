@@ -134,10 +134,11 @@ final class Filterer
      */
     public static function filter(array $spec, array $input, array $options = [])
     {
-        $options += ['allowUnknowns' => false, 'defaultRequired' => false];
+        $options += ['allowUnknowns' => false, 'defaultRequired' => false, 'responseType' => self::RESPONSE_TYPE_ARRAY];
 
         $allowUnknowns = self::getAllowUnknowns($options);
         $defaultRequired = self::getDefaultRequired($options);
+        $responseType = $options['responseType'];
 
         $inputToFilter = array_intersect_key($input, $spec);
         $leftOverSpec = array_diff_key($spec, $input);
@@ -186,8 +187,6 @@ final class Filterer
         }
 
         $errors = self::handleAllowUnknowns($allowUnknowns, $leftOverInput, $errors);
-
-        $responseType = $options['responseType'] ?? self::RESPONSE_TYPE_ARRAY;
 
         return self::generateFilterResponse($responseType, $inputToFilter, $errors, $leftOverInput);
     }
