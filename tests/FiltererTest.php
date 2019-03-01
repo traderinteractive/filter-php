@@ -248,6 +248,26 @@ final class FiltererTest extends TestCase
     /**
      * @test
      * @covers ::filter
+     */
+    public function filterReturnsResponseTypeWithErrors()
+    {
+        $specification = ['name' => [['string']]];
+        $input = ['name' => 'foo', 'id' => 1];
+        $options = ['responseType' => Filterer::RESPONSE_TYPE_FILTER];
+
+        $result = Filterer::filter($specification, $input, $options);
+
+        $this->assertInstanceOf(FilterResponse::class, $result);
+        $this->assertSame(false, $result->success);
+        $this->assertSame(['name' => 'foo'], $result->filteredValue);
+        $this->assertSame(['id' => "Field 'id' with value '1' is unknown"], $result->errors);
+        $this->assertSame("Field 'id' with value '1' is unknown", $result->errorMessage);
+        $this->assertSame(['id' => 1], $result->unknowns);
+    }
+
+    /**
+     * @test
+     * @covers ::filter
      * @covers ::setFilterAliases
      */
     public function filterCustomShortNamePass()

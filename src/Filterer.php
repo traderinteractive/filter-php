@@ -346,7 +346,7 @@ final class Filterer
     private static function checkForUnknowns(array $leftOverInput, array $errors) : array
     {
         foreach ($leftOverInput as $field => $value) {
-            $errors[] = "Field '{$field}' with value '" . trim(var_export($value, true), "'") . "' is unknown";
+            $errors[$field] = "Field '{$field}' with value '" . trim(var_export($value, true), "'") . "' is unknown";
         }
 
         return $errors;
@@ -364,7 +364,7 @@ final class Filterer
     private static function handleRequiredFields(bool $required, string $field, array $errors) : array
     {
         if ($required) {
-            $errors[] = "Field '{$field}' was required and not present";
+            $errors[$field] = "Field '{$field}' was required and not present";
         }
         return $errors;
     }
@@ -402,7 +402,7 @@ final class Filterer
             );
         }
 
-        $errors[] = str_replace('{value}', trim(var_export($value, true), "'"), $error);
+        $errors[$field] = str_replace('{value}', trim(var_export($value, true), "'"), $error);
         return $errors;
     }
 
