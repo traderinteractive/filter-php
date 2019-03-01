@@ -42,6 +42,16 @@ final class Filterer
     ];
 
     /**
+     * @var string
+     */
+    const RESPONSE_TYPE_ARRAY = 'array';
+
+    /**
+     * @var string
+     */
+    const RESPONSE_TYPE_FILTER = FilterResponse::class;
+
+    /**
      * @var array
      */
     private static $filterAliases = self::DEFAULT_FILTER_ALIASES;
@@ -106,18 +116,23 @@ final class Filterer
      * @param array $options 'allowUnknowns' (default false) true to allow unknowns or false to treat as error,
      *                       'defaultRequired' (default false) true to make fields required by default and treat as
      *                       error on absence and false to allow their absence by default
+     *                       'responseType' (default RESPONSE_TYPE_ARRAY) Determines the return type, as described
+     *                       in the return section.
      *
-     * @return array on success [true, $input filtered, null, array of unknown fields]
-     *     on error [false, null, 'error message', array of unknown fields]
+     * @return array|FilterResponse If 'responseType' option is RESPONSE_TYPE_ARRAY:
+     *                                  on success [true, $input filtered, null, array of unknown fields]
+     *                                  on error [false, null, 'error message', array of unknown fields]
+     *                              If 'responseType' option is RESPONSE_TYPE_FILTER: a FilterResponse instance.
      *
      * @throws Exception
      * @throws InvalidArgumentException if 'allowUnknowns' option was not a bool
      * @throws InvalidArgumentException if 'defaultRequired' option was not a bool
+     * @throws InvalidArgumentException if 'responseType' option was not a recognized type
      * @throws InvalidArgumentException if filters for a field was not an array
      * @throws InvalidArgumentException if a filter for a field was not an array
      * @throws InvalidArgumentException if 'required' for a field was not a bool
      */
-    public static function filter(array $spec, array $input, array $options = []) : array
+    public static function filter(array $spec, array $input, array $options = [])
     {
         $options += ['allowUnknowns' => false, 'defaultRequired' => false];
 
@@ -172,11 +187,9 @@ final class Filterer
 
         $errors = self::handleAllowUnknowns($allowUnknowns, $leftOverInput, $errors);
 
-        if (empty($errors)) {
-            return [true, $inputToFilter, null, $leftOverInput];
-        }
+        $responseType = $options['responseType'] ?? self::RESPONSE_TYPE_ARRAY;
 
-        return [false, null, implode("\n", $errors), $leftOverInput];
+        return self::generateFilterResponse($responseType, $inputToFilter, $errors, $leftOverInput);
     }
 
     /**
@@ -452,5 +465,34 @@ final class Filterer
         }
 
         return $defaultRequired;
+    }
+
+    /**
+     * @param string $responseType  The type of object that should be returned.
+     * @param array  $filteredValue The filtered input to return.
+     * @param array  $errors        The errors to return.
+     * @param array  $unknowns      The unknowns to return.
+     *
+     * @return array|FilterResponse
+     *
+     * @see filter For more information on how responseType is handled and returns are structured.
+     */
+    private static function generateFilterResponse(
+        string $responseType,
+        array $filteredValue,
+        array $errors,
+        array $unknowns
+    ) {
+        $filterResponse = new FilterResponse($filteredValue, $errors, $unknowns);
+
+        if ($responseType === self::RESPONSE_TYPE_FILTER) {
+            return $filterResponse;
+        }
+
+        if ($responseType === self::RESPONSE_TYPE_ARRAY) {
+            return $filterResponse->toArray();
+        }
+
+        throw new InvalidArgumentException("'responseType' was not a recognized value");
     }
 }

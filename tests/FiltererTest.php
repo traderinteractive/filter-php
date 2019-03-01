@@ -228,6 +228,26 @@ final class FiltererTest extends TestCase
     /**
      * @test
      * @covers ::filter
+     */
+    public function filterReturnsResponseType()
+    {
+        $specification = ['id' => [['uint']]];
+        $input = ['id' => 1];
+        $options = ['responseType' => Filterer::RESPONSE_TYPE_FILTER];
+
+        $result = Filterer::filter($specification, $input, $options);
+
+        $this->assertInstanceOf(FilterResponse::class, $result);
+        $this->assertSame(true, $result->success);
+        $this->assertSame($input, $result->filteredValue);
+        $this->assertSame([], $result->errors);
+        $this->assertSame(null, $result->errorMessage);
+        $this->assertSame([], $result->unknowns);
+    }
+
+    /**
+     * @test
+     * @covers ::filter
      * @covers ::setFilterAliases
      */
     public function filterCustomShortNamePass()
