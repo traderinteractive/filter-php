@@ -57,6 +57,58 @@ final class Filterer
     private static $filterAliases = self::DEFAULT_FILTER_ALIASES;
 
     /**
+     * @var array
+     */
+    private $specification;
+
+    /**
+     * @var array
+     */
+    private $options;
+
+    /**
+     * @param array $specification The specification to apply to the value.
+     * @param array $options       The options apply during filtering.
+     *
+     * @see filter For more detailed information on the parameters.
+     */
+    public function __construct(array $specification, array $options = [])
+    {
+        $this->specification = $specification;
+        $this->options = $options;
+    }
+
+    /**
+     * @param array $value The value to filter.
+     *
+     * @return array
+     */
+    public function __invoke(array $value) : array
+    {
+        $filterResponse = $this->execute($value, [], ['responseType' => self::RESPONSE_TYPE_FILTER]);
+        if ($filterResponse->success === false) {
+            throw new FilterException($filterResponse->errorMessage);
+        }
+
+        return $filterResponse->filteredValue;
+    }
+
+    /**
+     * @param mixed $value         The value to filter.
+     * @param array $specification Specification to merge with the instance specification.
+     * @param array $options       Options to merge with the instance options.
+     *
+     * @return array|FilterResponse
+     *
+     * @throws Exception
+     * @see filter For more information on the return types and structure.
+     */
+    public function execute(array $value, array $specification = [], array $options = [])
+    {
+        return self::filter($specification + $this->specification, $value, $options + $this->options);
+    }
+
+    /**
      * Example:
      * <pre>
      * <?php

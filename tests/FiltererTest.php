@@ -634,4 +634,111 @@ TXT;
             $this->assertSame($expected, $e->getMessage());
         }
     }
+
+    /**
+     * @test
+     * @covers ::__invoke
+     * @dataProvider provideInvoke
+     *
+     * @param array $filter
+     * @param array $options
+     * @param mixed $value
+     * @param array $expected
+     */
+    public function invoke(array $filter, array $options, $value, array $expected)
+    {
+        $filterer = new Filterer($filter, $options);
+        $response = $filterer($value);
+
+        $this->assertSame($expected, $response);
+    }
+
+    /**
+     * @returns array
+     */
+    public function provideInvoke() : array
+    {
+        return [
+            'empty' => [
+                'filter' => [],
+                'options' => [],
+                'value' => [],
+                'expected' => [],
+            ],
+            'basic use' => [
+                'filter' => ['id' => [['uint']]],
+                'options' => ['defaultRequired' => true],
+                'value' => ['id' => '1'],
+                'expected' => ['id' => 1],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @covers ::__invoke
+     */
+    public function invokeThrowsFilterException()
+    {
+        $filter = ['id' => ['required' => true]];
+        $options = [];
+        $value = [];
+
+        $this->expectException(FilterException::class);
+        $this->expectExceptionMessage("Field 'id' was required and not present");
+
+        $filterer = new Filterer($filter, $options);
+        $filterer($value);
+    }
+
+    /**
+     * @test
+     * @covers ::execute
+     * @dataProvider provideExecute
+     *
+     * @param array $filter
+     * @param array $options
+     * @param mixed $value
+     * @param array $expected
+     */
+    public function execute(array $filter, array $options, $value, array $expected)
+    {
+        $filterer = new Filterer($filter, $options);
+        $response = $filterer->execute($value);
+
+        $this->assertSame($expected, $response);
+    }
+
+    /**
+     * @returns array
+     */
+    public function provideExecute() : array
+    {
+        return [
+            'empty' => [
+                'filter' => [],
+                'options' => [],
+                'value' => [],
+                'expected' => [true, [], null, []],
+            ],
+            'basic use' => [
+                'filter' => ['id' => [['uint']]],
+                'options' => ['defaultRequired' => true],
+                'value' => ['id' => '1'],
+                'expected' => [true, ['id' => 1], null, []],
+            ],
+            'error' => [
+                'filter' => ['id' => [['uint']]],
+                'options' => ['defaultRequired' => true],
+                'value' => [],
+                'expected' => [false, null, "Field 'id' was required and not present", []],
+            ],
+            'unknowns' => [
+                'filter' => [],
+                'options' => ['allowUnknowns' => true],
+                'value' => ['id' => 1],
+                'expected' => [true, [], null, ['id' => 1]],
+            ],
+        ];
+    }
 }
