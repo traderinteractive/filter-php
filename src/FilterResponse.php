@@ -2,16 +2,17 @@
 
 namespace TraderInteractive;
 
+use InvalidArgumentException;
 use TraderInteractive\Exceptions\ReadOnlyViolationException;
 
 /**
  * This object contains the various data returned by a filter action.
  *
- * @property-read bool        $success       TRUE if the filter was successful or FALSE if errors were encountered.
- * @property-read mixed       $filteredValue The input values after being filtered.
- * @property-read array       $errors        Any errors encountered during the filter process.
- * @property-read string|null $errorMessage  An error message generated from the errors. NULL if no errors.
- * @property-read mixed       $unknowns      The values that were unknown during filtering.
+ * @property bool        $success       TRUE if the filter was successful or FALSE if errors were encountered.
+ * @property mixed       $filteredValue The input values after being filtered.
+ * @property array       $errors        Any errors encountered during the filter process.
+ * @property string|null $errorMessage  An error message generated from the errors. NULL if no errors.
+ * @property mixed       $unknowns      The values that were unknown during filtering.
  */
 final class FilterResponse
 {
@@ -42,12 +43,20 @@ final class FilterResponse
 
     public function __get($name)
     {
-        return $this->response[$name];
+        if (array_key_exists($name, $this->response)) {
+            return $this->response[$name];
+        }
+
+        throw new InvalidArgumentException("Property '{$name}' does not exist");
     }
 
     public function __set($name, $value)
     {
-        throw new ReadOnlyViolationException("Property {$name} is read-only");
+        if (array_key_exists($name, $this->response)) {
+            throw new ReadOnlyViolationException("Property '{$name}' is read-only");
+        }
+
+        throw new InvalidArgumentException("Property '{$name}' does not exist");
     }
 
     /**

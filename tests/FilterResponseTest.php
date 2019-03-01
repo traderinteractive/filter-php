@@ -2,7 +2,9 @@
 
 namespace TraderInteractiveTest;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use TraderInteractive\Exceptions\ReadOnlyViolationException;
 use TraderInteractive\FilterResponse;
 
 /**
@@ -63,6 +65,45 @@ class FilterResponseTest extends TestCase
         $this->assertSame([], $response->errors);
         $this->assertSame(null, $response->errorMessage);
         $this->assertSame([], $response->unknowns);
+    }
+
+    /**
+     * @test
+     * @covers ::__construct
+     */
+    public function gettingInvalidPropertyThrowsException()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("Property 'foo' does not exist");
+
+        $response = new FilterResponse([]);
+        $response->foo;
+    }
+
+    /**
+     * @test
+     * @covers ::__construct
+     */
+    public function settingValidPropertyThrowsAnException()
+    {
+        $this->expectException(ReadOnlyViolationException::class);
+        $this->expectExceptionMessage("Property 'success' is read-only");
+
+        $response = new FilterResponse([]);
+        $response->success = false;
+    }
+
+    /**
+     * @test
+     * @covers ::__construct
+     */
+    public function settingInvalidPropertyThrowsAnException()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("Property 'foo' does not exist");
+
+        $response = new FilterResponse([]);
+        $response->foo = false;
     }
 
     /**
