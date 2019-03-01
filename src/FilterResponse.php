@@ -2,6 +2,8 @@
 
 namespace TraderInteractive;
 
+use TraderInteractive\Exceptions\ReadOnlyViolationException;
+
 /**
  * This object contains the various data returned by a filter action.
  *
@@ -14,6 +16,11 @@ namespace TraderInteractive;
 final class FilterResponse
 {
     /**
+     * @var array
+     */
+    private $response;
+
+    /**
      * @param array $filteredValue The input values after being filtered.
      * @param array $errors        Any errors encountered during the filter process.
      * @param array $unknowns      The values that were unknown during filtering.
@@ -23,11 +30,24 @@ final class FilterResponse
         array $errors = [],
         array $unknowns = []
     ) {
-        $this->success = count($errors) === 0;
-        $this->filteredValue = $filteredValue;
-        $this->errors = $errors;
-        $this->errorMessage = $this->success ? null : implode("\n", $errors);
-        $this->unknowns = $unknowns;
+        $success = count($errors) === 0;
+        $this->response = [
+            'success' => $success,
+            'filteredValue' => $filteredValue,
+            'errors' => $errors,
+            'errorMessage' => $success ? null : implode("\n", $errors),
+            'unknowns' => $unknowns,
+        ];
+    }
+
+    public function __get($name)
+    {
+        return $this->response[$name];
+    }
+
+    public function __set($name, $value)
+    {
+        throw new ReadOnlyViolationException("Property {$name} is read-only");
     }
 
     /**
