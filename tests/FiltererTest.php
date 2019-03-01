@@ -306,6 +306,18 @@ final class FiltererTest extends TestCase
     /**
      * @test
      * @covers ::filter
+     */
+    public function filterThrowsExceptionOnInvalidResponseType()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("'responseType' was not a recognized value");
+
+        Filterer::filter([], [], ['responseType' => 'invalid']);
+    }
+
+    /**
+     * @test
+     * @covers ::filter
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage filters for field 'boo' was not a array
      */
