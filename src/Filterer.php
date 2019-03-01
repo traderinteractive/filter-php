@@ -3,6 +3,7 @@
 namespace TraderInteractive;
 
 use Exception;
+use InvalidArgumentException;
 use Throwable;
 use TraderInteractive\Exceptions\FilterException;
 
@@ -110,11 +111,11 @@ final class Filterer
      *     on error [false, null, 'error message', array of unknown fields]
      *
      * @throws Exception
-     * @throws \InvalidArgumentException if 'allowUnknowns' option was not a bool
-     * @throws \InvalidArgumentException if 'defaultRequired' option was not a bool
-     * @throws \InvalidArgumentException if filters for a field was not a array
-     * @throws \InvalidArgumentException if a filter for a field was not a array
-     * @throws \InvalidArgumentException if 'required' for a field was not a bool
+     * @throws InvalidArgumentException if 'allowUnknowns' option was not a bool
+     * @throws InvalidArgumentException if 'defaultRequired' option was not a bool
+     * @throws InvalidArgumentException if filters for a field was not an array
+     * @throws InvalidArgumentException if a filter for a field was not an array
+     * @throws InvalidArgumentException if 'required' for a field was not a bool
      */
     public static function filter(array $spec, array $input, array $options = []) : array
     {
@@ -319,7 +320,7 @@ final class Filterer
     private static function assertIfStringOrInt($alias)
     {
         if (!is_string($alias) && !is_int($alias)) {
-            throw new \InvalidArgumentException('$alias was not a string or int');
+            throw new InvalidArgumentException('$alias was not a string or int');
         }
     }
 
@@ -360,7 +361,7 @@ final class Filterer
     {
         $required = isset($filters['required']) ? $filters['required'] : $defaultRequired;
         if ($required !== false && $required !== true) {
-            throw new \InvalidArgumentException("'required' for field '{$field}' was not a bool");
+            throw new InvalidArgumentException("'required' for field '{$field}' was not a bool");
         }
 
         return $required;
@@ -369,7 +370,7 @@ final class Filterer
     private static function assertFiltersIsAnArray($filters, string $field)
     {
         if (!is_array($filters)) {
-            throw new \InvalidArgumentException("filters for field '{$field}' was not a array");
+            throw new InvalidArgumentException("filters for field '{$field}' was not a array");
         }
     }
 
@@ -414,7 +415,7 @@ final class Filterer
     private static function assertFilterIsNotArray($filter, string $field)
     {
         if (!is_array($filter)) {
-            throw new \InvalidArgumentException("filter for field '{$field}' was not a array");
+            throw new InvalidArgumentException("filter for field '{$field}' was not a array");
         }
     }
 
@@ -424,7 +425,7 @@ final class Filterer
         if (array_key_exists('error', $filters)) {
             $customError = $filters['error'];
             if (!is_string($customError) || trim($customError) === '') {
-                throw new \InvalidArgumentException("error for field '{$field}' was not a non-empty string");
+                throw new InvalidArgumentException("error for field '{$field}' was not a non-empty string");
             }
 
             unset($filters['error']);//unset so its not used as a filter
@@ -437,7 +438,7 @@ final class Filterer
     {
         $allowUnknowns = $options['allowUnknowns'];
         if ($allowUnknowns !== false && $allowUnknowns !== true) {
-            throw new \InvalidArgumentException("'allowUnknowns' option was not a bool");
+            throw new InvalidArgumentException("'allowUnknowns' option was not a bool");
         }
 
         return $allowUnknowns;
@@ -447,7 +448,7 @@ final class Filterer
     {
         $defaultRequired = $options['defaultRequired'];
         if ($defaultRequired !== false && $defaultRequired !== true) {
-            throw new \InvalidArgumentException("'defaultRequired' option was not a bool");
+            throw new InvalidArgumentException("'defaultRequired' option was not a bool");
         }
 
         return $defaultRequired;
