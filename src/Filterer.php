@@ -489,7 +489,12 @@ final class Filterer
         }
 
         if ($responseType === self::RESPONSE_TYPE_ARRAY) {
-            return $filterResponse->toArray();
+            return [
+                $filterResponse->success,
+                $filterResponse->success ? $filterResponse->filteredValue : null,
+                $filterResponse->errorMessage,
+                $filterResponse->unknowns
+            ];
         }
 
         throw new InvalidArgumentException("'responseType' was not a recognized value");

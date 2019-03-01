@@ -58,21 +58,4 @@ final class FilterResponse
 
         throw new InvalidArgumentException("Property '{$name}' does not exist");
     }
-
-    /**
-     * Converts the response to an array.
-     *
-     * @return array
-     */
-    public function toArray() : array
-    {
-        $filteredValue = $this->success ? $this->filteredValue : null;
-
-        return [
-            $this->success,
-            $filteredValue,
-            $this->errorMessage,
-            $this->unknowns
-        ];
-    }
 }

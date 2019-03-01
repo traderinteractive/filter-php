@@ -105,43 +105,4 @@ class FilterResponseTest extends TestCase
         $response = new FilterResponse([]);
         $response->foo = false;
     }
-
-    /**
-     * @test
-     * @covers ::toArray
-     * @dataProvider provideToArray
-     *
-     * @param array $value    The filtered value to pass to the response.
-     * @param array $errors   The errors to pass to the response.
-     * @param array $unknowns The unknowns to pass to the response.
-     * @param array $expected The expected array value.
-     */
-    public function toArray(array $value, array $errors, array $unknowns, array $expected)
-    {
-        $response = new FilterResponse($value, $errors, $unknowns);
-        $arrayResponse = $response->toArray();
-
-        $this->assertSame($expected, $arrayResponse);
-    }
-
-    /**
-     * @return array
-     */
-    public function provideToArray() : array
-    {
-        return [
-            'success' => [
-                'input' => ['foo' => 'bar'],
-                'errors' => [],
-                'unknowns' => ['other' => 'unknown'],
-                'expected' => [true, ['foo' => 'bar'], null, ['other' => 'unknown']],
-            ],
-            'failure' => [
-                'input' => ['foo' => 'bar'],
-                'errors' => ['something bad happened', 'and something else too'],
-                'unknowns' => ['other' => 'unknown'],
-                'expected' => [false, null, "something bad happened\nand something else too", ['other' => 'unknown']],
-            ],
-        ];
-    }
 }
