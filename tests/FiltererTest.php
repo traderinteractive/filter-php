@@ -216,6 +216,12 @@ final class FiltererTest extends TestCase
                 'options' => [],
                 'result' => [true, ['field' => 'I'], null, []],
             ],
+            'redact alias' => [
+                'spec' => ['field' => [['redact', ['other'], '*']]],
+                'input' => ['field' => 'one or other'],
+                'options' => [],
+                'result' => [true, ['field' => 'one or *****'], null, []],
+            ],
         ];
     }
 
