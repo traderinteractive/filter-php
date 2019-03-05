@@ -63,7 +63,7 @@ final class Filterer
     /**
      * @var array
      */
-    private static $registeredFilterAliases;
+    private static $registeredFilterAliases = self::DEFAULT_FILTER_ALIASES;
 
     /**
      * @var array
