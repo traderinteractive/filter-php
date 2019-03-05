@@ -640,14 +640,15 @@ TXT;
      * @covers ::__invoke
      * @dataProvider provideInvoke
      *
-     * @param array $filter
-     * @param array $options
-     * @param mixed $value
-     * @param array $expected
+     * @param array      $filter
+     * @param array      $options
+     * @param array|null $filterAliases
+     * @param mixed      $value
+     * @param array      $expected
      */
-    public function invoke(array $filter, array $options, $value, array $expected)
+    public function invoke(array $filter, array $options, $filterAliases, $value, array $expected)
     {
-        $filterer = new Filterer($filter, $options);
+        $filterer = new Filterer($filter, $options, $filterAliases);
         $response = $filterer($value);
 
         $this->assertSame($expected, $response);
@@ -662,12 +663,21 @@ TXT;
             'empty' => [
                 'filter' => [],
                 'options' => [],
+                'filterAliases' => null,
                 'value' => [],
                 'expected' => [],
             ],
             'basic use' => [
                 'filter' => ['id' => [['uint']]],
                 'options' => ['defaultRequired' => true],
+                'filterAliases' => null,
+                'value' => ['id' => '1'],
+                'expected' => ['id' => 1],
+            ],
+            'with custom alias' => [
+                'filter' => ['id' => [['hocuspocus']]],
+                'options' => ['defaultRequired' => true],
+                'filterAliases' => ['hocuspocus' => 'intval'],
                 'value' => ['id' => '1'],
                 'expected' => ['id' => 1],
             ],
