@@ -3,6 +3,7 @@
 namespace TraderInteractive;
 
 use Exception;
+use InvalidArgumentException;
 use Throwable;
 use TraderInteractive\Exceptions\FilterException;
 
@@ -39,6 +40,16 @@ final class Filterer
         'uint' => '\\TraderInteractive\\Filter\\UnsignedInt::filter',
         'url' => '\\TraderInteractive\\Filter\\Url::filter',
     ];
+
+    /**
+     * @var string
+     */
+    const RESPONSE_TYPE_ARRAY = 'array';
+
+    /**
+     * @var string
+     */
+    const RESPONSE_TYPE_FILTER = FilterResponse::class;
 
     /**
      * @var array
@@ -105,23 +116,29 @@ final class Filterer
      * @param array $options 'allowUnknowns' (default false) true to allow unknowns or false to treat as error,
      *                       'defaultRequired' (default false) true to make fields required by default and treat as
      *                       error on absence and false to allow their absence by default
+     *                       'responseType' (default RESPONSE_TYPE_ARRAY) Determines the return type, as described
+     *                       in the return section.
      *
-     * @return array on success [true, $input filtered, null, array of unknown fields]
-     *     on error [false, null, 'error message', array of unknown fields]
+     * @return array|FilterResponse If 'responseType' option is RESPONSE_TYPE_ARRAY:
+     *                                  on success [true, $input filtered, null, array of unknown fields]
+     *                                  on error [false, null, 'error message', array of unknown fields]
+     *                              If 'responseType' option is RESPONSE_TYPE_FILTER: a FilterResponse instance.
      *
      * @throws Exception
-     * @throws \InvalidArgumentException if 'allowUnknowns' option was not a bool
-     * @throws \InvalidArgumentException if 'defaultRequired' option was not a bool
-     * @throws \InvalidArgumentException if filters for a field was not a array
-     * @throws \InvalidArgumentException if a filter for a field was not a array
-     * @throws \InvalidArgumentException if 'required' for a field was not a bool
+     * @throws InvalidArgumentException if 'allowUnknowns' option was not a bool
+     * @throws InvalidArgumentException if 'defaultRequired' option was not a bool
+     * @throws InvalidArgumentException if 'responseType' option was not a recognized type
+     * @throws InvalidArgumentException if filters for a field was not an array
+     * @throws InvalidArgumentException if a filter for a field was not an array
+     * @throws InvalidArgumentException if 'required' for a field was not a bool
      */
-    public static function filter(array $spec, array $input, array $options = []) : array
+    public static function filter(array $spec, array $input, array $options = [])
     {
-        $options += ['allowUnknowns' => false, 'defaultRequired' => false];
+        $options += ['allowUnknowns' => false, 'defaultRequired' => false, 'responseType' => self::RESPONSE_TYPE_ARRAY];
 
         $allowUnknowns = self::getAllowUnknowns($options);
         $defaultRequired = self::getDefaultRequired($options);
+        $responseType = $options['responseType'];
 
         $inputToFilter = array_intersect_key($input, $spec);
         $leftOverSpec = array_diff_key($spec, $input);
@@ -171,11 +188,7 @@ final class Filterer
 
         $errors = self::handleAllowUnknowns($allowUnknowns, $leftOverInput, $errors);
 
-        if (empty($errors)) {
-            return [true, $inputToFilter, null, $leftOverInput];
-        }
-
-        return [false, null, implode("\n", $errors), $leftOverInput];
+        return self::generateFilterResponse($responseType, $inputToFilter, $errors, $leftOverInput);
     }
 
     /**
@@ -319,7 +332,7 @@ final class Filterer
     private static function assertIfStringOrInt($alias)
     {
         if (!is_string($alias) && !is_int($alias)) {
-            throw new \InvalidArgumentException('$alias was not a string or int');
+            throw new InvalidArgumentException('$alias was not a string or int');
         }
     }
 
@@ -333,7 +346,7 @@ final class Filterer
     private static function checkForUnknowns(array $leftOverInput, array $errors) : array
     {
         foreach ($leftOverInput as $field => $value) {
-            $errors[] = "Field '{$field}' with value '" . trim(var_export($value, true), "'") . "' is unknown";
+            $errors[$field] = "Field '{$field}' with value '" . trim(var_export($value, true), "'") . "' is unknown";
         }
 
         return $errors;
@@ -351,7 +364,7 @@ final class Filterer
     private static function handleRequiredFields(bool $required, string $field, array $errors) : array
     {
         if ($required) {
-            $errors[] = "Field '{$field}' was required and not present";
+            $errors[$field] = "Field '{$field}' was required and not present";
         }
         return $errors;
     }
@@ -360,7 +373,7 @@ final class Filterer
     {
         $required = isset($filters['required']) ? $filters['required'] : $defaultRequired;
         if ($required !== false && $required !== true) {
-            throw new \InvalidArgumentException("'required' for field '{$field}' was not a bool");
+            throw new InvalidArgumentException("'required' for field '{$field}' was not a bool");
         }
 
         return $required;
@@ -369,7 +382,7 @@ final class Filterer
     private static function assertFiltersIsAnArray($filters, string $field)
     {
         if (!is_array($filters)) {
-            throw new \InvalidArgumentException("filters for field '{$field}' was not a array");
+            throw new InvalidArgumentException("filters for field '{$field}' was not a array");
         }
     }
 
@@ -389,7 +402,7 @@ final class Filterer
             );
         }
 
-        $errors[] = str_replace('{value}', trim(var_export($value, true), "'"), $error);
+        $errors[$field] = str_replace('{value}', trim(var_export($value, true), "'"), $error);
         return $errors;
     }
 
@@ -414,7 +427,7 @@ final class Filterer
     private static function assertFilterIsNotArray($filter, string $field)
     {
         if (!is_array($filter)) {
-            throw new \InvalidArgumentException("filter for field '{$field}' was not a array");
+            throw new InvalidArgumentException("filter for field '{$field}' was not a array");
         }
     }
 
@@ -424,7 +437,7 @@ final class Filterer
         if (array_key_exists('error', $filters)) {
             $customError = $filters['error'];
             if (!is_string($customError) || trim($customError) === '') {
-                throw new \InvalidArgumentException("error for field '{$field}' was not a non-empty string");
+                throw new InvalidArgumentException("error for field '{$field}' was not a non-empty string");
             }
 
             unset($filters['error']);//unset so its not used as a filter
@@ -437,7 +450,7 @@ final class Filterer
     {
         $allowUnknowns = $options['allowUnknowns'];
         if ($allowUnknowns !== false && $allowUnknowns !== true) {
-            throw new \InvalidArgumentException("'allowUnknowns' option was not a bool");
+            throw new InvalidArgumentException("'allowUnknowns' option was not a bool");
         }
 
         return $allowUnknowns;
@@ -447,9 +460,43 @@ final class Filterer
     {
         $defaultRequired = $options['defaultRequired'];
         if ($defaultRequired !== false && $defaultRequired !== true) {
-            throw new \InvalidArgumentException("'defaultRequired' option was not a bool");
+            throw new InvalidArgumentException("'defaultRequired' option was not a bool");
         }
 
         return $defaultRequired;
+    }
+
+    /**
+     * @param string $responseType  The type of object that should be returned.
+     * @param array  $filteredValue The filtered input to return.
+     * @param array  $errors        The errors to return.
+     * @param array  $unknowns      The unknowns to return.
+     *
+     * @return array|FilterResponse
+     *
+     * @see filter For more information on how responseType is handled and returns are structured.
+     */
+    private static function generateFilterResponse(
+        string $responseType,
+        array $filteredValue,
+        array $errors,
+        array $unknowns
+    ) {
+        $filterResponse = new FilterResponse($filteredValue, $errors, $unknowns);
+
+        if ($responseType === self::RESPONSE_TYPE_FILTER) {
+            return $filterResponse;
+        }
+
+        if ($responseType === self::RESPONSE_TYPE_ARRAY) {
+            return [
+                $filterResponse->success,
+                $filterResponse->success ? $filterResponse->filteredValue : null,
+                $filterResponse->errorMessage,
+                $filterResponse->unknowns
+            ];
+        }
+
+        throw new InvalidArgumentException("'responseType' was not a recognized value");
     }
 }

@@ -5,7 +5,7 @@ namespace TraderInteractive;
 use Exception;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use StdClass;
+use stdClass;
 use TraderInteractive\Exceptions\FilterException;
 
 /**
@@ -216,7 +216,53 @@ final class FiltererTest extends TestCase
                 'options' => [],
                 'result' => [true, ['field' => 'I'], null, []],
             ],
+            'redact alias' => [
+                'spec' => ['field' => [['redact', ['other'], '*']]],
+                'input' => ['field' => 'one or other'],
+                'options' => [],
+                'result' => [true, ['field' => 'one or *****'], null, []],
+            ],
         ];
+    }
+
+    /**
+     * @test
+     * @covers ::filter
+     */
+    public function filterReturnsResponseType()
+    {
+        $specification = ['id' => [['uint']]];
+        $input = ['id' => 1];
+        $options = ['responseType' => Filterer::RESPONSE_TYPE_FILTER];
+
+        $result = Filterer::filter($specification, $input, $options);
+
+        $this->assertInstanceOf(FilterResponse::class, $result);
+        $this->assertSame(true, $result->success);
+        $this->assertSame($input, $result->filteredValue);
+        $this->assertSame([], $result->errors);
+        $this->assertSame(null, $result->errorMessage);
+        $this->assertSame([], $result->unknowns);
+    }
+
+    /**
+     * @test
+     * @covers ::filter
+     */
+    public function filterReturnsResponseTypeWithErrors()
+    {
+        $specification = ['name' => [['string']]];
+        $input = ['name' => 'foo', 'id' => 1];
+        $options = ['responseType' => Filterer::RESPONSE_TYPE_FILTER];
+
+        $result = Filterer::filter($specification, $input, $options);
+
+        $this->assertInstanceOf(FilterResponse::class, $result);
+        $this->assertSame(false, $result->success);
+        $this->assertSame(['name' => 'foo'], $result->filteredValue);
+        $this->assertSame(['id' => "Field 'id' with value '1' is unknown"], $result->errors);
+        $this->assertSame("Field 'id' with value '1' is unknown", $result->errorMessage);
+        $this->assertSame(['id' => 1], $result->unknowns);
     }
 
     /**
@@ -275,6 +321,18 @@ final class FiltererTest extends TestCase
     public function defaultRequiredNotBool()
     {
         Filterer::filter([], [], ['defaultRequired' => 1]);
+    }
+
+    /**
+     * @test
+     * @covers ::filter
+     */
+    public function filterThrowsExceptionOnInvalidResponseType()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("'responseType' was not a recognized value");
+
+        Filterer::filter([], [], ['responseType' => 'invalid']);
     }
 
     /**
@@ -379,7 +437,7 @@ final class FiltererTest extends TestCase
     public function filterWithNonStringError()
     {
         Filterer::filter(
-            ['fieldOne' => [['strtoupper'], 'error' => new StdClass()]],
+            ['fieldOne' => [['strtoupper'], 'error' => new stdClass()]],
             ['fieldOne' => 'valueOne']
         );
     }
@@ -436,7 +494,7 @@ final class FiltererTest extends TestCase
     public function ofScalarsFail()
     {
         try {
-            Filterer::ofScalars(['1', [], new \StdClass], [['string']]);
+            Filterer::ofScalars(['1', [], new stdClass], [['string']]);
             $this->fail();
         } catch (FilterException $e) {
             $expected = <<<TXT
@@ -495,7 +553,7 @@ TXT;
     {
         try {
             Filterer::ofArrays(
-                [['key' => new \StdClass], ['key' => []], ['key' => null], 'key'],
+                [['key' => new stdClass], ['key' => []], ['key' => null], 'key'],
                 ['key' => [['string']]]
             );
             $this->fail();
