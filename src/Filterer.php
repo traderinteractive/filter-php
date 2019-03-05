@@ -287,9 +287,9 @@ final class Filterer
             foreach ($aliases as $alias => $callback) {
                 self::registerAlias($alias, $callback);
             }
-        } catch (Exception $exception) {
+        } catch (Throwable $throwable) {
             self::$registeredFilterAliases = $originalAliases;
-            throw $exception;
+            throw $throwable;
         }
     }
 

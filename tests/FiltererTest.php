@@ -4,12 +4,16 @@ namespace TraderInteractive;
 
 use Exception;
 use InvalidArgumentException;
+use MongoDB\BSON\Type;
 use PHPUnit\Framework\TestCase;
 use stdClass;
+use Throwable;
 use TraderInteractive\Exceptions\FilterException;
+use TypeError;
 
 /**
  * @coversDefaultClass \TraderInteractive\Filterer
+ * @covers ::__construct
  * @covers ::<private>
  */
 final class FiltererTest extends TestCase
@@ -22,6 +26,7 @@ final class FiltererTest extends TestCase
     /**
      * @test
      * @covers ::filter
+     * @covers ::execute
      * @dataProvider provideValidFilterData
      *
      * @param array $spec  The filter specification to be use.
@@ -228,6 +233,7 @@ final class FiltererTest extends TestCase
     /**
      * @test
      * @covers ::filter
+     * @covers ::execute
      */
     public function filterReturnsResponseType()
     {
@@ -248,6 +254,7 @@ final class FiltererTest extends TestCase
     /**
      * @test
      * @covers ::filter
+     * @covers ::execute
      */
     public function filterReturnsResponseTypeWithErrors()
     {
@@ -268,6 +275,7 @@ final class FiltererTest extends TestCase
     /**
      * @test
      * @covers ::filter
+     * @covers ::execute
      * @covers ::setFilterAliases
      */
     public function filterCustomShortNamePass()
@@ -280,6 +288,7 @@ final class FiltererTest extends TestCase
     /**
      * @test
      * @covers ::filter
+     * @covers ::execute
      * @covers ::setFilterAliases
      * @covers ::getFilterAliases
      */
@@ -292,7 +301,27 @@ final class FiltererTest extends TestCase
 
     /**
      * @test
+     * @covers ::setFilterAliases
+     */
+    public function setBadFilterAliases()
+    {
+        $originalAliases = Filterer::getFilterAliases();
+
+        $actualThrowable = null;
+        try {
+            Filterer::setFilterAliases(['foo' => 'not callable']);
+        } catch (Throwable $throwable) {
+            $actualThrowable = $throwable;
+        }
+
+        $this->assertSame($originalAliases, Filterer::getFilterAliases());
+        $this->assertInstanceOf(TypeError::class, $actualThrowable);
+    }
+
+    /**
+     * @test
      * @covers ::filter
+     * @covers ::execute
      * @expectedException Exception
      * @expectedExceptionMessage Function 'boo' for field 'foo' is not callable
      */
@@ -304,6 +333,7 @@ final class FiltererTest extends TestCase
     /**
      * @test
      * @covers ::filter
+     * @covers ::execute
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage 'allowUnknowns' option was not a bool
      */
@@ -315,6 +345,7 @@ final class FiltererTest extends TestCase
     /**
      * @test
      * @covers ::filter
+     * @covers ::execute
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage 'defaultRequired' option was not a bool
      */
@@ -326,6 +357,7 @@ final class FiltererTest extends TestCase
     /**
      * @test
      * @covers ::filter
+     * @covers ::execute
      */
     public function filterThrowsExceptionOnInvalidResponseType()
     {
@@ -338,6 +370,7 @@ final class FiltererTest extends TestCase
     /**
      * @test
      * @covers ::filter
+     * @covers ::execute
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage filters for field 'boo' was not a array
      */
@@ -349,6 +382,7 @@ final class FiltererTest extends TestCase
     /**
      * @test
      * @covers ::filter
+     * @covers ::execute
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage filters for field 'boo' was not a array
      */
@@ -360,6 +394,7 @@ final class FiltererTest extends TestCase
     /**
      * @test
      * @covers ::filter
+     * @covers ::execute
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage filter for field 'boo' was not a array
      */
@@ -371,6 +406,7 @@ final class FiltererTest extends TestCase
     /**
      * @test
      * @covers ::filter
+     * @covers ::execute
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage 'required' for field 'boo' was not a bool
      */
@@ -429,6 +465,7 @@ final class FiltererTest extends TestCase
      *
      * @test
      * @covers ::filter
+     * @covers ::execute
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage error for field 'fieldOne' was not a non-empty string
      *
@@ -447,6 +484,7 @@ final class FiltererTest extends TestCase
      *
      * @test
      * @covers ::filter
+     * @covers ::execute
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage error for field 'fieldOne' was not a non-empty string
      *
@@ -699,56 +737,5 @@ TXT;
 
         $filterer = new Filterer($filter, $options);
         $filterer($value);
-    }
-
-    /**
-     * @test
-     * @covers ::execute
-     * @dataProvider provideExecute
-     *
-     * @param array $filter
-     * @param array $options
-     * @param mixed $value
-     * @param array $expected
-     */
-    public function execute(array $filter, array $options, $value, array $expected)
-    {
-        $filterer = new Filterer($filter, $options);
-        $response = $filterer->execute($value);
-
-        $this->assertSame($expected, $response);
-    }
-
-    /**
-     * @returns array
-     */
-    public function provideExecute() : array
-    {
-        return [
-            'empty' => [
-                'filter' => [],
-                'options' => [],
-                'value' => [],
-                'expected' => [true, [], null, []],
-            ],
-            'basic use' => [
-                'filter' => ['id' => [['uint']]],
-                'options' => ['defaultRequired' => true],
-                'value' => ['id' => '1'],
-                'expected' => [true, ['id' => 1], null, []],
-            ],
-            'error' => [
-                'filter' => ['id' => [['uint']]],
-                'options' => ['defaultRequired' => true],
-                'value' => [],
-                'expected' => [false, null, "Field 'id' was required and not present", []],
-            ],
-            'unknowns' => [
-                'filter' => [],
-                'options' => ['allowUnknowns' => true],
-                'value' => ['id' => 1],
-                'expected' => [true, [], null, ['id' => 1]],
-            ],
-        ];
     }
 }
