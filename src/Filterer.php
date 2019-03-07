@@ -76,22 +76,33 @@ final class Filterer
     private $specification;
 
     /**
-     * @var array
+     * @var bool
      */
-    private $options;
+    private $allowUnknowns;
+
+    /**
+     * @var bool
+     */
+    private $defaultRequired;
 
     /**
      * @param array      $specification The specification to apply to the value.
      * @param array      $options       The options apply during filtering.
+     *                                  'allowUnknowns' (default false) true to allow or false to treat as error.
+     *                                  'defaultRequired' (default false) true to make fields required by default.
      * @param array|null $filterAliases The filter aliases to accept.
      *
-     * @see filter For more detailed information on the parameters.
+     * @throws InvalidArgumentException if 'allowUnknowns' option was not a bool
+     * @throws InvalidArgumentException if 'defaultRequired' option was not a bool
      */
     public function __construct(array $specification, array $options = [], array $filterAliases = null)
     {
+        $options += self::DEFAULT_OPTIONS;
+
         $this->specification = $specification;
-        $this->options = $options + self::DEFAULT_OPTIONS;
-        $this->filterAliases = $filterAliases ?? self::$registeredFilterAliases;
+        $this->filterAliases = $filterAliases;
+        $this->allowUnknowns = self::getAllowUnknowns($options);
+        $this->defaultRequired = self::getDefaultRequired($options);
     }
 
     /**
@@ -110,16 +121,14 @@ final class Filterer
     }
 
     /**
-     * @param mixed $value         The value to filter.
-     * @param array $specification Specification to merge with the instance specification.
-     * @param array $options       Options to merge with the instance options.
+     * @param mixed $value The input to filter.
      *
-     * @return array|FilterResponse
+     * @return FilterResponse
      *
      * @throws Exception
      * @see filter For more information on the return types and structure.
      */
-    public function execute(array $value, array $specification = [], array $options = [])
+    public function execute(array $value) : FilterResponse
     {
         $specification += $this->specification;
         $options += $this->options;
@@ -255,10 +264,15 @@ final class Filterer
      * @throws InvalidArgumentException if a filter for a field was not an array
      * @throws InvalidArgumentException if 'required' for a field was not a bool
      */
-    public static function filter(array $spec, array $input, array $options = [])
+    public static function filter(array $specification, array $input, array $options = [])
     {
-        $filterer = new Filterer($spec, $options);
-        return $filterer->execute($input);
+        $options += self::DEFAULT_OPTIONS;
+        $responseType = $options['responseType'];
+
+        $filterer = new Filterer($specification, $options);
+        $filterResponse = $filterer->execute($input);
+
+        return self::generateFilterResponse($responseType, $filterResponse);
     }
 
     /**
@@ -537,23 +551,15 @@ final class Filterer
     }
 
     /**
-     * @param string $responseType  The type of object that should be returned.
-     * @param array  $filteredValue The filtered input to return.
-     * @param array  $errors        The errors to return.
-     * @param array  $unknowns      The unknowns to return.
+     * @param string         $responseType   The type of object that should be returned.
+     * @param FilterResponse $filterResponse The filter response to generate the typed response from.
      *
      * @return array|FilterResponse
      *
      * @see filter For more information on how responseType is handled and returns are structured.
      */
-    private static function generateFilterResponse(
-        string $responseType,
-        array $filteredValue,
-        array $errors,
-        array $unknowns
-    ) {
-        $filterResponse = new FilterResponse($filteredValue, $errors, $unknowns);
-
+    private static function generateFilterResponse(string $responseType, FilterResponse $filterResponse)
+    {
         if ($responseType === self::RESPONSE_TYPE_FILTER) {
             return $filterResponse;
         }
