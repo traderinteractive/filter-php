@@ -4,7 +4,6 @@ namespace TraderInteractive;
 
 use Exception;
 use InvalidArgumentException;
-use MongoDB\BSON\Type;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 use Throwable;
@@ -737,5 +736,75 @@ TXT;
 
         $filterer = new Filterer($filter, $options);
         $filterer($value);
+    }
+
+    /**
+     * @test
+     * @covers ::getAliases
+     */
+    public function getAliases()
+    {
+        $expected = ['some' => 'alias'];
+
+        $filterer = new Filterer([], [], $expected);
+        $actual = $filterer->getAliases();
+
+        $this->assertSame($expected, $actual);
+    }
+
+    /**
+     * @test
+     * @covers ::getAliases
+     */
+    public function getAliasesReturnsStaticValueIfNull()
+    {
+        $filterer = new Filterer([]);
+        $actual = $filterer->getAliases();
+
+        $this->assertSame(Filterer::getFilterAliases(), $actual);
+    }
+
+    /**
+     * @test
+     * @covers ::getSpecification
+     */
+    public function getSpecification()
+    {
+        $expected = ['some' => 'specification'];
+
+        $filterer = new Filterer($expected);
+        $actual = $filterer->getSpecification();
+
+        $this->assertSame($expected, $actual);
+    }
+
+    /**
+     * @test
+     * @covers ::withAliases
+     */
+    public function withAliases()
+    {
+        $expected = ['foo' => 'bar'];
+
+        $filterer = new Filterer([]);
+        $filtererCopy = $filterer->withAliases($expected);
+
+        $this->assertNotSame($filterer, $filtererCopy);
+        $this->assertSame($expected, $filtererCopy->getAliases());
+    }
+
+    /**
+     * @test
+     * @covers ::withSpecification
+     */
+    public function withSpecification()
+    {
+        $expected = ['foo' => 'bar'];
+
+        $filterer = new Filterer([]);
+        $filtererCopy = $filterer->withSpecification($expected);
+
+        $this->assertNotSame($filterer, $filtererCopy);
+        $this->assertSame($expected, $filtererCopy->getSpecification());
     }
 }

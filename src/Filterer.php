@@ -10,7 +10,7 @@ use TraderInteractive\Exceptions\FilterException;
 /**
  * Class to filter an array of input.
  */
-final class Filterer
+final class Filterer implements FiltererInterface
 {
     /**
      * @var array
@@ -121,29 +121,24 @@ final class Filterer
     }
 
     /**
-     * @param mixed $value The input to filter.
+     * @param mixed $input The input to filter.
      *
      * @return FilterResponse
      *
-     * @throws Exception
-     * @see filter For more information on the return types and structure.
+     * @throws InvalidArgumentException Thrown if the filters for a field were not an array.
+     * @throws InvalidArgumentException Thrown if any one filter for a field was not an array.
+     * @throws InvalidArgumentException Thrown if the 'required' value for a field was not a bool.
      */
-    public function execute(array $value) : FilterResponse
+    public function execute(array $input) : FilterResponse
     {
-        $specification += $this->specification;
-        $options += $this->options;
-
-        $allowUnknowns = self::getAllowUnknowns($options);
-        $defaultRequired = self::getDefaultRequired($options);
-        $responseType = $options['responseType'];
-
-        $inputToFilter = array_intersect_key($value, $specification);
-        $leftOverSpec = array_diff_key($specification, $value);
-        $leftOverInput = array_diff_key($value, $specification);
+        $filterAliases = $this->getAliases();
+        $inputToFilter = array_intersect_key($input, $this->specification);
+        $leftOverSpec = array_diff_key($this->specification, $input);
+        $leftOverInput = array_diff_key($input, $this->specification);
 
         $errors = [];
-        foreach ($inputToFilter as $field => $value) {
-            $filters = $specification[$field];
+        foreach ($inputToFilter as $field => $input) {
+            $filters = $this->specification[$field];
             self::assertFiltersIsAnArray($filters, $field);
             $customError = self::validateCustomError($filters, $field);
             unset($filters['required']);//doesn't matter if required since we have this one
@@ -156,25 +151,25 @@ final class Filterer
                 }
 
                 $function = array_shift($filter);
-                $function = self::handleFilterAliases($function, $this->filterAliases);
+                $function = self::handleFilterAliases($function, $filterAliases);
 
                 self::assertFunctionIsCallable($function, $field);
 
-                array_unshift($filter, $value);
+                array_unshift($filter, $input);
                 try {
-                    $value = call_user_func_array($function, $filter);
+                    $input = call_user_func_array($function, $filter);
                 } catch (Exception $exception) {
-                    $errors = self::handleCustomError($field, $value, $exception, $errors, $customError);
+                    $errors = self::handleCustomError($field, $input, $exception, $errors, $customError);
                     continue 2;//next field
                 }
             }
 
-            $inputToFilter[$field] = $value;
+            $inputToFilter[$field] = $input;
         }
 
         foreach ($leftOverSpec as $field => $filters) {
             self::assertFiltersIsAnArray($filters, $field);
-            $required = self::getRequired($filters, $defaultRequired, $field);
+            $required = self::getRequired($filters, $this->defaultRequired, $field);
             if (array_key_exists('default', $filters)) {
                 $inputToFilter[$field] = $filters['default'];
                 continue;
@@ -183,9 +178,64 @@ final class Filterer
             $errors = self::handleRequiredFields($required, $field, $errors);
         }
 
-        $errors = self::handleAllowUnknowns($allowUnknowns, $leftOverInput, $errors);
+        $errors = self::handleAllowUnknowns($this->allowUnknowns, $leftOverInput, $errors);
 
-        return self::generateFilterResponse($responseType, $inputToFilter, $errors, $leftOverInput);
+        return new FilterResponse($inputToFilter, $errors, $leftOverInput);
+    }
+
+    /**
+     * @return array
+     *
+     * @see FiltererInterface::getAliases
+     */
+    public function getAliases() : array
+    {
+        return $this->filterAliases ?? self::$registeredFilterAliases;
+    }
+
+    /**
+     * @return array
+     *
+     * @see FiltererInterface::getSpecification
+     */
+    public function getSpecification() : array
+    {
+        return $this->specification;
+    }
+
+    /**
+     * @param array $filterAliases
+     *
+     * @return FiltererInterface
+     *
+     * @see FiltererInterface::withAliases
+     */
+    public function withAliases(array $filterAliases) : FiltererInterface
+    {
+        return new Filterer($this->specification, $this->getOptions(), $filterAliases);
+    }
+
+    /**
+     * @param array $specification
+     *
+     * @return FiltererInterface
+     *
+     * @see FiltererInterface::withSpecification
+     */
+    public function withSpecification(array $specification) : FiltererInterface
+    {
+        return new Filterer($specification, $this->getOptions(), $this->filterAliases);
+    }
+
+    /**
+     * @return array
+     */
+    private function getOptions() : array
+    {
+        return [
+            'defaultRequired' => $this->defaultRequired,
+            'allowUnknowns' => $this->allowUnknowns,
+        ];
     }
 
     /**
@@ -234,35 +284,28 @@ final class Filterer
      * }
      * </pre>
      *
-     * @param array $spec the specification to apply to the $input. An array where each key is a known input field and
-     *                    each value is an array of filters. Each filter should be an array with the first member being
-     *                    anything that can pass is_callable() as well as accepting the value to filter as its first
-     *                    argument. Two examples would be the string 'trim' or an object function specified like [$obj,
-     *                    'filter'], see is_callable() documentation. The rest of the members are extra arguments to the
-     *                    callable. The result of one filter will be the first argument to the next filter. In addition
-     *                    to the filters, the specification values may contain a 'required' key (default false) that
-     *                    controls the same behavior as the 'defaultRequired' option below but on a per field basis. A
-     *                    'default' specification value may be used to substitute in a default to the $input when the
-     *                    key is not present (whether 'required' is specified or not).
-     * @param array $input the input the apply the $spec on.
-     * @param array $options 'allowUnknowns' (default false) true to allow unknowns or false to treat as error,
-     *                       'defaultRequired' (default false) true to make fields required by default and treat as
-     *                       error on absence and false to allow their absence by default
-     *                       'responseType' (default RESPONSE_TYPE_ARRAY) Determines the return type, as described
-     *                       in the return section.
+     * @param array $specification The specification to apply to the input.
+     * @param array $input          The input the apply the specification to.
+     * @param array $options        The options apply during filtering.
+     *                              'allowUnknowns' (default false) true to allow or false to treat as error.
+     *                              'defaultRequired' (default false) true to make fields required by default.
+     *                              'responseType' (default RESPONSE_TYPE_ARRAY)
+     *                                  Determines the return type, as described in the return section.
      *
      * @return array|FilterResponse If 'responseType' option is RESPONSE_TYPE_ARRAY:
-     *                                  on success [true, $input filtered, null, array of unknown fields]
-     *                                  on error [false, null, 'error message', array of unknown fields]
-     *                              If 'responseType' option is RESPONSE_TYPE_FILTER: a FilterResponse instance.
+     *                                  On success: [true, $input filtered, null, array of unknown fields]
+     *                                  On error: [false, null, 'error message', array of unknown fields]
+     *                              If 'responseType' option is RESPONSE_TYPE_FILTER: a FilterResponse instance
      *
      * @throws Exception
-     * @throws InvalidArgumentException if 'allowUnknowns' option was not a bool
-     * @throws InvalidArgumentException if 'defaultRequired' option was not a bool
-     * @throws InvalidArgumentException if 'responseType' option was not a recognized type
-     * @throws InvalidArgumentException if filters for a field was not an array
-     * @throws InvalidArgumentException if a filter for a field was not an array
-     * @throws InvalidArgumentException if 'required' for a field was not a bool
+     * @throws InvalidArgumentException Thrown if the 'allowUnknowns' option was not a bool
+     * @throws InvalidArgumentException Thrown if the 'defaultRequired' option was not a bool
+     * @throws InvalidArgumentException Thrown if the 'responseType' option was not a recognized type.
+     * @throws InvalidArgumentException Thrown if the filters for a field were not an array.
+     * @throws InvalidArgumentException Thrown if any one filter for a field was not an array.
+     * @throws InvalidArgumentException Thrown if the 'required' value for a field was not a bool.
+     *
+     * @see FiltererInterface::getSpecification For more information on specifications.
      */
     public static function filter(array $specification, array $input, array $options = [])
     {
