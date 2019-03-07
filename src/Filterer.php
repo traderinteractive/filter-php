@@ -106,21 +106,6 @@ final class Filterer implements FiltererInterface
     }
 
     /**
-     * @param array $value The value to filter.
-     *
-     * @return array
-     */
-    public function __invoke(array $value) : array
-    {
-        $filterResponse = $this->execute($value, [], ['responseType' => self::RESPONSE_TYPE_FILTER]);
-        if ($filterResponse->success === false) {
-            throw new FilterException($filterResponse->errorMessage);
-        }
-
-        return $filterResponse->filteredValue;
-    }
-
-    /**
      * @param mixed $input The input to filter.
      *
      * @return FilterResponse
