@@ -66,7 +66,7 @@ final class Filterer implements FiltererInterface
     private static $registeredFilterAliases = self::DEFAULT_FILTER_ALIASES;
 
     /**
-     * @var array
+     * @var array|null
      */
     private $filterAliases;
 
