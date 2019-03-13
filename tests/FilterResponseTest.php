@@ -15,6 +15,7 @@ class FilterResponseTest extends TestCase
     /**
      * @test
      * @covers ::__construct
+     * @covers ::__get
      */
     public function construct()
     {
@@ -34,6 +35,7 @@ class FilterResponseTest extends TestCase
     /**
      * @test
      * @covers ::__construct
+     * @covers ::__get
      */
     public function constructWithErrors()
     {
@@ -53,6 +55,7 @@ class FilterResponseTest extends TestCase
     /**
      * @test
      * @covers ::__construct
+     * @covers ::__get
      */
     public function constructDefault()
     {
@@ -70,6 +73,7 @@ class FilterResponseTest extends TestCase
     /**
      * @test
      * @covers ::__construct
+     * @covers ::__get
      */
     public function gettingInvalidPropertyThrowsException()
     {
@@ -83,6 +87,7 @@ class FilterResponseTest extends TestCase
     /**
      * @test
      * @covers ::__construct
+     * @covers ::__set
      */
     public function settingValidPropertyThrowsAnException()
     {
@@ -96,6 +101,7 @@ class FilterResponseTest extends TestCase
     /**
      * @test
      * @covers ::__construct
+     * @covers ::__set
      */
     public function settingInvalidPropertyThrowsAnException()
     {

@@ -6,10 +6,13 @@ use Exception;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
+use Throwable;
 use TraderInteractive\Exceptions\FilterException;
+use TypeError;
 
 /**
  * @coversDefaultClass \TraderInteractive\Filterer
+ * @covers ::__construct
  * @covers ::<private>
  */
 final class FiltererTest extends TestCase
@@ -22,6 +25,7 @@ final class FiltererTest extends TestCase
     /**
      * @test
      * @covers ::filter
+     * @covers ::execute
      * @dataProvider provideValidFilterData
      *
      * @param array $spec  The filter specification to be use.
@@ -228,6 +232,7 @@ final class FiltererTest extends TestCase
     /**
      * @test
      * @covers ::filter
+     * @covers ::execute
      */
     public function filterReturnsResponseType()
     {
@@ -248,6 +253,7 @@ final class FiltererTest extends TestCase
     /**
      * @test
      * @covers ::filter
+     * @covers ::execute
      */
     public function filterReturnsResponseTypeWithErrors()
     {
@@ -268,6 +274,7 @@ final class FiltererTest extends TestCase
     /**
      * @test
      * @covers ::filter
+     * @covers ::execute
      * @covers ::setFilterAliases
      */
     public function filterCustomShortNamePass()
@@ -280,6 +287,7 @@ final class FiltererTest extends TestCase
     /**
      * @test
      * @covers ::filter
+     * @covers ::execute
      * @covers ::setFilterAliases
      * @covers ::getFilterAliases
      */
@@ -292,7 +300,27 @@ final class FiltererTest extends TestCase
 
     /**
      * @test
+     * @covers ::setFilterAliases
+     */
+    public function setBadFilterAliases()
+    {
+        $originalAliases = Filterer::getFilterAliases();
+
+        $actualThrowable = null;
+        try {
+            Filterer::setFilterAliases(['foo' => 'not callable']);
+        } catch (Throwable $throwable) {
+            $actualThrowable = $throwable;
+        }
+
+        $this->assertSame($originalAliases, Filterer::getFilterAliases());
+        $this->assertInstanceOf(TypeError::class, $actualThrowable);
+    }
+
+    /**
+     * @test
      * @covers ::filter
+     * @covers ::execute
      * @expectedException Exception
      * @expectedExceptionMessage Function 'boo' for field 'foo' is not callable
      */
@@ -304,6 +332,7 @@ final class FiltererTest extends TestCase
     /**
      * @test
      * @covers ::filter
+     * @covers ::execute
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage 'allowUnknowns' option was not a bool
      */
@@ -315,6 +344,7 @@ final class FiltererTest extends TestCase
     /**
      * @test
      * @covers ::filter
+     * @covers ::execute
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage 'defaultRequired' option was not a bool
      */
@@ -326,6 +356,7 @@ final class FiltererTest extends TestCase
     /**
      * @test
      * @covers ::filter
+     * @covers ::execute
      */
     public function filterThrowsExceptionOnInvalidResponseType()
     {
@@ -338,6 +369,7 @@ final class FiltererTest extends TestCase
     /**
      * @test
      * @covers ::filter
+     * @covers ::execute
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage filters for field 'boo' was not a array
      */
@@ -349,6 +381,7 @@ final class FiltererTest extends TestCase
     /**
      * @test
      * @covers ::filter
+     * @covers ::execute
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage filters for field 'boo' was not a array
      */
@@ -360,6 +393,7 @@ final class FiltererTest extends TestCase
     /**
      * @test
      * @covers ::filter
+     * @covers ::execute
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage filter for field 'boo' was not a array
      */
@@ -371,6 +405,7 @@ final class FiltererTest extends TestCase
     /**
      * @test
      * @covers ::filter
+     * @covers ::execute
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage 'required' for field 'boo' was not a bool
      */
@@ -429,6 +464,7 @@ final class FiltererTest extends TestCase
      *
      * @test
      * @covers ::filter
+     * @covers ::execute
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage error for field 'fieldOne' was not a non-empty string
      *
@@ -447,6 +483,7 @@ final class FiltererTest extends TestCase
      *
      * @test
      * @covers ::filter
+     * @covers ::execute
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage error for field 'fieldOne' was not a non-empty string
      *
@@ -633,5 +670,75 @@ TXT;
             $expected = "Field 'key' with value '1' is unknown";
             $this->assertSame($expected, $e->getMessage());
         }
+    }
+
+    /**
+     * @test
+     * @covers ::getAliases
+     */
+    public function getAliases()
+    {
+        $expected = ['some' => 'alias'];
+
+        $filterer = new Filterer([], [], $expected);
+        $actual = $filterer->getAliases();
+
+        $this->assertSame($expected, $actual);
+    }
+
+    /**
+     * @test
+     * @covers ::getAliases
+     */
+    public function getAliasesReturnsStaticValueIfNull()
+    {
+        $filterer = new Filterer([]);
+        $actual = $filterer->getAliases();
+
+        $this->assertSame(Filterer::getFilterAliases(), $actual);
+    }
+
+    /**
+     * @test
+     * @covers ::getSpecification
+     */
+    public function getSpecification()
+    {
+        $expected = ['some' => 'specification'];
+
+        $filterer = new Filterer($expected);
+        $actual = $filterer->getSpecification();
+
+        $this->assertSame($expected, $actual);
+    }
+
+    /**
+     * @test
+     * @covers ::withAliases
+     */
+    public function withAliases()
+    {
+        $expected = ['foo' => 'bar'];
+
+        $filterer = new Filterer([]);
+        $filtererCopy = $filterer->withAliases($expected);
+
+        $this->assertNotSame($filterer, $filtererCopy);
+        $this->assertSame($expected, $filtererCopy->getAliases());
+    }
+
+    /**
+     * @test
+     * @covers ::withSpecification
+     */
+    public function withSpecification()
+    {
+        $expected = ['foo' => 'bar'];
+
+        $filterer = new Filterer([]);
+        $filtererCopy = $filterer->withSpecification($expected);
+
+        $this->assertNotSame($filterer, $filtererCopy);
+        $this->assertSame($expected, $filtererCopy->getSpecification());
     }
 }

@@ -10,7 +10,7 @@ use TraderInteractive\Exceptions\FilterException;
 /**
  * Class to filter an array of input.
  */
-final class Filterer
+final class Filterer implements FiltererInterface
 {
     /**
      * @var array
@@ -42,6 +42,15 @@ final class Filterer
     ];
 
     /**
+     * @var array
+     */
+    const DEFAULT_OPTIONS = [
+        'allowUnknowns' => false,
+        'defaultRequired' => false,
+        'responseType' => self::RESPONSE_TYPE_ARRAY,
+    ];
+
+    /**
      * @var string
      */
     const RESPONSE_TYPE_ARRAY = 'array';
@@ -54,7 +63,165 @@ final class Filterer
     /**
      * @var array
      */
-    private static $filterAliases = self::DEFAULT_FILTER_ALIASES;
+    private static $registeredFilterAliases = self::DEFAULT_FILTER_ALIASES;
+
+    /**
+     * @var array|null
+     */
+    private $filterAliases;
+
+    /**
+     * @var array
+     */
+    private $specification;
+
+    /**
+     * @var bool
+     */
+    private $allowUnknowns;
+
+    /**
+     * @var bool
+     */
+    private $defaultRequired;
+
+    /**
+     * @param array      $specification The specification to apply to the value.
+     * @param array      $options       The options apply during filtering.
+     *                                  'allowUnknowns' (default false) true to allow or false to treat as error.
+     *                                  'defaultRequired' (default false) true to make fields required by default.
+     * @param array|null $filterAliases The filter aliases to accept.
+     *
+     * @throws InvalidArgumentException if 'allowUnknowns' option was not a bool
+     * @throws InvalidArgumentException if 'defaultRequired' option was not a bool
+     */
+    public function __construct(array $specification, array $options = [], array $filterAliases = null)
+    {
+        $options += self::DEFAULT_OPTIONS;
+
+        $this->specification = $specification;
+        $this->filterAliases = $filterAliases;
+        $this->allowUnknowns = self::getAllowUnknowns($options);
+        $this->defaultRequired = self::getDefaultRequired($options);
+    }
+
+    /**
+     * @param mixed $input The input to filter.
+     *
+     * @return FilterResponse
+     *
+     * @throws InvalidArgumentException Thrown if the filters for a field were not an array.
+     * @throws InvalidArgumentException Thrown if any one filter for a field was not an array.
+     * @throws InvalidArgumentException Thrown if the 'required' value for a field was not a bool.
+     */
+    public function execute(array $input) : FilterResponse
+    {
+        $filterAliases = $this->getAliases();
+        $inputToFilter = array_intersect_key($input, $this->specification);
+        $leftOverSpec = array_diff_key($this->specification, $input);
+        $leftOverInput = array_diff_key($input, $this->specification);
+
+        $errors = [];
+        foreach ($inputToFilter as $field => $input) {
+            $filters = $this->specification[$field];
+            self::assertFiltersIsAnArray($filters, $field);
+            $customError = self::validateCustomError($filters, $field);
+            unset($filters['required']);//doesn't matter if required since we have this one
+            unset($filters['default']);//doesn't matter if there is a default since we have a value
+            foreach ($filters as $filter) {
+                self::assertFilterIsNotArray($filter, $field);
+
+                if (empty($filter)) {
+                    continue;
+                }
+
+                $function = array_shift($filter);
+                $function = self::handleFilterAliases($function, $filterAliases);
+
+                self::assertFunctionIsCallable($function, $field);
+
+                array_unshift($filter, $input);
+                try {
+                    $input = call_user_func_array($function, $filter);
+                } catch (Exception $exception) {
+                    $errors = self::handleCustomError($field, $input, $exception, $errors, $customError);
+                    continue 2;//next field
+                }
+            }
+
+            $inputToFilter[$field] = $input;
+        }
+
+        foreach ($leftOverSpec as $field => $filters) {
+            self::assertFiltersIsAnArray($filters, $field);
+            $required = self::getRequired($filters, $this->defaultRequired, $field);
+            if (array_key_exists('default', $filters)) {
+                $inputToFilter[$field] = $filters['default'];
+                continue;
+            }
+
+            $errors = self::handleRequiredFields($required, $field, $errors);
+        }
+
+        $errors = self::handleAllowUnknowns($this->allowUnknowns, $leftOverInput, $errors);
+
+        return new FilterResponse($inputToFilter, $errors, $leftOverInput);
+    }
+
+    /**
+     * @return array
+     *
+     * @see FiltererInterface::getAliases
+     */
+    public function getAliases() : array
+    {
+        return $this->filterAliases ?? self::$registeredFilterAliases;
+    }
+
+    /**
+     * @return array
+     *
+     * @see FiltererInterface::getSpecification
+     */
+    public function getSpecification() : array
+    {
+        return $this->specification;
+    }
+
+    /**
+     * @param array $filterAliases
+     *
+     * @return FiltererInterface
+     *
+     * @see FiltererInterface::withAliases
+     */
+    public function withAliases(array $filterAliases) : FiltererInterface
+    {
+        return new Filterer($this->specification, $this->getOptions(), $filterAliases);
+    }
+
+    /**
+     * @param array $specification
+     *
+     * @return FiltererInterface
+     *
+     * @see FiltererInterface::withSpecification
+     */
+    public function withSpecification(array $specification) : FiltererInterface
+    {
+        return new Filterer($specification, $this->getOptions(), $this->filterAliases);
+    }
+
+    /**
+     * @return array
+     */
+    private function getOptions() : array
+    {
+        return [
+            'defaultRequired' => $this->defaultRequired,
+            'allowUnknowns' => $this->allowUnknowns,
+        ];
+    }
 
     /**
      * Example:
@@ -102,93 +269,38 @@ final class Filterer
      * }
      * </pre>
      *
-     * @param array $spec the specification to apply to the $input. An array where each key is a known input field and
-     *                    each value is an array of filters. Each filter should be an array with the first member being
-     *                    anything that can pass is_callable() as well as accepting the value to filter as its first
-     *                    argument. Two examples would be the string 'trim' or an object function specified like [$obj,
-     *                    'filter'], see is_callable() documentation. The rest of the members are extra arguments to the
-     *                    callable. The result of one filter will be the first argument to the next filter. In addition
-     *                    to the filters, the specification values may contain a 'required' key (default false) that
-     *                    controls the same behavior as the 'defaultRequired' option below but on a per field basis. A
-     *                    'default' specification value may be used to substitute in a default to the $input when the
-     *                    key is not present (whether 'required' is specified or not).
-     * @param array $input the input the apply the $spec on.
-     * @param array $options 'allowUnknowns' (default false) true to allow unknowns or false to treat as error,
-     *                       'defaultRequired' (default false) true to make fields required by default and treat as
-     *                       error on absence and false to allow their absence by default
-     *                       'responseType' (default RESPONSE_TYPE_ARRAY) Determines the return type, as described
-     *                       in the return section.
+     * @param array $specification The specification to apply to the input.
+     * @param array $input          The input the apply the specification to.
+     * @param array $options        The options apply during filtering.
+     *                              'allowUnknowns' (default false) true to allow or false to treat as error.
+     *                              'defaultRequired' (default false) true to make fields required by default.
+     *                              'responseType' (default RESPONSE_TYPE_ARRAY)
+     *                                  Determines the return type, as described in the return section.
      *
      * @return array|FilterResponse If 'responseType' option is RESPONSE_TYPE_ARRAY:
-     *                                  on success [true, $input filtered, null, array of unknown fields]
-     *                                  on error [false, null, 'error message', array of unknown fields]
-     *                              If 'responseType' option is RESPONSE_TYPE_FILTER: a FilterResponse instance.
+     *                                  On success: [true, $input filtered, null, array of unknown fields]
+     *                                  On error: [false, null, 'error message', array of unknown fields]
+     *                              If 'responseType' option is RESPONSE_TYPE_FILTER: a FilterResponse instance
      *
      * @throws Exception
-     * @throws InvalidArgumentException if 'allowUnknowns' option was not a bool
-     * @throws InvalidArgumentException if 'defaultRequired' option was not a bool
-     * @throws InvalidArgumentException if 'responseType' option was not a recognized type
-     * @throws InvalidArgumentException if filters for a field was not an array
-     * @throws InvalidArgumentException if a filter for a field was not an array
-     * @throws InvalidArgumentException if 'required' for a field was not a bool
+     * @throws InvalidArgumentException Thrown if the 'allowUnknowns' option was not a bool
+     * @throws InvalidArgumentException Thrown if the 'defaultRequired' option was not a bool
+     * @throws InvalidArgumentException Thrown if the 'responseType' option was not a recognized type.
+     * @throws InvalidArgumentException Thrown if the filters for a field were not an array.
+     * @throws InvalidArgumentException Thrown if any one filter for a field was not an array.
+     * @throws InvalidArgumentException Thrown if the 'required' value for a field was not a bool.
+     *
+     * @see FiltererInterface::getSpecification For more information on specifications.
      */
-    public static function filter(array $spec, array $input, array $options = [])
+    public static function filter(array $specification, array $input, array $options = [])
     {
-        $options += ['allowUnknowns' => false, 'defaultRequired' => false, 'responseType' => self::RESPONSE_TYPE_ARRAY];
-
-        $allowUnknowns = self::getAllowUnknowns($options);
-        $defaultRequired = self::getDefaultRequired($options);
+        $options += self::DEFAULT_OPTIONS;
         $responseType = $options['responseType'];
 
-        $inputToFilter = array_intersect_key($input, $spec);
-        $leftOverSpec = array_diff_key($spec, $input);
-        $leftOverInput = array_diff_key($input, $spec);
+        $filterer = new Filterer($specification, $options);
+        $filterResponse = $filterer->execute($input);
 
-        $errors = [];
-        foreach ($inputToFilter as $field => $value) {
-            $filters = $spec[$field];
-            self::assertFiltersIsAnArray($filters, $field);
-            $customError = self::validateCustomError($filters, $field);
-            unset($filters['required']);//doesn't matter if required since we have this one
-            unset($filters['default']);//doesn't matter if there is a default since we have a value
-            foreach ($filters as $filter) {
-                self::assertFilterIsNotArray($filter, $field);
-
-                if (empty($filter)) {
-                    continue;
-                }
-
-                $function = array_shift($filter);
-                $function = self::handleFilterAliases($function);
-
-                self::assertFunctionIsCallable($function, $field);
-
-                array_unshift($filter, $value);
-                try {
-                    $value = call_user_func_array($function, $filter);
-                } catch (Exception $e) {
-                    $errors = self::handleCustomError($field, $value, $e, $errors, $customError);
-                    continue 2;//next field
-                }
-            }
-
-            $inputToFilter[$field] = $value;
-        }
-
-        foreach ($leftOverSpec as $field => $filters) {
-            self::assertFiltersIsAnArray($filters, $field);
-            $required = self::getRequired($filters, $defaultRequired, $field);
-            if (array_key_exists('default', $filters)) {
-                $inputToFilter[$field] = $filters['default'];
-                continue;
-            }
-
-            $errors = self::handleRequiredFields($required, $field, $errors);
-        }
-
-        $errors = self::handleAllowUnknowns($allowUnknowns, $leftOverInput, $errors);
-
-        return self::generateFilterResponse($responseType, $inputToFilter, $errors, $leftOverInput);
+        return self::generateFilterResponse($responseType, $filterResponse);
     }
 
     /**
@@ -198,7 +310,7 @@ final class Filterer
      */
     public static function getFilterAliases() : array
     {
-        return self::$filterAliases;
+        return self::$registeredFilterAliases;
     }
 
     /**
@@ -211,15 +323,15 @@ final class Filterer
      */
     public static function setFilterAliases(array $aliases)
     {
-        $originalAliases = self::$filterAliases;
-        self::$filterAliases = [];
+        $originalAliases = self::$registeredFilterAliases;
+        self::$registeredFilterAliases = [];
         try {
             foreach ($aliases as $alias => $callback) {
                 self::registerAlias($alias, $callback);
             }
-        } catch (Exception $e) {
-            self::$filterAliases = $originalAliases;
-            throw $e;
+        } catch (Throwable $throwable) {
+            self::$registeredFilterAliases = $originalAliases;
+            throw $throwable;
         }
     }
 
@@ -239,7 +351,7 @@ final class Filterer
     {
         self::assertIfStringOrInt($alias);
         self::assertIfAliasExists($alias, $overwrite);
-        self::$filterAliases[$alias] = $filter;
+        self::$registeredFilterAliases[$alias] = $filter;
     }
 
     /**
@@ -338,7 +450,7 @@ final class Filterer
 
     private static function assertIfAliasExists($alias, bool $overwrite)
     {
-        if (array_key_exists($alias, self::$filterAliases) && !$overwrite) {
+        if (array_key_exists($alias, self::$registeredFilterAliases) && !$overwrite) {
             throw new Exception("Alias '{$alias}' exists");
         }
     }
@@ -415,10 +527,10 @@ final class Filterer
         }
     }
 
-    private static function handleFilterAliases($function)
+    private static function handleFilterAliases($function, $filterAliases)
     {
-        if ((is_string($function) || is_int($function)) && array_key_exists($function, self::$filterAliases)) {
-            $function = self::$filterAliases[$function];
+        if ((is_string($function) || is_int($function)) && array_key_exists($function, $filterAliases)) {
+            $function = $filterAliases[$function];
         }
 
         return $function;
@@ -467,23 +579,15 @@ final class Filterer
     }
 
     /**
-     * @param string $responseType  The type of object that should be returned.
-     * @param array  $filteredValue The filtered input to return.
-     * @param array  $errors        The errors to return.
-     * @param array  $unknowns      The unknowns to return.
+     * @param string         $responseType   The type of object that should be returned.
+     * @param FilterResponse $filterResponse The filter response to generate the typed response from.
      *
      * @return array|FilterResponse
      *
      * @see filter For more information on how responseType is handled and returns are structured.
      */
-    private static function generateFilterResponse(
-        string $responseType,
-        array $filteredValue,
-        array $errors,
-        array $unknowns
-    ) {
-        $filterResponse = new FilterResponse($filteredValue, $errors, $unknowns);
-
+    private static function generateFilterResponse(string $responseType, FilterResponse $filterResponse)
+    {
         if ($responseType === self::RESPONSE_TYPE_FILTER) {
             return $filterResponse;
         }
