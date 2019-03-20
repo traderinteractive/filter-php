@@ -226,6 +226,18 @@ final class FiltererTest extends TestCase
                 'options' => [],
                 'result' => [true, ['field' => 'one or *****'], null, []],
             ],
+            'compress-string alias' => [
+                'spec' => ['field' => [['compress-string']]],
+                'input' => ['field' => ' a  string    with    extra spaces '],
+                'options' => [],
+                'result' => [true, ['field' => 'a string with extra spaces'], null, []],
+            ],
+            'compress-string alias include newlines' => [
+                'spec' => ['field' => [['compress-string', true]]],
+                'input' => ['field' => " a  string\n    with\nnewlines  and    extra spaces\n "],
+                'options' => [],
+                'result' => [true, ['field' => 'a string with newlines and extra spaces'], null, []],
+            ],
         ];
     }
 
