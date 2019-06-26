@@ -109,6 +109,7 @@ The filter specification for a single field is also an array.  It can contain tw
   result.  The `required` value does not affect `default` behavior.
 * `error` defines a custom error message to be returned if the value fails filtering. Within the error string, `{value}` can be used as a placeholder
   for the value that failed filtering.
+* `returnOnNull` defines whether the filter should continue on null values or return null when it is found in the filter chain. The default for this option is `false`
 
 The rest of the specification for the field are the filters to apply.
 
