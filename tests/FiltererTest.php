@@ -296,6 +296,12 @@ final class FiltererTest extends TestCase
                     [],
                 ],
             ],
+            'returnOnNull filter option' => [
+                'spec' => ['field' => ['returnOnNull' => true, ['string', true], ['string']]],
+                'input' => ['field' => null],
+                'options' => [],
+                'result' => [true, ['field' => null], null, []],
+            ],
         ];
     }
 
