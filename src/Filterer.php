@@ -131,8 +131,7 @@ final class Filterer implements FiltererInterface
             unset($filters[FilterOptions::IS_REQUIRED]);//doesn't matter if required since we have this one
             unset($filters[FilterOptions::DEFAULT_VALUE]);//doesn't matter if there is a default since we have a value
             $conflicts = self::extractConflicts($filters, $field, $conflicts);
-            $returnOnNull = $filters['returnOnNull'] ?? false;
-            unset($filters['returnOnNull']);
+            $returnOnNull = self::extractReturnOnNull($filters, $field);
 
             foreach ($filters as $filter) {
                 self::assertFilterIsNotArray($filter, $field);
@@ -220,6 +219,13 @@ final class Filterer implements FiltererInterface
         }
 
         return $errors;
+    }
+
+    private static function extractReturnOnNull(array &$filters, string $field) : bool
+    {
+        $returnOnNull = $filters[FilterOptions::RETURN_ON_NULL] ?? false;
+        unset($filters[FilterOptions::RETURN_ON_NULL]);
+        return $returnOnNull;
     }
 
     /**
