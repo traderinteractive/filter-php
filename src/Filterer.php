@@ -46,9 +46,9 @@ final class Filterer implements FiltererInterface
      * @var array
      */
     const DEFAULT_OPTIONS = [
-        'allowUnknowns' => false,
-        'defaultRequired' => false,
-        'responseType' => self::RESPONSE_TYPE_ARRAY,
+        FiltererOptions::ALLOW_UNKNOWNS => false,
+        FiltererOptions::DEFAULT_REQUIRED => false,
+        FiltererOptions::RESPONSE_TYPE => self::RESPONSE_TYPE_ARRAY,
     ];
 
     /**
@@ -219,8 +219,8 @@ final class Filterer implements FiltererInterface
     private function getOptions() : array
     {
         return [
-            'defaultRequired' => $this->defaultRequired,
-            'allowUnknowns' => $this->allowUnknowns,
+            FiltererOptions::DEFAULT_REQUIRED => $this->defaultRequired,
+            FiltererOptions::ALLOW_UNKNOWNS => $this->allowUnknowns,
         ];
     }
 
@@ -296,7 +296,7 @@ final class Filterer implements FiltererInterface
     public static function filter(array $specification, array $input, array $options = [])
     {
         $options += self::DEFAULT_OPTIONS;
-        $responseType = $options['responseType'];
+        $responseType = $options[FiltererOptions::RESPONSE_TYPE];
 
         $filterer = new Filterer($specification, $options);
         $filterResponse = $filterer->execute($input);
@@ -561,9 +561,9 @@ final class Filterer implements FiltererInterface
 
     private static function getAllowUnknowns(array $options) : bool
     {
-        $allowUnknowns = $options['allowUnknowns'];
+        $allowUnknowns = $options[FiltererOptions::ALLOW_UNKNOWNS];
         if ($allowUnknowns !== false && $allowUnknowns !== true) {
-            throw new InvalidArgumentException("'allowUnknowns' option was not a bool");
+            throw new InvalidArgumentException(sprintf("'%s' option was not a bool", FiltererOptions::ALLOW_UNKNOWNS));
         }
 
         return $allowUnknowns;
@@ -571,9 +571,11 @@ final class Filterer implements FiltererInterface
 
     private static function getDefaultRequired(array $options) : bool
     {
-        $defaultRequired = $options['defaultRequired'];
+        $defaultRequired = $options[FiltererOptions::DEFAULT_REQUIRED];
         if ($defaultRequired !== false && $defaultRequired !== true) {
-            throw new InvalidArgumentException("'defaultRequired' option was not a bool");
+            throw new InvalidArgumentException(
+                sprintf("'%s' option was not a bool", FiltererOptions::DEFAULT_REQUIRED)
+            );
         }
 
         return $defaultRequired;
@@ -602,6 +604,6 @@ final class Filterer implements FiltererInterface
             ];
         }
 
-        throw new InvalidArgumentException("'responseType' was not a recognized value");
+        throw new InvalidArgumentException(sprintf("'%s' was not a recognized value", FiltererOptions::RESPONSE_TYPE));
     }
 }
