@@ -548,11 +548,8 @@ final class Filterer implements FiltererInterface
     ) : array {
         $error = $customError;
         if ($error === null) {
-            $error = sprintf(
-                "Field '%s' with value '{value}' failed filtering, message '%s'",
-                $field,
-                $e->getMessage()
-            );
+            $errorFormat = "Field '%s' with value '{value}' failed filtering, message '%s'";
+            $error = sprintf($errorFormat, $field, $e->getMessage());
         }
 
         $errors[$field] = str_replace('{value}', trim(var_export($value, true), "'"), $error);
