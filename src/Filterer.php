@@ -46,9 +46,9 @@ final class Filterer implements FiltererInterface
      * @var array
      */
     const DEFAULT_OPTIONS = [
-        'allowUnknowns' => false,
-        'defaultRequired' => false,
-        'responseType' => self::RESPONSE_TYPE_ARRAY,
+        FiltererOptions::ALLOW_UNKNOWNS => false,
+        FiltererOptions::DEFAULT_REQUIRED => false,
+        FiltererOptions::RESPONSE_TYPE => self::RESPONSE_TYPE_ARRAY,
     ];
 
     /**
@@ -123,12 +123,15 @@ final class Filterer implements FiltererInterface
         $leftOverInput = array_diff_key($input, $this->specification);
 
         $errors = [];
+        $conflicts = [];
         foreach ($inputToFilter as $field => $input) {
             $filters = $this->specification[$field];
             self::assertFiltersIsAnArray($filters, $field);
             $customError = self::validateCustomError($filters, $field);
-            unset($filters['required']);//doesn't matter if required since we have this one
-            unset($filters['default']);//doesn't matter if there is a default since we have a value
+            unset($filters[FilterOptions::IS_REQUIRED]);//doesn't matter if required since we have this one
+            unset($filters[FilterOptions::DEFAULT_VALUE]);//doesn't matter if there is a default since we have a value
+            $conflicts = self::extractConflicts($filters, $field, $conflicts);
+
             foreach ($filters as $filter) {
                 self::assertFilterIsNotArray($filter, $field);
 
@@ -156,8 +159,8 @@ final class Filterer implements FiltererInterface
         foreach ($leftOverSpec as $field => $filters) {
             self::assertFiltersIsAnArray($filters, $field);
             $required = self::getRequired($filters, $this->defaultRequired, $field);
-            if (array_key_exists('default', $filters)) {
-                $inputToFilter[$field] = $filters['default'];
+            if (array_key_exists(FilterOptions::DEFAULT_VALUE, $filters)) {
+                $inputToFilter[$field] = $filters[FilterOptions::DEFAULT_VALUE];
                 continue;
             }
 
@@ -165,6 +168,7 @@ final class Filterer implements FiltererInterface
         }
 
         $errors = self::handleAllowUnknowns($this->allowUnknowns, $leftOverInput, $errors);
+        $errors = self::handleConflicts($inputToFilter, $conflicts, $errors);
 
         return new FilterResponse($inputToFilter, $errors, $leftOverInput);
     }
@@ -177,6 +181,40 @@ final class Filterer implements FiltererInterface
     public function getAliases() : array
     {
         return $this->filterAliases ?? self::$registeredFilterAliases;
+    }
+
+    private static function extractConflicts(array &$filters, string $field, array $conflicts) : array
+    {
+        $conflictsWith = $filters[FilterOptions::CONFLICTS_WITH] ?? null;
+        unset($filters[FilterOptions::CONFLICTS_WITH]);
+        if ($conflictsWith === null) {
+            return $conflicts;
+        }
+
+        if (!is_array($conflictsWith)) {
+            $conflictsWith = [$conflictsWith];
+        }
+
+        $conflicts[$field] = $conflictsWith;
+
+        return $conflicts;
+    }
+
+    private static function handleConflicts(array $inputToFilter, array $conflicts, array $errors)
+    {
+        foreach (array_keys($inputToFilter) as $field) {
+            if (!array_key_exists($field, $conflicts)) {
+                continue;
+            }
+
+            foreach ($conflicts[$field] as $conflictsWith) {
+                if (array_key_exists($conflictsWith, $inputToFilter)) {
+                    $errors[] = "Field '{$field}' cannot be given if field '{$conflictsWith}' is present.";
+                }
+            }
+        }
+
+        return $errors;
     }
 
     /**
@@ -219,8 +257,8 @@ final class Filterer implements FiltererInterface
     private function getOptions() : array
     {
         return [
-            'defaultRequired' => $this->defaultRequired,
-            'allowUnknowns' => $this->allowUnknowns,
+            FiltererOptions::DEFAULT_REQUIRED => $this->defaultRequired,
+            FiltererOptions::ALLOW_UNKNOWNS => $this->allowUnknowns,
         ];
     }
 
@@ -296,7 +334,7 @@ final class Filterer implements FiltererInterface
     public static function filter(array $specification, array $input, array $options = [])
     {
         $options += self::DEFAULT_OPTIONS;
-        $responseType = $options['responseType'];
+        $responseType = $options[FiltererOptions::RESPONSE_TYPE];
 
         $filterer = new Filterer($specification, $options);
         $filterResponse = $filterer->execute($input);
@@ -484,9 +522,11 @@ final class Filterer implements FiltererInterface
 
     private static function getRequired($filters, $defaultRequired, $field) : bool
     {
-        $required = isset($filters['required']) ? $filters['required'] : $defaultRequired;
+        $required = $filters[FilterOptions::IS_REQUIRED] ?? $defaultRequired;
         if ($required !== false && $required !== true) {
-            throw new InvalidArgumentException("'required' for field '{$field}' was not a bool");
+            throw new InvalidArgumentException(
+                sprintf("'%s' for field '%s' was not a bool", FilterOptions::IS_REQUIRED, $field)
+            );
         }
 
         return $required;
@@ -508,11 +548,8 @@ final class Filterer implements FiltererInterface
     ) : array {
         $error = $customError;
         if ($error === null) {
-            $error = sprintf(
-                "Field '%s' with value '{value}' failed filtering, message '%s'",
-                $field,
-                $e->getMessage()
-            );
+            $errorFormat = "Field '%s' with value '{value}' failed filtering, message '%s'";
+            $error = sprintf($errorFormat, $field, $e->getMessage());
         }
 
         $errors[$field] = str_replace('{value}', trim(var_export($value, true), "'"), $error);
@@ -547,13 +584,15 @@ final class Filterer implements FiltererInterface
     private static function validateCustomError(array &$filters, string $field)
     {
         $customError = null;
-        if (array_key_exists('error', $filters)) {
-            $customError = $filters['error'];
+        if (array_key_exists(FilterOptions::CUSTOM_ERROR, $filters)) {
+            $customError = $filters[FilterOptions::CUSTOM_ERROR];
             if (!is_string($customError) || trim($customError) === '') {
-                throw new InvalidArgumentException("error for field '{$field}' was not a non-empty string");
+                throw new InvalidArgumentException(
+                    sprintf("%s for field '%s' was not a non-empty string", FilterOptions::CUSTOM_ERROR, $field)
+                );
             }
 
-            unset($filters['error']);//unset so its not used as a filter
+            unset($filters[FilterOptions::CUSTOM_ERROR]);//unset so its not used as a filter
         }
 
         return $customError;
@@ -561,9 +600,9 @@ final class Filterer implements FiltererInterface
 
     private static function getAllowUnknowns(array $options) : bool
     {
-        $allowUnknowns = $options['allowUnknowns'];
+        $allowUnknowns = $options[FiltererOptions::ALLOW_UNKNOWNS];
         if ($allowUnknowns !== false && $allowUnknowns !== true) {
-            throw new InvalidArgumentException("'allowUnknowns' option was not a bool");
+            throw new InvalidArgumentException(sprintf("'%s' option was not a bool", FiltererOptions::ALLOW_UNKNOWNS));
         }
 
         return $allowUnknowns;
@@ -571,9 +610,11 @@ final class Filterer implements FiltererInterface
 
     private static function getDefaultRequired(array $options) : bool
     {
-        $defaultRequired = $options['defaultRequired'];
+        $defaultRequired = $options[FiltererOptions::DEFAULT_REQUIRED];
         if ($defaultRequired !== false && $defaultRequired !== true) {
-            throw new InvalidArgumentException("'defaultRequired' option was not a bool");
+            throw new InvalidArgumentException(
+                sprintf("'%s' option was not a bool", FiltererOptions::DEFAULT_REQUIRED)
+            );
         }
 
         return $defaultRequired;
@@ -602,6 +643,6 @@ final class Filterer implements FiltererInterface
             ];
         }
 
-        throw new InvalidArgumentException("'responseType' was not a recognized value");
+        throw new InvalidArgumentException(sprintf("'%s' was not a recognized value", FiltererOptions::RESPONSE_TYPE));
     }
 }

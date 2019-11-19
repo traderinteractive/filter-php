@@ -238,6 +238,64 @@ final class FiltererTest extends TestCase
                 'options' => [],
                 'result' => [true, ['field' => 'a string with newlines and extra spaces'], null, []],
             ],
+            'conflicts with single' => [
+                'spec' => [
+                    'fieldOne' => [FilterOptions::CONFLICTS_WITH => 'fieldThree', ['string']],
+                    'fieldTwo' => [['string']],
+                    'fieldThree' => [FilterOptions::CONFLICTS_WITH => 'fieldOne', ['string']],
+                ],
+                'input' => [
+                    'fieldOne' => 'abc',
+                    'fieldTwo' => '123',
+                    'fieldThree' => 'xyz',
+                ],
+                'options' => [],
+                'result' => [
+                    false,
+                    null,
+                    "Field 'fieldOne' cannot be given if field 'fieldThree' is present.\n"
+                    . "Field 'fieldThree' cannot be given if field 'fieldOne' is present.",
+                    [],
+                ],
+            ],
+            'conflicts with multiple' => [
+                'spec' => [
+                    'fieldOne' => [FilterOptions::CONFLICTS_WITH => ['fieldTwo', 'fieldThree'], ['string']],
+                    'fieldTwo' => [['string']],
+                    'fieldThree' => [['string']],
+                ],
+                'input' => [
+                    'fieldOne' => 'abc',
+                    'fieldTwo' => '123',
+                ],
+                'options' => [],
+                'result' => [
+                    false,
+                    null,
+                    "Field 'fieldOne' cannot be given if field 'fieldTwo' is present.",
+                    [],
+                ],
+            ],
+            'conflicts with not present' => [
+                'spec' => [
+                    'fieldOne' => [FilterOptions::CONFLICTS_WITH => 'fieldThree', ['string']],
+                    'fieldTwo' => [['string']],
+                ],
+                'input' => [
+                    'fieldOne' => 'abc',
+                    'fieldTwo' => '123',
+                ],
+                'options' => [],
+                'result' => [
+                    true,
+                    [
+                        'fieldOne' => 'abc',
+                        'fieldTwo' => '123',
+                    ],
+                    null,
+                    [],
+                ],
+            ],
         ];
     }
 
