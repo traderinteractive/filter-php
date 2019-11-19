@@ -18,4 +18,9 @@ final class FilterOptions
      * @var string
      */
     const IS_REQUIRED = 'required';
+
+    /**
+     * @var string
+     */
+    const CONFLICTS_WITH = 'conflictsWith';
 }
