@@ -43,11 +43,21 @@ final class Filterer implements FiltererInterface
     ];
 
     /**
+     * @var bool
+     */
+    const DEFAULT_ALLOW_UNKNOWNS = false;
+
+    /**
+     * @var bool
+     */
+    const DEFAULT_REQUIRED = false;
+
+    /**
      * @var array
      */
     const DEFAULT_OPTIONS = [
-        FiltererOptions::ALLOW_UNKNOWNS => false,
-        FiltererOptions::DEFAULT_REQUIRED => false,
+        FiltererOptions::ALLOW_UNKNOWNS => self::DEFAULT_ALLOW_UNKNOWNS,
+        FiltererOptions::DEFAULT_REQUIRED => self::DEFAULT_REQUIRED,
         FiltererOptions::RESPONSE_TYPE => self::RESPONSE_TYPE_ARRAY,
     ];
 
