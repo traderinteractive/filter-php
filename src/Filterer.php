@@ -127,8 +127,8 @@ final class Filterer implements FiltererInterface
             $filters = $this->specification[$field];
             self::assertFiltersIsAnArray($filters, $field);
             $customError = self::validateCustomError($filters, $field);
-            unset($filters['required']);//doesn't matter if required since we have this one
-            unset($filters['default']);//doesn't matter if there is a default since we have a value
+            unset($filters[FilterOptions::IS_REQUIRED]);//doesn't matter if required since we have this one
+            unset($filters[FilterOptions::DEFAULT_VALUE]);//doesn't matter if there is a default since we have a value
             foreach ($filters as $filter) {
                 self::assertFilterIsNotArray($filter, $field);
 
@@ -156,8 +156,8 @@ final class Filterer implements FiltererInterface
         foreach ($leftOverSpec as $field => $filters) {
             self::assertFiltersIsAnArray($filters, $field);
             $required = self::getRequired($filters, $this->defaultRequired, $field);
-            if (array_key_exists('default', $filters)) {
-                $inputToFilter[$field] = $filters['default'];
+            if (array_key_exists(FilterOptions::DEFAULT_VALUE, $filters)) {
+                $inputToFilter[$field] = $filters[FilterOptions::DEFAULT_VALUE];
                 continue;
             }
 
@@ -484,9 +484,11 @@ final class Filterer implements FiltererInterface
 
     private static function getRequired($filters, $defaultRequired, $field) : bool
     {
-        $required = isset($filters['required']) ? $filters['required'] : $defaultRequired;
+        $required = $filters[FilterOptions::IS_REQUIRED] ?? $defaultRequired;
         if ($required !== false && $required !== true) {
-            throw new InvalidArgumentException("'required' for field '{$field}' was not a bool");
+            throw new InvalidArgumentException(
+                sprintf("'%s' for field '%s' was not a bool", FilterOptions::IS_REQUIRED, $field)
+            );
         }
 
         return $required;
@@ -547,13 +549,15 @@ final class Filterer implements FiltererInterface
     private static function validateCustomError(array &$filters, string $field)
     {
         $customError = null;
-        if (array_key_exists('error', $filters)) {
-            $customError = $filters['error'];
+        if (array_key_exists(FilterOptions::CUSTOM_ERROR, $filters)) {
+            $customError = $filters[FilterOptions::CUSTOM_ERROR];
             if (!is_string($customError) || trim($customError) === '') {
-                throw new InvalidArgumentException("error for field '{$field}' was not a non-empty string");
+                throw new InvalidArgumentException(
+                    sprintf("%s for field '%s' was not a non-empty string", FilterOptions::CUSTOM_ERROR, $field)
+                );
             }
 
-            unset($filters['error']);//unset so its not used as a filter
+            unset($filters[FilterOptions::CUSTOM_ERROR]);//unset so its not used as a filter
         }
 
         return $customError;
