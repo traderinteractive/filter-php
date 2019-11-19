@@ -123,12 +123,15 @@ final class Filterer implements FiltererInterface
         $leftOverInput = array_diff_key($input, $this->specification);
 
         $errors = [];
+        $conflicts = [];
         foreach ($inputToFilter as $field => $input) {
             $filters = $this->specification[$field];
             self::assertFiltersIsAnArray($filters, $field);
             $customError = self::validateCustomError($filters, $field);
             unset($filters[FilterOptions::IS_REQUIRED]);//doesn't matter if required since we have this one
             unset($filters[FilterOptions::DEFAULT_VALUE]);//doesn't matter if there is a default since we have a value
+            $conflicts = self::extractConflicts($filters, $field, $conflicts);
+
             foreach ($filters as $filter) {
                 self::assertFilterIsNotArray($filter, $field);
 
@@ -165,6 +168,7 @@ final class Filterer implements FiltererInterface
         }
 
         $errors = self::handleAllowUnknowns($this->allowUnknowns, $leftOverInput, $errors);
+        $errors = self::handleConflicts($inputToFilter, $conflicts, $errors);
 
         return new FilterResponse($inputToFilter, $errors, $leftOverInput);
     }
@@ -177,6 +181,40 @@ final class Filterer implements FiltererInterface
     public function getAliases() : array
     {
         return $this->filterAliases ?? self::$registeredFilterAliases;
+    }
+
+    private static function extractConflicts(array &$filters, string $field, array $conflicts) : array
+    {
+        $conflictsWith = $filters[FilterOptions::CONFLICTS_WITH] ?? null;
+        unset($filters[FilterOptions::CONFLICTS_WITH]);
+        if ($conflictsWith === null) {
+            return $conflicts;
+        }
+
+        if (!is_array($conflictsWith)) {
+            $conflictsWith = [$conflictsWith];
+        }
+
+        $conflicts[$field] = $conflictsWith;
+
+        return $conflicts;
+    }
+
+    private static function handleConflicts(array $inputToFilter, array $conflicts, array $errors)
+    {
+        foreach (array_keys($inputToFilter) as $field) {
+            if (!array_key_exists($field, $conflicts)) {
+                continue;
+            }
+
+            foreach ($conflicts[$field] as $conflictsWith) {
+                if (array_key_exists($conflictsWith, $inputToFilter)) {
+                    $errors[] = "Field '{$field}' cannot be given if field '{$conflictsWith}' is present.";
+                }
+            }
+        }
+
+        return $errors;
     }
 
     /**
