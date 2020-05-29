@@ -118,10 +118,21 @@ final class Filterer implements FiltererInterface
     public function execute(array $input) : FilterResponse
     {
         $filterAliases = $this->getAliases();
-        $inputToFilter = array_intersect_key($input, $this->specification);
-        $leftOverSpec = array_diff_key($this->specification, $input);
-        $leftOverInput = array_diff_key($input, $this->specification);
+        $inputToFilter = [];
+        $leftOverSpec = [];
 
+        foreach ($this->specification as $field => $specification) {
+            if (array_key_exists($field, $input)) {
+                $inputToFilter[$field] = $input[$field];
+                continue;
+            }
+
+            $leftOverSpec[$field] = $specification;
+        }
+
+        $leftOverInput = array_diff_key($input, $inputToFilter);
+
+        $filteredInput = [];
         $errors = [];
         $conflicts = [];
         foreach ($inputToFilter as $field => $input) {
@@ -131,6 +142,9 @@ final class Filterer implements FiltererInterface
             unset($filters[FilterOptions::IS_REQUIRED]);//doesn't matter if required since we have this one
             unset($filters[FilterOptions::DEFAULT_VALUE]);//doesn't matter if there is a default since we have a value
             $conflicts = self::extractConflicts($filters, $field, $conflicts);
+
+            $uses = $filters[FilterOptions::USES] ?? [];
+            unset($filters[FilterOptions::USES]);
 
             foreach ($filters as $filter) {
                 self::assertFilterIsNotArray($filter, $field);
@@ -146,6 +160,16 @@ final class Filterer implements FiltererInterface
 
                 array_unshift($filter, $input);
                 try {
+                    foreach ($uses as $usedField) {
+                        if (!array_key_exists($usedField, $filteredInput)) {
+                            throw new FilterException(
+                                "{$field} uses {$usedField} but {$usedField} was not given."
+                            );
+                        }
+
+                        array_push($filter, $filteredInput[$usedField]);
+                    }
+
                     $input = call_user_func_array($function, $filter);
                 } catch (Exception $exception) {
                     $errors = self::handleCustomError($field, $input, $exception, $errors, $customError);
@@ -153,14 +177,14 @@ final class Filterer implements FiltererInterface
                 }
             }
 
-            $inputToFilter[$field] = $input;
+            $filteredInput[$field] = $input;
         }
 
         foreach ($leftOverSpec as $field => $filters) {
             self::assertFiltersIsAnArray($filters, $field);
             $required = self::getRequired($filters, $this->defaultRequired, $field);
             if (array_key_exists(FilterOptions::DEFAULT_VALUE, $filters)) {
-                $inputToFilter[$field] = $filters[FilterOptions::DEFAULT_VALUE];
+                $filteredInput[$field] = $filters[FilterOptions::DEFAULT_VALUE];
                 continue;
             }
 
@@ -168,9 +192,9 @@ final class Filterer implements FiltererInterface
         }
 
         $errors = self::handleAllowUnknowns($this->allowUnknowns, $leftOverInput, $errors);
-        $errors = self::handleConflicts($inputToFilter, $conflicts, $errors);
+        $errors = self::handleConflicts($filteredInput, $conflicts, $errors);
 
-        return new FilterResponse($inputToFilter, $errors, $leftOverInput);
+        return new FilterResponse($filteredInput, $errors, $leftOverInput);
     }
 
     /**
