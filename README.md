@@ -116,6 +116,97 @@ of the final filter is set in the result array.
 
 The example above should help clarify all this.
 
+# Filterer Options
+
+## allowUnknowns
+
+#### Summary
+
+Flag to allow elements in unfiltered input that are not present in the filterer specification.
+
+#### Types
+
+  * bool
+
+#### Default
+
+The default value is `false`
+
+#### Constant
+
+```php
+TraderInteractive\FiltererOptions::ALLOW_UNKNOWNS
+```
+
+#### Example
+
+```php
+$options = [
+    TraderInteractive\FiltererOptions::ALLOW_UNKNOWNS => true,
+];
+
+$filterer = new TraderInteractive\Filterer($specification, $options);
+```
+
+## defaultRequired
+
+#### Summary
+
+Flag for the default required behavior of all elements in the filterer specification. If `true` all elements in the specification are required unless they have the required filter option set.
+
+#### Types
+
+  * bool
+
+#### Default
+
+The default value is `false`
+
+#### Constant
+
+```php
+TraderInteractive\FiltererOptions::DEFAULT_REQUIRED
+```
+
+#### Example
+
+```php
+$options = [
+    TraderInteractive\FiltererOptions::DEFAULT_REQUIRED => true,
+];
+
+$filterer = new TraderInteractive\Filterer($specification, $options);
+```
+
+## responseType
+
+#### Summary
+
+Specifies the type of response which The Filterer::filter method will return. It can be `array` or `\TraderInteractive\FilterResponse`
+
+#### Types
+
+  * string
+
+#### Default
+
+The default value is `array`
+
+#### Constant
+
+```php
+TraderInteractive\FiltererOptions::RESPONSE_TYPE
+```
+
+#### Example
+
+```php
+$options = [
+    TraderInteractive\FiltererOptions::RESPONSE_TYPE => \TraderInteractive\FilterResponse::class,
+];
+
+$filterer = new TraderInteractive\Filterer($specification, $options);
+```
 # Filter Options
 
 ## required
