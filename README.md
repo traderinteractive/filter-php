@@ -296,13 +296,13 @@ The following checks that `$value` is a timezone
 $timezone = \TraderInteractive\Filter\DateTimeZone::filter('America/New_York');
 ```
 
-##Contact
+## Contact
 Developers may be contacted at:
 
  * [Pull Requests](https://github.com/traderinteractive/filter-php/pulls)
  * [Issues](https://github.com/traderinteractive/filter-php/issues)
 
-##Project Build
+## Project Build
 With a checkout of the code get [Composer](http://getcomposer.org) in your PATH and run:
 
 ```bash
