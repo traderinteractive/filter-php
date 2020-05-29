@@ -329,6 +329,43 @@ $specification = [
     ],
 ];
 ```
+
+## uses
+
+#### Summary
+
+Specifies an array of input values that should be used as part of a field's filter specification.
+
+#### Types
+
+   * string[]
+   
+#### Default   
+
+The default value for this option is an empty array.
+
+#### Constant
+
+```php
+TraderInteractive\FilterOptions::USES
+```
+
+#### Example
+
+```php
+$specification = [
+    'base' => [
+        [['float']],
+    ],
+    'exponent' => [
+        TraderInteractive\FilterOptions::USES => 'base',
+        [['uint'], ['pow']],
+    ],
+];
+```
+
+The exponent filter spec will call the PHP function `pow()` with the value provided and the result of the filtered `base`
+
 ### Included Filters
 Of course, any function can potentially be used as a filter, but we include some useful filters with aliases for common circumstances.
 
