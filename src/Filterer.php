@@ -142,9 +142,7 @@ final class Filterer implements FiltererInterface
             unset($filters[FilterOptions::IS_REQUIRED]);//doesn't matter if required since we have this one
             unset($filters[FilterOptions::DEFAULT_VALUE]);//doesn't matter if there is a default since we have a value
             $conflicts = self::extractConflicts($filters, $field, $conflicts);
-
-            $uses = $filters[FilterOptions::USES] ?? [];
-            unset($filters[FilterOptions::USES]);
+            $uses = self::extractUses($filters);
 
             foreach ($filters as $filter) {
                 self::assertFilterIsNotArray($filter, $field);
@@ -160,16 +158,7 @@ final class Filterer implements FiltererInterface
 
                 array_unshift($filter, $input);
                 try {
-                    foreach ($uses as $usedField) {
-                        if (!array_key_exists($usedField, $filteredInput)) {
-                            throw new FilterException(
-                                "{$field} uses {$usedField} but {$usedField} was not given."
-                            );
-                        }
-
-                        array_push($filter, $filteredInput[$usedField]);
-                    }
-
+                    $this->addUsedInputToFilter($uses, $filteredInput, $field, $filter);
                     $input = call_user_func_array($function, $filter);
                 } catch (Exception $exception) {
                     $errors = self::handleCustomError($field, $input, $exception, $errors, $customError);
@@ -239,6 +228,13 @@ final class Filterer implements FiltererInterface
         }
 
         return $errors;
+    }
+
+    private static function extractUses(&$filters)
+    {
+        $uses = $filters[FilterOptions::USES] ?? [];
+        unset($filters[FilterOptions::USES]);
+        return is_array($uses) ? $uses : [$uses];
     }
 
     /**
@@ -668,5 +664,19 @@ final class Filterer implements FiltererInterface
         }
 
         throw new InvalidArgumentException(sprintf("'%s' was not a recognized value", FiltererOptions::RESPONSE_TYPE));
+    }
+
+    private function addUsedInputToFilter(array $uses, array $filteredInput, string $field, array &$filter)
+    {
+        foreach ($uses as $usedField) {
+            if (array_key_exists($usedField, $filteredInput)) {
+                array_push($filter, $filteredInput[$usedField]);
+                continue;
+            }
+
+            throw new FilterException(
+                "{$field} uses {$usedField} but {$usedField} was not given."
+            );
+        }
     }
 }
