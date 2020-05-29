@@ -102,13 +102,7 @@ The specification is an array of key => filter specification pairs.
 The keys define the known fields in the array.  Any fields in the array that are not in the specification are treated as "unknown" fields and
 may cause validation to fail, depending on the value of the `allowUnknowns` option.
 
-The filter specification for a single field is also an array.  It can contain two special keys:
-* `required` defines whether this field is a required element of the array.  This value overrides the global filter specification's
-  `defaultRequired` option.
-* `default` defines what the default value of this field is if none is given.  A field with a default value will be guaranteed to be in the
-  result.  The `required` value does not affect `default` behavior.
-* `error` defines a custom error message to be returned if the value fails filtering. Within the error string, `{value}` can be used as a placeholder
-  for the value that failed filtering.
+The filter specification for a single field is also an array.  It can contain predefined [filter options](#filter-options).
 
 The rest of the specification for the field are the filters to apply.
 
@@ -122,6 +116,128 @@ of the final filter is set in the result array.
 
 The example above should help clarify all this.
 
+# Filter Options
+
+## required
+
+#### Summary
+
+Defines whether this field is a required element of the array.  This value overrides the global filter specification's `defaultRequired` option.
+
+#### Types
+
+  * bool
+  
+#### Default
+
+The default value depends on the `defaultRequired` Filterer Option.
+
+#### Constant
+
+```php
+TraderInteractive\FilterOptions::IS_REQUIRED
+```
+
+#### Example
+
+```php
+$specificaton = [
+    'id' => [TraderInteractive\FilterOptions::IS_REQUIRED => true, ['uint']],
+];
+```
+
+## default
+
+#### Summary
+  
+Defines what the default value of this field is if none is given.  A field with a default value will be guaranteed to be in the result.  The `required` value does not affect `default` behavior.
+
+#### Types
+  * string
+  
+#### Default
+
+There is no default value for this option.
+
+#### Constant
+
+```php
+TraderInteractive\FilterOptions::DEFAULT_VALUE
+```
+
+#### Example
+```php
+$specificaton = [
+    'subscribe' => [TraderInteractive\FilterOptions::DEFAULT_VALUE => true, ['bool']],
+    'status' => [TraderInteractive\FilterOptions::DEFAULT_VALUE => 'A', ['string', false, 1, 1]],
+];
+```
+
+## error
+
+#### Summary
+
+Defines a custom error message to be returned if the value fails filtering. Within the error string, `{value}` can be used as a placeholder for the value that failed filtering.
+
+#### Types
+
+  * string
+  
+#### Default
+
+There is no default value for this option.
+
+#### Constant
+
+```php
+TraderInteractive\FilterOptions::CUSTOM_ERROR
+```
+
+#### Example
+
+```php
+$specificaton = [
+    'price' => [
+        TraderInteractive\FilterOptions::CUSTOM_ERROR => 'Price {value} was not between 0 and 100', 
+        ['uint', false, 0, 100],
+    ],
+];
+```
+
+## conflictsWith
+
+#### Summary
+
+Defines any input fields with which a given field will conflict. Used when one field can be given in input or another but not both.
+
+#### Types
+
+   * string
+   
+#### Default   
+
+There is no default value for this option.
+
+#### Constant
+
+```php
+TraderInteractive\FilterOptions::CONFLICTS_WITH
+```
+
+#### Example
+
+```php
+$specification = [
+    'id' => [
+        TraderInteractive\FilterOptions::CONFLICTS_WITH => 'code',
+        [['uint']],
+    ],
+    'code' => [
+        TraderInteractive\FilterOptions::CONFLICTS_WITH => 'id',
+        [['string']],
+    ],
+];
+```
 ### Included Filters
 Of course, any function can potentially be used as a filter, but we include some useful filters with aliases for common circumstances.
 
