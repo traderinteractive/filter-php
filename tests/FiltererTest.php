@@ -300,9 +300,9 @@ final class FiltererTest extends TestCase
                 'spec' => [
                     'fieldOne' => [['uint']],
                     'fieldTwo' => [
-                        FilterOptions::USES => ['fieldOne'],
                         ['uint'],
                         [
+                            FilterOptions::USES => ['fieldOne'],
                             function (int $input, int $fieldOneValue) : int {
                                 return $input * $fieldOneValue;
                             },
@@ -328,9 +328,9 @@ final class FiltererTest extends TestCase
                 'spec' => [
                     'fieldOne' => [['uint']],
                     'fieldTwo' => [
-                        FilterOptions::USES => ['fieldOne'],
                         ['uint'],
                         [
+                            FilterOptions::USES => ['fieldOne'],
                             function (int $input, int $fieldOneValue) : int {
                                 return $input * $fieldOneValue;
                             },
@@ -356,9 +356,9 @@ final class FiltererTest extends TestCase
                 'spec' => [
                     'fieldOne' => [['uint']],
                     'fieldTwo' => [
-                        FilterOptions::USES => ['fieldOne'],
                         ['uint'],
                         [
+                            FilterOptions::USES => ['fieldOne'],
                             function (int $input, int $fieldOneValue) : int {
                                 return $input * $fieldOneValue;
                             },

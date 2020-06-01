@@ -142,7 +142,6 @@ final class Filterer implements FiltererInterface
             unset($filters[FilterOptions::IS_REQUIRED]);//doesn't matter if required since we have this one
             unset($filters[FilterOptions::DEFAULT_VALUE]);//doesn't matter if there is a default since we have a value
             $conflicts = self::extractConflicts($filters, $field, $conflicts);
-            $uses = self::extractUses($filters);
 
             foreach ($filters as $filter) {
                 self::assertFilterIsNotArray($filter, $field);
@@ -150,6 +149,8 @@ final class Filterer implements FiltererInterface
                 if (empty($filter)) {
                     continue;
                 }
+
+                $uses = self::extractUses($filter);
 
                 $function = array_shift($filter);
                 $function = self::handleFilterAliases($function, $filterAliases);
