@@ -358,8 +358,11 @@ $specification = [
         [['float']],
     ],
     'exponent' => [
-        TraderInteractive\FilterOptions::USES => 'base',
-        [['uint'], ['pow']],
+        ['uint'], 
+        [
+            TraderInteractive\FilterOptions::USES => 'base',
+            'pow',
+        ],
     ],
 ];
 ```
