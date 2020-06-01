@@ -296,6 +296,87 @@ final class FiltererTest extends TestCase
                     [],
                 ],
             ],
+            'uses' => [
+                'spec' => [
+                    'fieldOne' => [['uint']],
+                    'fieldTwo' => [
+                        ['uint'],
+                        [
+                            FilterOptions::USES => ['fieldOne'],
+                            function (int $input, int $fieldOneValue) : int {
+                                return $input * $fieldOneValue;
+                            },
+                        ],
+                    ],
+                ],
+                'input' => [
+                    'fieldOne' => '5',
+                    'fieldTwo' => '2',
+                ],
+                'options' => [],
+                'result' => [
+                    true,
+                    [
+                        'fieldOne' => 5,
+                        'fieldTwo' => 10,
+                    ],
+                    null,
+                    [],
+                ],
+            ],
+            'input order does not matter for uses' => [
+                'spec' => [
+                    'fieldOne' => [['uint']],
+                    'fieldTwo' => [
+                        ['uint'],
+                        [
+                            FilterOptions::USES => ['fieldOne'],
+                            function (int $input, int $fieldOneValue) : int {
+                                return $input * $fieldOneValue;
+                            },
+                        ],
+                    ],
+                ],
+                'input' => [
+                    'fieldTwo' => '2',
+                    'fieldOne' => '5',
+                ],
+                'options' => [],
+                'result' => [
+                    true,
+                    [
+                        'fieldOne' => 5,
+                        'fieldTwo' => 10,
+                    ],
+                    null,
+                    [],
+                ],
+            ],
+            'uses missing field' => [
+                'spec' => [
+                    'fieldOne' => [['uint']],
+                    'fieldTwo' => [
+                        ['uint'],
+                        [
+                            FilterOptions::USES => ['fieldOne'],
+                            function (int $input, int $fieldOneValue) : int {
+                                return $input * $fieldOneValue;
+                            },
+                        ],
+                    ],
+                ],
+                'input' => [
+                    'fieldTwo' => '2',
+                ],
+                'options' => [],
+                'result' => [
+                    false,
+                    null,
+                    "Field 'fieldTwo' with value '2' failed filtering, message 'fieldTwo uses fieldOne but fieldOne was"
+                    . " not given.'",
+                    [],
+                ],
+            ],
         ];
     }
 

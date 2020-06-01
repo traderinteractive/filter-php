@@ -102,13 +102,7 @@ The specification is an array of key => filter specification pairs.
 The keys define the known fields in the array.  Any fields in the array that are not in the specification are treated as "unknown" fields and
 may cause validation to fail, depending on the value of the `allowUnknowns` option.
 
-The filter specification for a single field is also an array.  It can contain two special keys:
-* `required` defines whether this field is a required element of the array.  This value overrides the global filter specification's
-  `defaultRequired` option.
-* `default` defines what the default value of this field is if none is given.  A field with a default value will be guaranteed to be in the
-  result.  The `required` value does not affect `default` behavior.
-* `error` defines a custom error message to be returned if the value fails filtering. Within the error string, `{value}` can be used as a placeholder
-  for the value that failed filtering.
+The filter specification for a single field is also an array.  It can contain predefined [filter options](#filter-options).
 
 The rest of the specification for the field are the filters to apply.
 
@@ -121,6 +115,259 @@ A filter specification can contain any number of filters and the result of each 
 of the final filter is set in the result array.
 
 The example above should help clarify all this.
+
+# Filterer Options
+
+## allowUnknowns
+
+#### Summary
+
+Flag to allow elements in unfiltered input that are not present in the filterer specification.
+
+#### Types
+
+  * bool
+
+#### Default
+
+The default value is `false`
+
+#### Constant
+
+```php
+TraderInteractive\FiltererOptions::ALLOW_UNKNOWNS
+```
+
+#### Example
+
+```php
+$options = [
+    TraderInteractive\FiltererOptions::ALLOW_UNKNOWNS => true,
+];
+
+$filterer = new TraderInteractive\Filterer($specification, $options);
+```
+
+## defaultRequired
+
+#### Summary
+
+Flag for the default required behavior of all elements in the filterer specification. If `true` all elements in the specification are required unless they have the required filter option set.
+
+#### Types
+
+  * bool
+
+#### Default
+
+The default value is `false`
+
+#### Constant
+
+```php
+TraderInteractive\FiltererOptions::DEFAULT_REQUIRED
+```
+
+#### Example
+
+```php
+$options = [
+    TraderInteractive\FiltererOptions::DEFAULT_REQUIRED => true,
+];
+
+$filterer = new TraderInteractive\Filterer($specification, $options);
+```
+
+## responseType
+
+#### Summary
+
+Specifies the type of response which The Filterer::filter method will return. It can be `array` or `\TraderInteractive\FilterResponse`
+
+#### Types
+
+  * string
+
+#### Default
+
+The default value is `array`
+
+#### Constant
+
+```php
+TraderInteractive\FiltererOptions::RESPONSE_TYPE
+```
+
+#### Example
+
+```php
+$options = [
+    TraderInteractive\FiltererOptions::RESPONSE_TYPE => \TraderInteractive\FilterResponse::class,
+];
+
+$filterer = new TraderInteractive\Filterer($specification, $options);
+```
+# Filter Options
+
+## required
+
+#### Summary
+
+Defines whether this field is a required element of the array.  This value overrides the global filter specification's `defaultRequired` option.
+
+#### Types
+
+  * bool
+  
+#### Default
+
+The default value depends on the `defaultRequired` Filterer Option.
+
+#### Constant
+
+```php
+TraderInteractive\FilterOptions::IS_REQUIRED
+```
+
+#### Example
+
+```php
+$specificaton = [
+    'id' => [TraderInteractive\FilterOptions::IS_REQUIRED => true, ['uint']],
+];
+```
+
+## default
+
+#### Summary
+  
+Defines what the default value of this field is if none is given.  A field with a default value will be guaranteed to be in the result.  The `required` value does not affect `default` behavior.
+
+#### Types
+  * string
+  
+#### Default
+
+There is no default value for this option.
+
+#### Constant
+
+```php
+TraderInteractive\FilterOptions::DEFAULT_VALUE
+```
+
+#### Example
+```php
+$specificaton = [
+    'subscribe' => [TraderInteractive\FilterOptions::DEFAULT_VALUE => true, ['bool']],
+    'status' => [TraderInteractive\FilterOptions::DEFAULT_VALUE => 'A', ['string', false, 1, 1]],
+];
+```
+
+## error
+
+#### Summary
+
+Defines a custom error message to be returned if the value fails filtering. Within the error string, `{value}` can be used as a placeholder for the value that failed filtering.
+
+#### Types
+
+  * string
+  
+#### Default
+
+There is no default value for this option.
+
+#### Constant
+
+```php
+TraderInteractive\FilterOptions::CUSTOM_ERROR
+```
+
+#### Example
+
+```php
+$specificaton = [
+    'price' => [
+        TraderInteractive\FilterOptions::CUSTOM_ERROR => 'Price {value} was not between 0 and 100', 
+        ['uint', false, 0, 100],
+    ],
+];
+```
+
+## conflictsWith
+
+#### Summary
+
+Defines any input fields with which a given field will conflict. Used when one field can be given in input or another but not both.
+
+#### Types
+
+   * string
+   
+#### Default   
+
+There is no default value for this option.
+
+#### Constant
+
+```php
+TraderInteractive\FilterOptions::CONFLICTS_WITH
+```
+
+#### Example
+
+```php
+$specification = [
+    'id' => [
+        TraderInteractive\FilterOptions::CONFLICTS_WITH => 'code',
+        [['uint']],
+    ],
+    'code' => [
+        TraderInteractive\FilterOptions::CONFLICTS_WITH => 'id',
+        [['string']],
+    ],
+];
+```
+
+## uses
+
+#### Summary
+
+Specifies an array of input values that should be used as part of a field's filter specification.
+
+#### Types
+
+   * string[]
+   
+#### Default   
+
+The default value for this option is an empty array.
+
+#### Constant
+
+```php
+TraderInteractive\FilterOptions::USES
+```
+
+#### Example
+
+```php
+$specification = [
+    'base' => [
+        [['float']],
+    ],
+    'exponent' => [
+        ['uint'], 
+        [
+            TraderInteractive\FilterOptions::USES => 'base',
+            'pow',
+        ],
+    ],
+];
+```
+
+The exponent filter spec will call the PHP function `pow()` with the value provided and the result of the filtered `base`
 
 ### Included Filters
 Of course, any function can potentially be used as a filter, but we include some useful filters with aliases for common circumstances.
@@ -296,13 +543,13 @@ The following checks that `$value` is a timezone
 $timezone = \TraderInteractive\Filter\DateTimeZone::filter('America/New_York');
 ```
 
-##Contact
+## Contact
 Developers may be contacted at:
 
  * [Pull Requests](https://github.com/traderinteractive/filter-php/pulls)
  * [Issues](https://github.com/traderinteractive/filter-php/issues)
 
-##Project Build
+## Project Build
 With a checkout of the code get [Composer](http://getcomposer.org) in your PATH and run:
 
 ```bash

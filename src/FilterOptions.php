@@ -23,4 +23,9 @@ final class FilterOptions
      * @var string
      */
     const CONFLICTS_WITH = 'conflictsWith';
+
+    /**
+     * @var string
+     */
+    const USES = 'uses';
 }

@@ -118,10 +118,21 @@ final class Filterer implements FiltererInterface
     public function execute(array $input) : FilterResponse
     {
         $filterAliases = $this->getAliases();
-        $inputToFilter = array_intersect_key($input, $this->specification);
-        $leftOverSpec = array_diff_key($this->specification, $input);
-        $leftOverInput = array_diff_key($input, $this->specification);
+        $inputToFilter = [];
+        $leftOverSpec = [];
 
+        foreach ($this->specification as $field => $specification) {
+            if (array_key_exists($field, $input)) {
+                $inputToFilter[$field] = $input[$field];
+                continue;
+            }
+
+            $leftOverSpec[$field] = $specification;
+        }
+
+        $leftOverInput = array_diff_key($input, $inputToFilter);
+
+        $filteredInput = [];
         $errors = [];
         $conflicts = [];
         foreach ($inputToFilter as $field => $input) {
@@ -133,11 +144,13 @@ final class Filterer implements FiltererInterface
             $conflicts = self::extractConflicts($filters, $field, $conflicts);
 
             foreach ($filters as $filter) {
-                self::assertFilterIsNotArray($filter, $field);
+                self::assertFilterIsArray($filter, $field);
 
                 if (empty($filter)) {
                     continue;
                 }
+
+                $uses = self::extractUses($filter);
 
                 $function = array_shift($filter);
                 $function = self::handleFilterAliases($function, $filterAliases);
@@ -146,6 +159,7 @@ final class Filterer implements FiltererInterface
 
                 array_unshift($filter, $input);
                 try {
+                    $this->addUsedInputToFilter($uses, $filteredInput, $field, $filter);
                     $input = call_user_func_array($function, $filter);
                 } catch (Exception $exception) {
                     $errors = self::handleCustomError($field, $input, $exception, $errors, $customError);
@@ -153,14 +167,14 @@ final class Filterer implements FiltererInterface
                 }
             }
 
-            $inputToFilter[$field] = $input;
+            $filteredInput[$field] = $input;
         }
 
         foreach ($leftOverSpec as $field => $filters) {
             self::assertFiltersIsAnArray($filters, $field);
             $required = self::getRequired($filters, $this->defaultRequired, $field);
             if (array_key_exists(FilterOptions::DEFAULT_VALUE, $filters)) {
-                $inputToFilter[$field] = $filters[FilterOptions::DEFAULT_VALUE];
+                $filteredInput[$field] = $filters[FilterOptions::DEFAULT_VALUE];
                 continue;
             }
 
@@ -168,9 +182,9 @@ final class Filterer implements FiltererInterface
         }
 
         $errors = self::handleAllowUnknowns($this->allowUnknowns, $leftOverInput, $errors);
-        $errors = self::handleConflicts($inputToFilter, $conflicts, $errors);
+        $errors = self::handleConflicts($filteredInput, $conflicts, $errors);
 
-        return new FilterResponse($inputToFilter, $errors, $leftOverInput);
+        return new FilterResponse($filteredInput, $errors, $leftOverInput);
     }
 
     /**
@@ -215,6 +229,13 @@ final class Filterer implements FiltererInterface
         }
 
         return $errors;
+    }
+
+    private static function extractUses(&$filters)
+    {
+        $uses = $filters[FilterOptions::USES] ?? [];
+        unset($filters[FilterOptions::USES]);
+        return is_array($uses) ? $uses : [$uses];
     }
 
     /**
@@ -574,7 +595,7 @@ final class Filterer implements FiltererInterface
         return $function;
     }
 
-    private static function assertFilterIsNotArray($filter, string $field)
+    private static function assertFilterIsArray($filter, string $field)
     {
         if (!is_array($filter)) {
             throw new InvalidArgumentException("filter for field '{$field}' was not a array");
@@ -644,5 +665,19 @@ final class Filterer implements FiltererInterface
         }
 
         throw new InvalidArgumentException(sprintf("'%s' was not a recognized value", FiltererOptions::RESPONSE_TYPE));
+    }
+
+    private function addUsedInputToFilter(array $uses, array $filteredInput, string $field, array &$filter)
+    {
+        foreach ($uses as $usedField) {
+            if (array_key_exists($usedField, $filteredInput)) {
+                array_push($filter, $filteredInput[$usedField]);
+                continue;
+            }
+
+            throw new FilterException(
+                "{$field} uses {$usedField} but {$usedField} was not given."
+            );
+        }
     }
 }
