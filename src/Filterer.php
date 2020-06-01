@@ -144,7 +144,7 @@ final class Filterer implements FiltererInterface
             $conflicts = self::extractConflicts($filters, $field, $conflicts);
 
             foreach ($filters as $filter) {
-                self::assertFilterIsNotArray($filter, $field);
+                self::assertFilterIsArray($filter, $field);
 
                 if (empty($filter)) {
                     continue;
@@ -595,7 +595,7 @@ final class Filterer implements FiltererInterface
         return $function;
     }
 
-    private static function assertFilterIsNotArray($filter, string $field)
+    private static function assertFilterIsArray($filter, string $field)
     {
         if (!is_array($filter)) {
             throw new InvalidArgumentException("filter for field '{$field}' was not a array");
