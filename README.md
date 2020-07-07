@@ -369,6 +369,46 @@ $specification = [
 
 The exponent filter spec will call the PHP function `pow()` with the value provided and the result of the filtered `base`
 
+## throwOnError
+
+#### Summary
+
+If true the Filterer will throw any exception caught when filtering a value instead of returning the error in the filter response.
+
+#### Types
+
+   * boolean
+   
+#### Default   
+
+The default value for this option is `false`
+
+#### Constant
+
+```php
+TraderInteractive\FilterOptions::THROW_ON_ERROR
+```
+
+#### Example
+
+```php
+$idFilter = function ($id) : int {
+    if (!is_int($id)) {
+       throw new NotFoundException("id '{$id}' was not found"); 
+    }
+    
+    return $id;
+};
+$specification = [
+    'id' => [
+        \TraderInteractive\FilterOptions::THROW_ON_ERROR => true,
+        [$idFilter],
+    ],
+];
+```
+
+If the `id` value given in the input is not an integer the Filterer::execute() will throw the `NotFoundException`
+
 ### Included Filters
 Of course, any function can potentially be used as a filter, but we include some useful filters with aliases for common circumstances.
 
