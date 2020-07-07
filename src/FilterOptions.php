@@ -27,6 +27,11 @@ final class FilterOptions
     /**
      * @var string
      */
+    const RETURN_ON_NULL = 'returnOnNull';
+
+    /**
+     * @var string
+     */
     const THROW_ON_ERROR = 'throwOnError';
 
     /**
