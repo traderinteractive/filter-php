@@ -409,6 +409,42 @@ $specification = [
 
 If the `id` value given in the input is not an integer the Filterer::execute() will throw the `NotFoundException`
 
+## returnOnNull
+
+#### Summary
+
+Flag to break the filter chain if a resulting value is `null` Useful for nullable fields which require additional filtering if the value is not null.
+
+#### Types
+
+   * boolean
+   
+#### Default   
+
+The default value for this option is `false`
+
+#### Constant
+
+```php
+TraderInteractive\FilterOptions::RETURN_ON_NULL
+```
+
+#### Example
+
+```php
+$validCodes = ['A', 'I', 'X'];
+$specification = [
+    'code' => [
+        \TraderInteractive\FilterOptions::RETURN_ON_NULL => true,
+        ['string', true],
+        ['strtoupper'],
+        ['in', $validCodes],
+    ],
+];
+```
+
+If the `code` value is `null` then the resulting filtered value will be null. Otherwise the value must be one of the `$validCode` values.
+
 ### Included Filters
 Of course, any function can potentially be used as a filter, but we include some useful filters with aliases for common circumstances.
 
