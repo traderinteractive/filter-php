@@ -28,4 +28,9 @@ final class FilterOptions
      * @var string
      */
     const USES = 'uses';
+
+    /**
+     * @var string
+     */
+    const THROW_ON_ERROR = 'throwOnError';
 }
