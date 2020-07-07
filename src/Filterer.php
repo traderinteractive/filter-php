@@ -62,6 +62,13 @@ final class Filterer implements FiltererInterface
     const RESPONSE_TYPE_FILTER = FilterResponse::class;
 
     /**
+     * @var string
+     */
+    const INVALID_THROW_ON_ERROR_VALUE_ERROR_FORMAT = (
+        FilterOptions::THROW_ON_ERROR . " for field '%s' was not a boolean value"
+    );
+
+    /**
      * @var array
      */
     private static $registeredFilterAliases = self::DEFAULT_FILTER_ALIASES;
@@ -139,6 +146,7 @@ final class Filterer implements FiltererInterface
             $filters = $this->specification[$field];
             self::assertFiltersIsAnArray($filters, $field);
             $customError = self::validateCustomError($filters, $field);
+            $throwOnError = self::validateThrowOnError($filters, $field);
             unset($filters[FilterOptions::IS_REQUIRED]);//doesn't matter if required since we have this one
             unset($filters[FilterOptions::DEFAULT_VALUE]);//doesn't matter if there is a default since we have a value
             $conflicts = self::extractConflicts($filters, $field, $conflicts);
@@ -162,6 +170,10 @@ final class Filterer implements FiltererInterface
                     $this->addUsedInputToFilter($uses, $filteredInput, $field, $filter);
                     $input = call_user_func_array($function, $filter);
                 } catch (Exception $exception) {
+                    if ($throwOnError) {
+                        throw $exception;
+                    }
+
                     $errors = self::handleCustomError($field, $input, $exception, $errors, $customError);
                     continue 2;//next field
                 }
@@ -600,6 +612,24 @@ final class Filterer implements FiltererInterface
         if (!is_array($filter)) {
             throw new InvalidArgumentException("filter for field '{$field}' was not a array");
         }
+    }
+
+    private static function validateThrowOnError(array &$filters, string $field) : bool
+    {
+        if (!array_key_exists(FilterOptions::THROW_ON_ERROR, $filters)) {
+            return false;
+        }
+
+        $throwOnError = $filters[FilterOptions::THROW_ON_ERROR];
+        if ($throwOnError !== true && $throwOnError !== false) {
+            throw new InvalidArgumentException(
+                sprintf(self::INVALID_THROW_ON_ERROR_VALUE_ERROR_FORMAT, $field)
+            );
+        }
+
+        unset($filters[FilterOptions::THROW_ON_ERROR]);
+
+        return $throwOnError;
     }
 
     private static function validateCustomError(array &$filters, string $field)

@@ -5,6 +5,7 @@ namespace TraderInteractive;
 use Exception;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use stdClass;
 use Throwable;
 use TraderInteractive\Exceptions\FilterException;
@@ -378,6 +379,47 @@ final class FiltererTest extends TestCase
                 ],
             ],
         ];
+    }
+
+    /**
+     * @test
+     * @covers ::execute
+     */
+    public function executeThrowsOnError()
+    {
+        $exception = new RuntimeException('the error');
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage($exception->getMessage());
+        $filter = function () use ($exception) {
+            throw $exception;
+        };
+
+        $specification = [
+            'id' => [
+                FilterOptions::THROW_ON_ERROR => true,
+                [$filter],
+            ],
+        ];
+        $filterer = new Filterer($specification);
+        $filterer->execute(['id' => 1]);
+    }
+
+    /**
+     * @test
+     * @covers ::execute
+     */
+    public function executeValidatesThrowsOnError()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(sprintf(Filterer::INVALID_THROW_ON_ERROR_VALUE_ERROR_FORMAT, 'id'));
+        $specification = [
+            'id' => [
+                FilterOptions::THROW_ON_ERROR => 'abc',
+                ['uint'],
+            ],
+        ];
+        $filterer = new Filterer($specification);
+        $filterer->execute(['id' => 1]);
     }
 
     /**
