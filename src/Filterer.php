@@ -145,6 +145,7 @@ final class Filterer implements FiltererInterface
             self::assertFiltersIsAnArray($filters, $field);
             $customError = self::validateCustomError($filters, $field);
             $throwOnError = self::validateThrowOnError($filters, $field);
+            $returnOnNull = self::validateReturnOnNull($filters, $field);
             unset($filters[FilterOptions::IS_REQUIRED]);//doesn't matter if required since we have this one
             unset($filters[FilterOptions::DEFAULT_VALUE]);//doesn't matter if there is a default since we have a value
             $conflicts = self::extractConflicts($filters, $field, $conflicts);
@@ -167,6 +168,9 @@ final class Filterer implements FiltererInterface
                 try {
                     $this->addUsedInputToFilter($uses, $filteredInput, $field, $filter);
                     $input = call_user_func_array($function, $filter);
+                    if ($input === null && $returnOnNull) {
+                        break;
+                    }
                 } catch (Exception $exception) {
                     if ($throwOnError) {
                         throw $exception;
@@ -628,6 +632,24 @@ final class Filterer implements FiltererInterface
         unset($filters[FilterOptions::THROW_ON_ERROR]);
 
         return $throwOnError;
+    }
+
+    private static function validateReturnOnNull(array &$filters, string $field) : bool
+    {
+        if (!array_key_exists(FilterOptions::RETURN_ON_NULL, $filters)) {
+            return false;
+        }
+
+        $returnOnNull = $filters[FilterOptions::RETURN_ON_NULL];
+        if ($returnOnNull !== true && $returnOnNull !== false) {
+            throw new InvalidArgumentException(
+                sprintf(self::INVALID_BOOLEAN_FILTER_OPTION, FilterOptions::RETURN_ON_NULL, $field)
+            );
+        }
+
+        unset($filters[FilterOptions::RETURN_ON_NULL]);
+
+        return $returnOnNull;
     }
 
     private static function validateCustomError(array &$filters, string $field)
