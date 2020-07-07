@@ -64,9 +64,7 @@ final class Filterer implements FiltererInterface
     /**
      * @var string
      */
-    const INVALID_THROW_ON_ERROR_VALUE_ERROR_FORMAT = (
-        FilterOptions::THROW_ON_ERROR . " for field '%s' was not a boolean value"
-    );
+    const INVALID_BOOLEAN_FILTER_OPTION = "%s for field '%s' was not a boolean value";
 
     /**
      * @var array
@@ -623,7 +621,7 @@ final class Filterer implements FiltererInterface
         $throwOnError = $filters[FilterOptions::THROW_ON_ERROR];
         if ($throwOnError !== true && $throwOnError !== false) {
             throw new InvalidArgumentException(
-                sprintf(self::INVALID_THROW_ON_ERROR_VALUE_ERROR_FORMAT, $field)
+                sprintf(self::INVALID_BOOLEAN_FILTER_OPTION, FilterOptions::THROW_ON_ERROR, $field)
             );
         }
 

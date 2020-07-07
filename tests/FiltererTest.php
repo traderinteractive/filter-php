@@ -411,7 +411,9 @@ final class FiltererTest extends TestCase
     public function executeValidatesThrowsOnError()
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage(sprintf(Filterer::INVALID_THROW_ON_ERROR_VALUE_ERROR_FORMAT, 'id'));
+        $this->expectExceptionMessage(
+            sprintf(Filterer::INVALID_BOOLEAN_FILTER_OPTION, FilterOptions::THROW_ON_ERROR, 'id')
+        );
         $specification = [
             'id' => [
                 FilterOptions::THROW_ON_ERROR => 'abc',
