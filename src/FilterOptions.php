@@ -7,7 +7,7 @@ final class FilterOptions
     /**
      * @var string
      */
-    const DEFAULT_VALUE = 'default';
+    const CONFLICTS_WITH = 'conflictsWith';
 
     /**
      * @var string
@@ -17,20 +17,25 @@ final class FilterOptions
     /**
      * @var string
      */
+    const DEFAULT_VALUE = 'default';
+
+    /**
+     * @var string
+     */
     const IS_REQUIRED = 'required';
 
     /**
      * @var string
      */
-    const CONFLICTS_WITH = 'conflictsWith';
-
-    /**
-     * @var string
-     */
-    const USES = 'uses';
+    const RETURN_ON_NULL = 'returnOnNull';
 
     /**
      * @var string
      */
     const THROW_ON_ERROR = 'throwOnError';
+
+    /**
+     * @var string
+     */
+    const USES = 'uses';
 }
