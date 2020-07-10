@@ -6,6 +6,9 @@ use Exception;
 use InvalidArgumentException;
 use Throwable;
 use TraderInteractive\Exceptions\FilterException;
+use TraderInteractive\Filter\Json;
+use TraderInteractive\Filter\PhoneFilter;
+use TraderInteractive\Filter\XmlFilter;
 
 /**
  * Class to filter an array of input.
@@ -30,9 +33,12 @@ final class Filterer implements FiltererInterface
         'float' => '\\TraderInteractive\\Filter\\Floats::filter',
         'in' => '\\TraderInteractive\\Filter\\Arrays::in',
         'int' => '\\TraderInteractive\\Filter\\Ints::filter',
+        'json' => Json::class . '::validate',
+        'json-decode' => Json::class . '::parse',
         'ofArray' => '\\TraderInteractive\\Filterer::ofArray',
         'ofArrays' => '\\TraderInteractive\\Filterer::ofArrays',
         'ofScalars' => '\\TraderInteractive\\Filterer::ofScalars',
+        'phone' => PhoneFilter::class . '::filter',
         'redact' => '\\TraderInteractive\\Filter\\Strings::redact',
         'string' => '\\TraderInteractive\\Filter\\Strings::filter',
         'strip-tags' => '\\TraderInteractive\\Filter\\Strings::stripTags',
@@ -40,6 +46,9 @@ final class Filterer implements FiltererInterface
         'translate' => '\\TraderInteractive\\Filter\\Strings::translate',
         'uint' => '\\TraderInteractive\\Filter\\UnsignedInt::filter',
         'url' => '\\TraderInteractive\\Filter\\Url::filter',
+        'xml' => XmlFilter::class . '::filter',
+        'xml-extract' => XmlFilter::class . '::extract',
+        'xml-validate' => XmlFilter::class . '::validate',
     ];
 
     /**

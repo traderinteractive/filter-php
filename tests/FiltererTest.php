@@ -18,6 +18,31 @@ use TypeError;
  */
 final class FiltererTest extends TestCase
 {
+    /**
+     * @var string
+     */
+    const FULL_XML = (''
+        . "<?xml version=\"1.0\"?>\n"
+            . '<books>'
+                . '<book id="bk101">'
+                    . '<author>Gambardella, Matthew</author>'
+                    . "<title>XML Developer's Guide</title>"
+                    . '<genre>Computer</genre>'
+                    . '<price>44.95</price>'
+                    . '<publish_date>2000-10-01</publish_date>'
+                    . '<description>An in-depth look at creating applications with XML.</description>'
+            . '</book>'
+        . '<book id="bk102">'
+                    . '<author>Ralls, Kim</author>'
+                    . '<title>Midnight Rain</title>'
+                    . '<genre>Fantasy</genre>'
+                    . '<price>5.95</price>'
+                    . '<publish_date>2000-12-16</publish_date>'
+                    . '<description>A former architect battles corporate zombies</description>'
+            . '</book>'
+        . "</books>\n"
+    );
+
     public function setUp()
     {
         Filterer::setFilterAliases(Filterer::DEFAULT_FILTER_ALIASES);
@@ -383,6 +408,58 @@ final class FiltererTest extends TestCase
                 'input' => ['field' => null],
                 'options' => [],
                 'result' => [true, ['field' => null], null, []],
+            ],
+            'phone alias' => [
+                'spec' => ['field' => [['phone']]],
+                'input' => ['field' => '(234) 567 8901'],
+                'options' => [],
+                'result' => [true, ['field' => '2345678901'], null, []],
+            ],
+            'json alias' => [
+                'spec' => ['field' => [['json']]],
+                'input' => ['field' => '{"foo": "bar"}'],
+                'options' => [],
+                'result' => [true, ['field' => '{"foo": "bar"}'], null, []],
+            ],
+            'json-decode alias' => [
+                'spec' => ['field' => [['json-decode']]],
+                'input' => ['field' => '{"foo": "bar"}'],
+                'options' => [],
+                'result' => [true, ['field' => ['foo' => 'bar']], null, []],
+            ],
+            'xml alias' => [
+                'spec' => ['field' => [['xml']]],
+                'input' => ['field' => self::FULL_XML],
+                'options' => [],
+                'result' => [true, ['field' => self::FULL_XML], null, []],
+            ],
+            'xml-validate alias' => [
+                'spec' => ['field' => [['xml-validate', __DIR__ . '/_files/books.xsd']]],
+                'input' => ['field' => self::FULL_XML],
+                'options' => [],
+                'result' => [true, ['field' => self::FULL_XML], null, []],
+            ],
+            'xml-extract alias' => [
+                'spec' => ['field' => [['xml-extract', "/books/book[@id='bk101']"]]],
+                'input' => ['field' => self::FULL_XML],
+                'options' => [],
+                'result' => [
+                    true,
+                    [
+                        'field' => (''
+                            . '<book id="bk101">'
+                                . '<author>Gambardella, Matthew</author>'
+                                . "<title>XML Developer's Guide</title>"
+                                . '<genre>Computer</genre>'
+                                . '<price>44.95</price>'
+                                . '<publish_date>2000-10-01</publish_date>'
+                                . '<description>An in-depth look at creating applications with XML.</description>'
+                            . '</book>'
+                        ),
+                    ],
+                    null,
+                    []
+                ],
             ],
         ];
     }

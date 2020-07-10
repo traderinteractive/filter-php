@@ -619,6 +619,121 @@ The following checks that `$value` is a timezone
 $timezone = \TraderInteractive\Filter\DateTimeZone::filter('America/New_York');
 ```
 
+#### Json::validate
+Aliased in the filter as `json`, checks that the JSON is valid and returns the original value.
+
+The following ensures that `$value` is valid JSON
+```php
+$value = \TraderInteractive\Filter\Json::validate('{"foo": "bar"}');
+```
+
+#### Json::parse
+Aliased in the filter as `json-decode`, checks that the JSON is valid and returns the decoded result.
+
+The following decodes the given value and returns the result.
+```php
+$value = \TraderInteractive\Filter\Json::parse('{"foo": "bar"}');
+assert($value === ['foo' => 'bar']);
+```
+
+#### PhoneFilter::filter
+Aliased in the filter as `phone`, this will filter a given value as a phone. Returning the phone is the specified format.
+
+The following filters the given string into a formatted phone string
+```php
+$value = \TraderInteractive\Filter\PhoneFilter::filter('234.567.8901', false, '({area}) {exchange}-{station}');
+assert($value === '(234) 567-8901');
+```
+
+#### XmlFilter::filter
+Aliased in the filter as `xml`, this will ensure the given string value is valid XML, returning the original value.
+
+The following ensures the given string is valid xml.
+```php
+$value = <<<XML
+<?xml version="1.0"?>
+<books>
+    <book id="bk101">
+        <author>Gambardella, Matthew</author>
+        <title>XML Developers Guide</title>
+        <genre>Computer</genre>
+        <price>44.95</price>
+        <publish_date>2000-10-01</publish_date>
+        <description>An in-depth look at creating applications with XML.</description>
+    </book>
+    <book id="bk102">
+        <author>Ralls, Kim</author>
+        <title>Midnight Rain</title>
+        <genre>Fantasy</genre>
+        <price>5.95</price>
+        <publish_date>2000-12-16</publish_date>
+        <description>A former architect battles corporate zombies</description>
+    </book>
+</books>
+XML;
+$xml = \TraderInteractive\Filter\XmlFilter::filter($value);
+```
+
+#### XmlFilter::extract
+Aliased in the filter as `xml-extract`, this will ensure the given string value is valid XML then extract and return the element found at the given xpath.
+
+The following ensures the given string is valid xml and returns the title element of the first book.
+```php
+$value = <<<XML
+<?xml version="1.0"?>
+<books>
+    <book id="bk101">
+        <author>Gambardella, Matthew</author>
+        <title>XML Developers Guide</title>
+        <genre>Computer</genre>
+        <price>44.95</price>
+        <publish_date>2000-10-01</publish_date>
+        <description>An in-depth look at creating applications with XML.</description>
+    </book>
+    <book id="bk102">
+        <author>Ralls, Kim</author>
+        <title>Midnight Rain</title>
+        <genre>Fantasy</genre>
+        <price>5.95</price>
+        <publish_date>2000-12-16</publish_date>
+        <description>A former architect battles corporate zombies</description>
+    </book>
+</books>
+XML;
+$xpath = "/books/book[@id='bk101']/title";
+$titleXml = \TraderInteractive\Filter\XmlFilter::extract($value, $xpath);
+assert($titleXml === '<title>XML Developers Guide</title>');
+```
+
+#### XmlFilter::validate
+Aliased in the filter as `xml-validate`, this will ensure the given string value is valid XML and also confirms to the given XSD file. The original value is returned.
+
+The following ensures the given string is valid xml and matches books.xsd.
+```php
+$value = <<<XML
+<?xml version="1.0"?>
+<books>
+    <book id="bk101">
+        <author>Gambardella, Matthew</author>
+        <title>XML Developers Guide</title>
+        <genre>Computer</genre>
+        <price>44.95</price>
+        <publish_date>2000-10-01</publish_date>
+        <description>An in-depth look at creating applications with XML.</description>
+    </book>
+    <book id="bk102">
+        <author>Ralls, Kim</author>
+        <title>Midnight Rain</title>
+        <genre>Fantasy</genre>
+        <price>5.95</price>
+        <publish_date>2000-12-16</publish_date>
+        <description>A former architect battles corporate zombies</description>
+    </book>
+</books>
+XML;
+$xml = \TraderInteractive\Filter\XmlFilter::validate($value, 'books.xsd');
+```
+
 ## Contact
 Developers may be contacted at:
 
