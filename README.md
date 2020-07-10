@@ -637,7 +637,7 @@ assert($value === ['foo' => 'bar']);
 ```
 
 #### PhoneFilter::filter
-Aliased in the filter as `phone`, this will filter a given value as a phone. Returning the phone is the specified format.
+Aliased in the filter as `phone`, this will filter a given value as a phone. Returning the phone in the specified format.
 
 The following filters the given string into a formatted phone string
 ```php
