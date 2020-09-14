@@ -9,6 +9,7 @@ use RuntimeException;
 use stdClass;
 use Throwable;
 use TraderInteractive\Exceptions\FilterException;
+use TraderInteractive\Filter\Arrays;
 use TypeError;
 
 /**
@@ -459,6 +460,59 @@ final class FiltererTest extends TestCase
                     ],
                     null,
                     []
+                ],
+            ],
+            'array-copy' => [
+                'spec' => [
+                    'field' => [['array-copy', ['FOO_VALUE' => 'foo', 'BAR_VALUE' => 'bar']]],
+                ],
+                'input' => ['field' => ['foo' => 'abc', 'bar' => 123]],
+                'options' => [],
+                'result' => [
+                    true,
+                    ['field' => ['FOO_VALUE' => 'abc', 'BAR_VALUE' => 123]],
+                    null,
+                    [],
+                ],
+            ],
+            'array-copy-each' => [
+                'spec' => [
+                    'field' => [['array-copy-each', ['FOO_VALUE' => 'foo', 'BAR_VALUE' => 'bar']]],
+                ],
+                'input' => [
+                    'field' => [
+                        ['foo' => 'abc', 'bar' => 123],
+                        ['foo' => 'xyz', 'bar' => 789],
+                    ],
+                ],
+                'options' => [],
+                'result' => [
+                    true,
+                    [
+                        'field' => [
+                            ['FOO_VALUE' => 'abc', 'BAR_VALUE' => 123],
+                            ['FOO_VALUE' => 'xyz', 'BAR_VALUE' => 789],
+                        ],
+                    ],
+                    null,
+                    [],
+                ],
+            ],
+            'array-pad' => [
+                'spec' => [
+                    'field' => [['array-pad', 5, 0, Arrays::ARRAY_PAD_FRONT]],
+                ],
+                'input' => [
+                    'field' => ['a', 'b', 'c'],
+                ],
+                'options' => [],
+                'result' => [
+                    true,
+                    [
+                        'field' => [0, 0, 'a', 'b', 'c'],
+                    ],
+                    null,
+                    [],
                 ],
             ],
         ];
