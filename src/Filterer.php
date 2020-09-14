@@ -6,6 +6,7 @@ use Exception;
 use InvalidArgumentException;
 use Throwable;
 use TraderInteractive\Exceptions\FilterException;
+use TraderInteractive\Filter\Arrays;
 use TraderInteractive\Filter\Json;
 use TraderInteractive\Filter\PhoneFilter;
 use TraderInteractive\Filter\XmlFilter;
@@ -20,6 +21,9 @@ final class Filterer implements FiltererInterface
      */
     const DEFAULT_FILTER_ALIASES = [
         'array' => '\\TraderInteractive\\Filter\\Arrays::filter',
+        'array-copy' => Arrays::class . '::copy',
+        'array-copy-each' => Arrays::class . '::copyEach',
+        'array-pad' => Arrays::class . '::pad',
         'arrayize' => '\\TraderInteractive\\Filter\\Arrays::arrayize',
         'bool' => '\\TraderInteractive\\Filter\\Booleans::filter',
         'bool-convert' => '\\TraderInteractive\\Filter\\Booleans::convert',

@@ -471,6 +471,35 @@ $value = \TraderInteractive\Filter\Filterer::ofArrays($value, ['id' => [['uint']
 Aliased in the filterer as `ofArray`, this filter verifies that the argument is an array that passes the given specification.  This is
 essentially a flipped version of `Filterer::filter` that allows for testing nested associative arrays.
 
+#### Arrays::copy
+
+Aliased in the filterer as `array-copy`, this filter copies values from the source array into a destination array using the provided destination key map.
+
+Example Usage:
+```php
+$specification = ['field' => [['array-copy', ['FOO_VALUE' => 'foo', 'BAR_VALUE' => 'bar']]]];
+$filterer = new TraderInteractive\Filterer($specification);
+$input = ['foo' => 123, 'bar' => 'abc'];
+$result = $filterer->execute($input);
+assert(['field' => ['FOO_VALUE' => 123, 'BAR_VALUE' => 'abc']], $result->filteredValue);
+```
+
+#### Arrays::copyEach
+
+Aliased in the filterer as `array-copy-each`, this filter copies values from each array in the source array into a destination array using the provided destination key map.
+
+Example Usage:
+```php
+$specification = ['field' => [['array-copy-each', ['FOO_VALUE' => 'foo', 'BAR_VALUE' => 'bar']]]];
+$filterer = new TraderInteractive\Filterer($specification);
+$input = [
+    ['foo' => 123, 'bar' => 'abc'],
+    ['foo' => 456, 'bar' => 'def'],
+];
+$result = $filterer->execute($input);
+assert(['field' => [['FOO_VALUE' => 123, 'BAR_VALUE' => 'abc'], ['FOO_VALUE' => 456, 'BAR_VALUE' => 'def']]], $result->filteredValue);
+```
+
 #### Arrays::in
 Aliased in the filterer as `in`, this filter is a wrapper around `in_array` including support for strict equality testing.
 
@@ -501,6 +530,20 @@ maintained, but the keys themselves will not.  For example:
 ```php
 $value = \TraderInteractive\Filter\Arrays::flatten([[1, 2], [3, [4, 5]]]);
 assert($value === [1, 2, 3, 4, 5]);
+```
+
+#### Arrays::pad
+
+Aliased in the filterer as `array-pad`, this filter pads an array to the specified length with a value. Padding optionally to the front or end of the array.
+
+Example Usage:
+```php
+$specification = ['field' => [['array-pad', 5, 0, Arrays::ARRAY_PAD_LEFT]]],
+$filterer = new TraderInteractive\Filterer($specification);
+$input = [2, 4, 6];
+$result = $filterer->execute($input);
+assert(['field' => [0, 0, 2, 4, 6]], $result->filteredValue);
+
 ```
 
 #### Booleans::filter
