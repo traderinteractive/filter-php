@@ -688,6 +688,15 @@ $value = \TraderInteractive\Filter\PhoneFilter::filter('234.567.8901', false, '(
 assert($value === '(234) 567-8901');
 ```
 
+#### TimeOfDayFilter::filter
+Aliased in the filterer as `time-of-day`, this will filter a given string value as a time of day in `HH:MM:SS` format.
+
+The following ensures that `$value` is a valid `HH:MM:SS` formatted string.
+```php
+$value = \TraderInteractive\Filter\TimeOfDayFilter::filter('12:15:23');
+assert($value === '12:15:23');
+```
+
 #### XmlFilter::filter
 Aliased in the filter as `xml`, this will ensure the given string value is valid XML, returning the original value.
 
