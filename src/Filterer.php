@@ -9,6 +9,7 @@ use TraderInteractive\Exceptions\FilterException;
 use TraderInteractive\Filter\Arrays;
 use TraderInteractive\Filter\Json;
 use TraderInteractive\Filter\PhoneFilter;
+use TraderInteractive\Filter\TimeOfDayFilter;
 use TraderInteractive\Filter\XmlFilter;
 
 /**
@@ -46,6 +47,7 @@ final class Filterer implements FiltererInterface
         'redact' => '\\TraderInteractive\\Filter\\Strings::redact',
         'string' => '\\TraderInteractive\\Filter\\Strings::filter',
         'strip-tags' => '\\TraderInteractive\\Filter\\Strings::stripTags',
+        'time-of-day' => TimeOfDayFilter::class . '::filter',
         'timezone' => '\\TraderInteractive\\Filter\\DateTimeZone::filter',
         'translate' => '\\TraderInteractive\\Filter\\Strings::translate',
         'uint' => '\\TraderInteractive\\Filter\\UnsignedInt::filter',

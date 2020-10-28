@@ -515,6 +515,23 @@ final class FiltererTest extends TestCase
                     [],
                 ],
             ],
+            'time-of-day' => [
+                'spec' => [
+                    'field' => [['time-of-day']],
+                ],
+                'input' => [
+                    'field' => '23:59:59',
+                ],
+                'options' => [],
+                'result' => [
+                    true,
+                    [
+                        'field' => '23:59:59',
+                    ],
+                    null,
+                    [],
+                ],
+            ],
         ];
     }
 
