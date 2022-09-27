@@ -44,7 +44,7 @@ final class FiltererTest extends TestCase
         . "</books>\n"
     );
 
-    public function setUp()
+    public function setUp(): void
     {
         Filterer::setFilterAliases(Filterer::DEFAULT_FILTER_ALIASES);
     }
@@ -690,11 +690,11 @@ final class FiltererTest extends TestCase
      * @test
      * @covers ::filter
      * @covers ::execute
-     * @expectedException Exception
-     * @expectedExceptionMessage Function 'boo' for field 'foo' is not callable
      */
     public function notCallable()
     {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage("Function 'boo' for field 'foo' is not callable");
         Filterer::filter(['foo' => [['boo']]], ['foo' => 0]);
     }
 
@@ -702,11 +702,11 @@ final class FiltererTest extends TestCase
      * @test
      * @covers ::filter
      * @covers ::execute
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage 'allowUnknowns' option was not a bool
      */
     public function allowUnknownsNotBool()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("'allowUnknowns' option was not a bool");
         Filterer::filter([], [], ['allowUnknowns' => 1]);
     }
 
@@ -714,11 +714,11 @@ final class FiltererTest extends TestCase
      * @test
      * @covers ::filter
      * @covers ::execute
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage 'defaultRequired' option was not a bool
      */
     public function defaultRequiredNotBool()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("'defaultRequired' option was not a bool");
         Filterer::filter([], [], ['defaultRequired' => 1]);
     }
 
@@ -739,11 +739,11 @@ final class FiltererTest extends TestCase
      * @test
      * @covers ::filter
      * @covers ::execute
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage filters for field 'boo' was not a array
      */
     public function filtersNotArrayInLeftOverSpec()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("filters for field 'boo' was not a array");
         Filterer::filter(['boo' => 1], []);
     }
 
@@ -751,11 +751,11 @@ final class FiltererTest extends TestCase
      * @test
      * @covers ::filter
      * @covers ::execute
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage filters for field 'boo' was not a array
      */
     public function filtersNotArrayWithInput()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("filters for field 'boo' was not a array");
         Filterer::filter(['boo' => 1], ['boo' => 'notUnderTest']);
     }
 
@@ -763,11 +763,11 @@ final class FiltererTest extends TestCase
      * @test
      * @covers ::filter
      * @covers ::execute
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage filter for field 'boo' was not a array
      */
     public function filterNotArray()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("filter for field 'boo' was not a array");
         Filterer::filter(['boo' => [1]], ['boo' => 'notUnderTest']);
     }
 
@@ -775,33 +775,33 @@ final class FiltererTest extends TestCase
      * @test
      * @covers ::filter
      * @covers ::execute
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage 'required' for field 'boo' was not a bool
      */
     public function requiredNotBool()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("'required' for field 'boo' was not a bool");
         Filterer::filter(['boo' => ['required' => 1]], []);
     }
 
     /**
      * @test
      * @covers ::registerAlias
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage $alias was not a string or int
      */
     public function registerAliasAliasNotString()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('$alias was not a string or int');
         Filterer::registerAlias(true, 'strtolower');
     }
 
     /**
      * @test
      * @covers ::registerAlias
-     * @expectedException Exception
-     * @expectedExceptionMessage Alias 'upper' exists
      */
     public function registerExistingAliasOverwriteFalse()
     {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage("Alias 'upper' exists");
         Filterer::setFilterAliases([]);
         Filterer::registerAlias('upper', 'strtoupper');
         Filterer::registerAlias('upper', 'strtoupper', false);
@@ -834,13 +834,13 @@ final class FiltererTest extends TestCase
      * @test
      * @covers ::filter
      * @covers ::execute
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage error for field 'fieldOne' was not a non-empty string
      *
      * @return void
      */
     public function filterWithNonStringError()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("error for field 'fieldOne' was not a non-empty string");
         Filterer::filter(
             ['fieldOne' => [['strtoupper'], 'error' => new stdClass()]],
             ['fieldOne' => 'valueOne']
@@ -853,13 +853,13 @@ final class FiltererTest extends TestCase
      * @test
      * @covers ::filter
      * @covers ::execute
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage error for field 'fieldOne' was not a non-empty string
      *
      * @return void
      */
     public function filterWithEmptyStringError()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("error for field 'fieldOne' was not a non-empty string");
         Filterer::filter(
             ['fieldOne' => [['strtoupper'], 'error' => "\n   \t"]],
             ['fieldOne' => 'valueOne']
@@ -907,9 +907,9 @@ final class FiltererTest extends TestCase
 Field '1' with value 'array (
 )' failed filtering, message 'Value 'array (
 )' is not a string'
-Field '2' with value 'stdClass::__set_state(array(
-))' failed filtering, message 'Value 'stdClass::__set_state(array(
-))' is not a string'
+Field '2' with value '(object) array(
+)' failed filtering, message 'Value '(object) array(
+)' is not a string'
 TXT;
             $this->assertSame($expected, $e->getMessage());
         }
@@ -965,9 +965,9 @@ TXT;
             $this->fail();
         } catch (FilterException $e) {
             $expected = <<<TXT
-Field 'key' with value 'stdClass::__set_state(array(
-))' failed filtering, message 'Value 'stdClass::__set_state(array(
-))' is not a string'
+Field 'key' with value '(object) array(
+)' failed filtering, message 'Value '(object) array(
+)' is not a string'
 Field 'key' with value 'array (
 )' failed filtering, message 'Value 'array (
 )' is not a string'
