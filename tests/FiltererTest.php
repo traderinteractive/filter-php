@@ -532,6 +532,24 @@ final class FiltererTest extends TestCase
                     [],
                 ],
             ],
+            'implode' => [
+                'spec' => [
+                    'field' => [['array'], ['implode', ',']],
+                ],
+                'input' => [
+                    'field' => ['one', 'two', 'three'],
+                ],
+                'options' => [],
+                'result' => [
+                    true,
+                    [
+                        'field' => 'one,two,three',
+                    ],
+                    null,
+                    [],
+                ],
+
+            ],
         ];
     }
 

@@ -36,6 +36,7 @@ final class Filterer implements FiltererInterface
         'explode' => '\\TraderInteractive\\Filter\\Strings::explode',
         'flatten' => '\\TraderInteractive\\Filter\\Arrays::flatten',
         'float' => '\\TraderInteractive\\Filter\\Floats::filter',
+        'implode' => Arrays::class . '::implode',
         'in' => '\\TraderInteractive\\Filter\\Arrays::in',
         'int' => '\\TraderInteractive\\Filter\\Ints::filter',
         'json' => Json::class . '::validate',
