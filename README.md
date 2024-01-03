@@ -500,6 +500,20 @@ $result = $filterer->execute($input);
 assert(['field' => [['FOO_VALUE' => 123, 'BAR_VALUE' => 'abc'], ['FOO_VALUE' => 456, 'BAR_VALUE' => 'def']]], $result->filteredValue);
 ```
 
+#### Arrays::implode
+
+Aliased in the filterer as `implode`, this filter is a wrapper around `implode` to ensure proper argument order.
+
+```php
+$sepcification = ['field' => [['array'],['implode', ',']]];
+$filterer = new TraderInteractive\Filterer($specification);
+$input = [
+    'field' => ['lastname', 'email', 'phone'],
+];
+$result = $filterer->execute($input);
+assert(['field' => 'lastname,email,phone'], $result->filteredValue);
+```
+
 #### Arrays::in
 Aliased in the filterer as `in`, this filter is a wrapper around `in_array` including support for strict equality testing.
 

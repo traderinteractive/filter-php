@@ -31,7 +31,7 @@
     "require": {
         "php": "^7.3 || ^8.0",
         "traderinteractive/exceptions": "^2.0",
-        "traderinteractive/filter-arrays": "^4.0",
+        "traderinteractive/filter-arrays": "^4.1",
         "traderinteractive/filter-bools": "^4.0",
         "traderinteractive/filter-dates": "^4.0",
         "traderinteractive/filter-floats": "^4.0",
