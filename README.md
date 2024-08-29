@@ -644,6 +644,17 @@ The following checks that `$value` is a URL.
 \TraderInteractive\Filter\Url::filter($value);
 ```
 
+#### Closures::filter
+Aliased in the filterer as `closure`, this filter verifies that the argument is a closure function.
+
+The following checks that `$closureMethod` is a closure.
+```php
+$closureMethod = function () {
+    doSomething();
+};
+\TraderInteractive\Filter\Closures::filter($closureMethod);
+```
+
 #### Email::filter
 Aliased in the filterer as `email`, this filter verifies that the argument is an email.
 
