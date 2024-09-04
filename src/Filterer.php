@@ -28,6 +28,7 @@ final class Filterer implements FiltererInterface
         'arrayize' => '\\TraderInteractive\\Filter\\Arrays::arrayize',
         'bool' => '\\TraderInteractive\\Filter\\Booleans::filter',
         'bool-convert' => '\\TraderInteractive\\Filter\\Booleans::convert',
+        'closure' => Filter\Closures::class . '::filter',
         'compress-string' => '\\TraderInteractive\\Filter\\Strings::compress',
         'concat' => '\\TraderInteractive\\Filter\\Strings::concat',
         'date' => '\\TraderInteractive\\Filter\\DateTime::filter',
