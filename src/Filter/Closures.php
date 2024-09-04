@@ -16,7 +16,7 @@ class Closures
      * @param mixed $value       the value to filter to a closure function
      * @param bool  $allowNull   Set to true if NULL values are allowed. The filtered result of a NULL value is NULL
      *
-     * @return Closure|null the filtered $value
+     * @return \Closure|null the filtered $value
      *
      * @throws FilterException
      */
