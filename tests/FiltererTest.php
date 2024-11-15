@@ -916,17 +916,18 @@ final class FiltererTest extends TestCase
      */
     public function ofScalarsFail()
     {
+        $valueOne = '1';
+        $valueTwo = [];
+        $valueThree = new stdClass();
         try {
-            Filterer::ofScalars(['1', [], new stdClass], [['string']]);
+            Filterer::ofScalars([$valueOne, $valueTwo, $valueThree], [['string']]);
             $this->fail();
         } catch (FilterException $e) {
+            $valueTwoExport = var_export($valueTwo, true);
+            $valueThreeExport = var_export($valueThree, true);
             $expected = <<<TXT
-Field '1' with value 'array (
-)' failed filtering, message 'Value 'array (
-)' is not a string'
-Field '2' with value 'stdClass::__set_state(array(
-))' failed filtering, message 'Value 'stdClass::__set_state(array(
-))' is not a string'
+Field '1' with value '{$valueTwoExport}' failed filtering, message 'Value '{$valueTwoExport}' is not a string'
+Field '2' with value '{$valueThreeExport}' failed filtering, message 'Value '{$valueThreeExport}' is not a string'
 TXT;
             $this->assertSame($expected, $e->getMessage());
         }
@@ -974,20 +975,22 @@ TXT;
      */
     public function ofArraysFail()
     {
+        $valueOne = new stdClass();
+        $valueTwo = [];
+        $valueThree = null;
+        $valueFour = 'key';
         try {
             Filterer::ofArrays(
-                [['key' => new stdClass], ['key' => []], ['key' => null], 'key'],
+                [['key' => $valueOne], ['key' => $valueTwo], ['key' => $valueThree], $valueFour],
                 ['key' => [['string']]]
             );
             $this->fail();
         } catch (FilterException $e) {
+            $valueOneExport = var_export($valueOne, true);
+            $valueTwoExport = var_export($valueTwo, true);
             $expected = <<<TXT
-Field 'key' with value 'stdClass::__set_state(array(
-))' failed filtering, message 'Value 'stdClass::__set_state(array(
-))' is not a string'
-Field 'key' with value 'array (
-)' failed filtering, message 'Value 'array (
-)' is not a string'
+Field 'key' with value '{$valueOneExport}' failed filtering, message 'Value '{$valueOneExport}' is not a string'
+Field 'key' with value '{$valueTwoExport}' failed filtering, message 'Value '{$valueTwoExport}' is not a string'
 Field 'key' with value 'NULL' failed filtering, message 'Value failed filtering, \$allowNull is set to false'
 Value at position '3' was not an array
 TXT;
