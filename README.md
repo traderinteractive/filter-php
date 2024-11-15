@@ -696,6 +696,15 @@ The following ensures that `$value` is a valid `HH:MM:SS` formatted string.
 $value = \TraderInteractive\Filter\TimeOfDayFilter::filter('12:15:23');
 assert($value === '12:15:23');
 ```
+#### UuidFilter::filter
+Aliased in the filterer as `uuid`, this will filter a given string values as a valid UUID.
+
+The following ensures the `$value` is a valid UUID v4 formatted string. Disallowing null values, nil UUIDs and UUID version other than v4
+
+```php
+$value = \TraderInteractive\Filter\UuidFilter::filter('2c02b87a-97ec-4de0-8c50-6721a29c150f', false, false, [4]);
+assert($value === '2c02b87a-97ec-4de0-8c50-6721a29c150f');
+```
 
 #### XmlFilter::filter
 Aliased in the filter as `xml`, this will ensure the given string value is valid XML, returning the original value.
