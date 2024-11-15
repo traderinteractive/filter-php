@@ -532,6 +532,23 @@ final class FiltererTest extends TestCase
                     [],
                 ],
             ],
+            'uuid' => [
+                'spec' => [
+                    'field' => [['uuid', false, false, [4]]],
+                ],
+                'input' => [
+                    'field' => '2c02b87a-97ec-4de0-8c50-6721a29c150f',
+                ],
+                'options' => [],
+                'result' => [
+                    true,
+                    [
+                        'field' => '2c02b87a-97ec-4de0-8c50-6721a29c150f',
+                    ],
+                    null,
+                    [],
+                ],
+            ],
         ];
     }
 

@@ -10,6 +10,7 @@ use TraderInteractive\Filter\Arrays;
 use TraderInteractive\Filter\Json;
 use TraderInteractive\Filter\PhoneFilter;
 use TraderInteractive\Filter\TimeOfDayFilter;
+use TraderInteractive\Filter\UuidFilter;
 use TraderInteractive\Filter\XmlFilter;
 
 /**
@@ -52,6 +53,7 @@ final class Filterer implements FiltererInterface
         'translate' => '\\TraderInteractive\\Filter\\Strings::translate',
         'uint' => '\\TraderInteractive\\Filter\\UnsignedInt::filter',
         'url' => '\\TraderInteractive\\Filter\\Url::filter',
+        'uuid' => UuidFilter::class . '::filter',
         'xml' => XmlFilter::class . '::filter',
         'xml-extract' => XmlFilter::class . '::extract',
         'xml-validate' => XmlFilter::class . '::validate',
