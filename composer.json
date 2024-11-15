@@ -45,5 +45,9 @@
     },
     "autoload": {
         "psr-4": { "TraderInteractive\\": "src/" }
+    },
+    "scripts": {
+        "lint": "vendor/bin/phpcs",
+        "test": "vendor/bin/phpunit"
     }
 }
