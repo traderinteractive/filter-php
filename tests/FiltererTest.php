@@ -549,6 +549,25 @@ final class FiltererTest extends TestCase
                     [],
                 ],
             ],
+            'strip-emoji' => [
+                'spec' => [
+                    'field' => [['strip-emoji']],
+                ],
+                'input' => [
+                    'field' => 'This 💩 text contains 😞 multiple emoji 🍔 characters 🍚. As well as an alphanumeric '
+                    . 'supplement 🆗 and flag 🚩',
+                ],
+                'options' => [],
+                'result' => [
+                    true,
+                    [
+                        'field' => 'This  text contains  multiple emoji  characters . As well as an alphanumeric '
+                        . 'supplement  and flag ',
+                    ],
+                    null,
+                    [],
+                ],
+            ],
         ];
     }
 

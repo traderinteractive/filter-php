@@ -605,6 +605,13 @@ $value = \TraderInteractive\Filter\Strings::explode('abc,def,ghi');
 assert($value === ['abc', 'def', 'ghi']);
 ```
 
+#### Strings::stripEmoji
+Aliased in the filterer as `strip-emoji`, this filter removes emoji characters from a given string optionally replacing them with the given replacement string
+```php
+$value = \TraderInteractive\Filter\Strings::stripEmoji('this is ridiculous🙄', '!');
+assert($value === 'this is ridiculous!');
+```
+
 #### Strings::stripTags
 Aliased in the filterer as `strip-tags`, this filter is essentially a wrapper around the built-in [`strip_tags`](http://php.net/manual/en/function.strip-tags.php) function. However, unlike the
 native function the stripTags method will return null when given a null value.
