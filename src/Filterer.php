@@ -161,6 +161,7 @@ final class Filterer implements FiltererInterface
         $filteredInput = [];
         $errors = [];
         $conflicts = [];
+        $requires = [];
         foreach ($inputToFilter as $field => $input) {
             $filters = $this->specification[$field];
             self::assertFiltersIsAnArray($filters, $field);
@@ -170,6 +171,7 @@ final class Filterer implements FiltererInterface
             unset($filters[FilterOptions::IS_REQUIRED]);//doesn't matter if required since we have this one
             unset($filters[FilterOptions::DEFAULT_VALUE]);//doesn't matter if there is a default since we have a value
             $conflicts = self::extractConflicts($filters, $field, $conflicts);
+            $requires = self::extractRequires($filters, $field, $requires);
 
             foreach ($filters as $filter) {
                 self::assertFilterIsArray($filter, $field);
@@ -218,6 +220,7 @@ final class Filterer implements FiltererInterface
 
         $errors = self::handleAllowUnknowns($this->allowUnknowns, $leftOverInput, $errors);
         $errors = self::handleConflicts($filteredInput, $conflicts, $errors);
+        $errors = self::handleRequires($filteredInput, $requires, $errors);
 
         return new FilterResponse($filteredInput, $errors, $leftOverInput);
     }
@@ -247,6 +250,41 @@ final class Filterer implements FiltererInterface
         $conflicts[$field] = $conflictsWith;
 
         return $conflicts;
+    }
+
+    private static function extractRequires(array &$filters, string $field, array $requires): array
+    {
+        $required = $filters[FilterOptions::REQUIRES] ?? null;
+        unset($filters[FilterOptions::REQUIRES]);
+        if ($required === null) {
+            return $requires;
+        }
+
+        if (!is_array($required)) {
+            $required = [$required];
+        }
+
+        $requires[$field] = $required;
+
+        return $requires;
+    }
+
+    private static function handleRequires(array $inputToFilter, array $requires, array $errors)
+    {
+        foreach (array_keys($inputToFilter) as $field) {
+            if (!array_key_exists($field, $requires)) {
+                continue;
+            }
+
+
+            foreach ($requires[$field] as $requiredField) {
+                if (!array_key_exists($requiredField, $inputToFilter)) {
+                    $errors[] = "Field '{$field}' requires field '{$requiredField}' but it is not present.";
+                }
+            }
+        }
+
+        return $errors;
     }
 
     private static function handleConflicts(array $inputToFilter, array $conflicts, array $errors)
