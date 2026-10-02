@@ -265,6 +265,70 @@ final class FiltererTest extends TestCase
                 'options' => [],
                 'result' => [true, ['field' => 'a string with newlines and extra spaces'], null, []],
             ],
+            'requires single' => [
+                'spec' => [
+                    'fieldOne' => [FilterOptions::REQUIRES => 'fieldThree', ['string']],
+                    'fieldTwo' => [['string']],
+                    'fieldThree' => [['string']],
+                ],
+                'input' => [
+                    'fieldOne' => 'abc',
+                    'fieldTwo' => '123',
+                ],
+                'options' => [],
+                'result' => [
+                    false,
+                    null,
+                    "Field 'fieldOne' requires field 'fieldThree' but it is not present.",
+                    [],
+                ],
+            ],
+            'requires multiple' => [
+                'spec' => [
+                    'fieldOne' => [FilterOptions::REQUIRES => ['fieldThree', 'fieldFour'], ['string']],
+                    'fieldTwo' => [['string']],
+                    'fieldThree' => [['string']],
+                    'fieldFour' => [['uint']],
+                ],
+                'input' => [
+                    'fieldOne' => 'abc',
+                    'fieldTwo' => '123',
+                ],
+                'options' => [],
+                'result' => [
+                    false,
+                    null,
+                    "Field 'fieldOne' requires field 'fieldThree' but it is not present.\n"
+                    . "Field 'fieldOne' requires field 'fieldFour' but it is not present.",
+                    [],
+                ],
+            ],
+            'requires multiple all present' => [
+                'spec' => [
+                    'fieldOne' => [FilterOptions::REQUIRES => ['fieldThree', 'fieldFour'], ['string']],
+                    'fieldTwo' => [['string']],
+                    'fieldThree' => [['string']],
+                    'fieldFour' => [['uint']],
+                ],
+                'input' => [
+                    'fieldOne' => 'abc',
+                    'fieldTwo' => '123',
+                    'fieldThree' => 'foo',
+                    'fieldFour' => '789',
+                ],
+                'options' => [],
+                'result' => [
+                    true,
+                    [
+                        'fieldOne' => 'abc',
+                        'fieldTwo' => '123',
+                        'fieldThree' => 'foo',
+                        'fieldFour' => 789,
+                    ],
+                    null,
+                    [],
+                ],
+            ],
             'conflicts with single' => [
                 'spec' => [
                     'fieldOne' => [FilterOptions::CONFLICTS_WITH => 'fieldThree', ['string']],
