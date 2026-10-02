@@ -27,6 +27,11 @@ final class FilterOptions
     /**
      * @var string
      */
+    const REQUIRES = 'requires';
+
+    /**
+     * @var string
+     */
     const RETURN_ON_NULL = 'returnOnNull';
 
     /**
