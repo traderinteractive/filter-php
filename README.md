@@ -330,6 +330,52 @@ $specification = [
 ];
 ```
 
+## requires
+
+#### Summary
+
+Defines any input field(s) which are required by a separate given field. Used when one field requires one or more additional fields to be operate properly.
+
+#### Types
+
+* string||string[]
+
+#### Default
+
+There is no default value for this option.
+
+#### Constant
+
+```php
+TraderInteractive\FilterOptions::REQUIRES
+```
+
+#### Examples
+
+```php
+$specification = [
+    'duration' => [['uint']],
+    'startDate' => [
+        TraderInteractive\FilterOptions::REQUIRES => 'duration',
+        ['date'],
+    ],
+];
+```
+
+```php
+$specification = [
+    'id' => [['string']],
+    'typeId' => [
+        TraderInteractive\FilterOptions::REQUIRES => ['typeCode'],
+        ['uint'],
+    ],
+    'typeCode' => [
+        TraderInteractive\FilterOptions::REQUIRES => ['typeId'],
+        ['string'],
+    ],
+];
+```
+
 ## uses
 
 #### Summary
