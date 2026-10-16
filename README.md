@@ -665,6 +665,13 @@ $value = \TraderInteractive\Filter\Strings::explode('abc,def,ghi');
 assert($value === ['abc', 'def', 'ghi']);
 ```
 
+#### Strings::stripControlCharacters
+Aliased in the filterer as `strip-cchars`, this filter removes control characters from a given string optionally replacing them with the given replacement string
+```php
+$value = \TraderInteractive\Filter\Strings::stripControlCharacters("Hello\x00\tWorld\nTest\x7F", ' ');
+assert($value === 'Hello  World Test ');
+```
+
 #### Strings::stripEmoji
 Aliased in the filterer as `strip-emoji`, this filter removes emoji characters from a given string optionally replacing them with the given replacement string
 ```php
