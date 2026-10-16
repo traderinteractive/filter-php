@@ -50,6 +50,7 @@ final class Filterer implements FiltererInterface
         'phone' => PhoneFilter::class . '::filter',
         'redact' => '\\TraderInteractive\\Filter\\Strings::redact',
         'string' => '\\TraderInteractive\\Filter\\Strings::filter',
+        'strip-cchars' => Strings::class . '::stripControlCharacters',
         'strip-emoji' => Strings::class . '::stripEmoji',
         'strip-tags' => '\\TraderInteractive\\Filter\\Strings::stripTags',
         'time-of-day' => TimeOfDayFilter::class . '::filter',

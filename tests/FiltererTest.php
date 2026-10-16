@@ -649,6 +649,23 @@ final class FiltererTest extends TestCase
                     [],
                 ],
             ],
+            'strip-cchars' => [
+                'spec' => [
+                    'field' => [['strip-cchars', ' ']],
+                ],
+                'input' => [
+                    'field' => "Hello\x00\tWorld\nTest\x7F",
+                ],
+                'options' => [],
+                'result' => [
+                    true,
+                    [
+                        'field' => 'Hello  World Test ',
+                    ],
+                    null,
+                    [],
+                ],
+            ],
         ];
     }
 
